@@ -29,8 +29,9 @@
         </ScrollViewer>
         <Grid x:Name="validationGrid" Height="715" Width="586" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" >
             <Button x:Name="saveFirmaEntry" Content="Zapisz rekord" Margin="508,263,0,425"/>
-            <TextBox x:Name="validationTextBox" HorizontalAlignment="Left" Height="174" TextWrapping="Wrap" AcceptsReturn="True" Text="" VerticalAlignment="Top" Width="270" Tag="box"/>
+            <TextBox x:Name="validationTextBox" HorizontalAlignment="Left" Height="154" TextWrapping="Wrap" AcceptsReturn="True" Text="" VerticalAlignment="Top" Width="270" Tag="box"/>
             <Button Content="cut all" HorizontalAlignment="Left" Margin="421,159,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+            <Button Content="rob sam" HorizontalAlignment="Left" Margin="421,134,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4" />
             <Button Content="copy result" HorizontalAlignment="Left" Margin="501,159,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
             <ListBox x:Name="parametersListBox" HorizontalAlignment="Left" SelectionMode="Multiple" VerticalAlignment="Top" Width="130"  Height="264" Margin="275,0,0,0">
                 <ListBoxItem >NIP</ListBoxItem>
@@ -51,8 +52,11 @@
             <Grid x:Name="fakturaGrid" HorizontalAlignment="Left" Height="300" Margin="0" VerticalAlignment="Bottom" Width="240">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
@@ -67,13 +71,16 @@
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="numer:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="0" Height="Auto"/>
-                <Label Content="sprzedawca:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="1" Height="Auto"/>
+                <Label Content="zaplacono:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="1" Height="Auto" Tag="zaplacono"/>
                 <Label Content="nabywca:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="2" Height="Auto"/>
-                <Label Content="data1:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="3" Height="Auto"/>
-                <Label Content="data2:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="4" Height="Auto"/>
-                <Label Content="kwota:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="5" Height="Auto"/>
-                <Label Content="sposób płatności:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="6" Height="Auto"/>
+                <Label Content="data sprz/wyk:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="3" Height="Auto"/>
+                <Label Content="data wyst:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="4" Height="Auto"/>
+                <Label Content="kwota:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="5" Height="Auto" Tag="razem do zaplaty"/>
+                <Label Content="sposób płatności:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="6" Height="Auto" Tag="sposob platnosci"/>
+                <Label Content="termin zaplaty:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="8" Height="Auto" Tag="termin zaplaty"/>
                 <Label Content="netto:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="7" Height="Auto"/>
+                <Label Content="faks:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="9" Height="Auto"/>
+
                 <Button  Content="Zapisz" Grid.Row="0" Grid.Column="2" Click="saveButton_Click" CommandParameter="{Binding Path=ID}" />
                 <Button  Content="Zapisz" Grid.Row="1" Grid.Column="2" Click="saveButton_Click" HorizontalAlignment="Left" Width="40" />
                 <Button  Content="Zapisz" Grid.Row="2" Grid.Column="2" Click="saveButton_Click" />
@@ -82,19 +89,25 @@
                 <Button  Content="Zapisz" Grid.Row="5" Grid.Column="2" Click="saveButton_Click" />
                 <Button  Content="Zapisz" Grid.Row="6" Grid.Column="2" Click="saveButton_Click" CommandParameter="{Binding Path=ID}" />
                 <Button  Content="Zapisz" Grid.Row="7" Grid.Column="2" Click="saveButton_Click" />
+                <Button  Content="Zapisz" Grid.Row="8" Grid.Column="2" Click="saveButton_Click" />
+                <Button  Content="Zapisz" Grid.Row="9" Grid.Column="2" Click="saveButton_Click" />
+
                 <TextBox x:Name="numerFakturaTextBox" Text="" Grid.Row="0" Grid.Column="1" Tag="numer faktury" />
-                <TextBox x:Name="sprzedawcaFakturaTextBox" Text="" Grid.Row="1" Grid.Column="1" Tag="sprzedawca faktura"/>
+                <TextBox x:Name="sprzedawcaFakturaTextBox" Text="" Grid.Row="1" Grid.Column="1" Tag="zaplacono"/>
                 <TextBox x:Name="nabywcaFakturaTextBox" Text="" Grid.Row="2" Grid.Column="1" Tag="nabywca faktura" />
-                <TextBox x:Name="data1FakturaTextBox" Text="" Grid.Row="3" Grid.Column="1" Tag="data1" />
-                <TextBox x:Name="data2FakturaTextBox" Text="" Grid.Row="4" Grid.Column="1" Tag="data2" />
-                <TextBox x:Name="kwotaFakturaTextBox" Text="" Grid.Row="5" Grid.Column="1" Tag="kwota" />
+                <TextBox x:Name="dataSprzedazyTextBox" Text="" Grid.Row="3" Grid.Column="1" Tag="data sprzedazy" />
+                <TextBox x:Name="dataWystawieniaFakturaTextBox" Text="" Grid.Row="4" Grid.Column="1" Tag="data wystawienia" />
+                <TextBox x:Name="kwotaFakturaTextBox" Text="" Grid.Row="5" Grid.Column="1" Tag="do zaplaty" />
                 <TextBox x:Name="sposobPlatnosciFakturaTextBox" Text="" Grid.Row="6" Grid.Column="1" Tag="sposob platnosci" />
                 <TextBox x:Name="nettoFakturaTextBox" Text="" Grid.Row="7" Grid.Column="1" Tag="netto faktura" />
+                <TextBox x:Name="terminZaplatyFakturaTextBox" Text="" Grid.Row="8" Grid.Column="1" Tag="termin zaplaty" />
+                <TextBox x:Name="faksTextBox" Text="" Grid.Row="9" Grid.Column="1"  Tag="faks"/>
 
 
             </Grid>
-            <Grid x:Name="towarGrid" HorizontalAlignment="Left" Height="150" Margin="0,0,0,350" VerticalAlignment="Bottom" Width="240">
+            <Grid x:Name="towarGrid" HorizontalAlignment="Left" Height="180" Margin="0,0,0,330" VerticalAlignment="Bottom" Width="240">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
@@ -112,16 +125,21 @@
                 <Label Content="ilosc:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="2" Height="Auto"/>
                 <Label Content="netto:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="3" Height="Auto"/>
                 <Label Content="brutto:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="4" Height="Auto"/>
+                <Label Content="VAT:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="5" Height="Auto"/>
+
                 <Button  Content="Zapisz" Grid.Row="0" Grid.Column="2" Click="saveButton_Click" CommandParameter="{Binding Path=ID}" />
                 <Button  Content="Zapisz" Grid.Row="1" Grid.Column="2" Click="saveButton_Click" HorizontalAlignment="Left" Width="40" />
                 <Button  Content="Zapisz" Grid.Row="2" Grid.Column="2" Click="saveButton_Click" />
                 <Button  Content="Zapisz" Grid.Row="3" Grid.Column="2" Click="saveButton_Click" />
                 <Button  Content="Zapisz" Grid.Row="4" Grid.Column="2" Click="saveButton_Click" />
+                <Button  Content="Zapisz" Grid.Row="5" Grid.Column="2" Click="saveButton_Click" />
+
                 <TextBox x:Name="numerFakturyTowarTextBox" Text="" Grid.Row="0" Grid.Column="1" Tag="numer faktury" />
                 <TextBox x:Name="nazwaTowarFakturaTextBox" Text="" Grid.Row="1" Grid.Column="1" Tag="nazwa towaru" />
                 <TextBox x:Name="iloscTowarTextBox" Text="" Grid.Row="2" Grid.Column="1" Tag="ilosc towaru" />
                 <TextBox x:Name="nettoTowarTextBox" Text="" Grid.Row="3" Grid.Column="1" Tag="netto towaru"/>
                 <TextBox x:Name="bruttoTowarTextBox" Text="" Grid.Row="4" Grid.Column="1" Tag="brutto towaru" />
+                <TextBox x:Name="VATTextBox" Text="" Grid.Row="5" Grid.Column="1" Tag="VAT" />
 
 
 
@@ -195,10 +213,10 @@
                 <TextBox x:Name="telefon2TextBox" Text="" Grid.Row="13" Grid.Column="1" Tag="telefon2"/>
 
             </Grid>
-            <Label Content="Towar:" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="62" Height="26" FontSize="14"/>
+            <Label Content="Towar:" HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" Width="62" Height="26" FontSize="14"/>
             <Label Content="Faktura:" HorizontalAlignment="Left" Margin="10,384,0,0" VerticalAlignment="Top" Width="62" Height="26" FontSize="14"/>
             <Label Content="Firma:" HorizontalAlignment="Left" Margin="343,264,0,0" VerticalAlignment="Top" Width="62" Height="26" FontSize="14"/>
-            <Button x:Name="saveTowarEntry" Content="Zapisz rekord" Margin="192,180,316,508" />
+            <Button x:Name="saveTowarEntry" Content="Zapisz rekord" Margin="192,165,316,523" />
             <Button x:Name="SaveFakturaEntry" Content="Zapisz rekord" Margin="192,383,316,305"/>
             <Button Content="parametry" HorizontalAlignment="Left" Margin="421,184,0,0" VerticalAlignment="Top" Width="75" Click="iterateNumerFakturyButtonClick" />
             <Button Content="sprz/nab" HorizontalAlignment="Left" Margin="421,209,0,0" VerticalAlignment="Top" Width="75" Click="iterateSprzedawcaNabywcaButtonCLick" />
@@ -221,7 +239,12 @@
             </StackPanel>
         </GroupBox>
         <Label Content="" HorizontalAlignment="Left" Margin="525,699,0,0" VerticalAlignment="Top" Width="232"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="620,303,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="617,274,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+        <TextBox x:Name="buildRegexTextBox" HorizontalAlignment="Left" Height="57" Margin="573,314,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="163"/>
+        <Button Content="Buduj wyrazenie" HorizontalAlignment="Left" Margin="602,387,0,0" VerticalAlignment="Top" Width="134" Click="buduj_Wyrazenie_Click"/>
+        <TextBox x:Name="sprawdzanieWyrazenTextBox" HorizontalAlignment="Left" Height="114" Margin="573,492,0,0" TextWrapping="Wrap" Text="Płatniości" VerticalAlignment="Top" Width="163"/>
+        <TextBox x:Name="wyrazenieTextBox" HorizontalAlignment="Left" Height="60" Margin="525,611,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="237"/>
+        <Button x:Name="szukaj" Content="szukaj" HorizontalAlignment="Left" Margin="637,676,0,0" VerticalAlignment="Top" Width="75" Click="szukaj_Click"/>
 
     </Grid>
 </Window>

@@ -49,7 +49,7 @@ namespace Tess
         {
             InitializeComponent();
             this.WindowState = WindowState.Maximized;
-           
+            Patterning p = new Patterning();
             BitmapImage imgdata;
             imgdata=new BitmapImage(new Uri(testImagePath,UriKind.RelativeOrAbsolute));
         
@@ -577,25 +577,26 @@ namespace Tess
             }
         }
 
-
+        
         private void imgMouseDown(object sender, MouseButtonEventArgs e)
-        {
+        {  /*
             begin = e.GetPosition(img);
           //  imgBegin=
            // System.Windows.MessageBox.Show(begin.X.ToString() + " " + begin.Y.ToString());
-
+        */
         }
 
         private void imgMouseUp(object sender, MouseButtonEventArgs e)
         {
+          /*
             end = e.GetPosition(img);
             System.Windows.MessageBox.Show(end.X.ToString() + " " + end.Y.ToString());
             Section((int)begin.X, (int)begin.Y, (int)(end.X - begin.X), (int)(end.Y - begin.Y));
             CreateARectangle((int)begin.X, (int)begin.Y, (int)(end.X - begin.X), (int)(end.Y - begin.Y));
             
-
+        */
         }
-
+        
         private void saveTextButton_Click(object sender, RoutedEventArgs e)
         {
             if(resultTextBox.Text!="")
@@ -805,7 +806,7 @@ namespace Tess
                   }
                   else if (s.Content.ToString()=="telefon")
                   {
-                      System.Windows.MessageBox.Show("");
+                   //   System.Windows.MessageBox.Show("");
                       p.IterateFor(validationTextBox.Text, "telefon1");
                       p.IterateFor(validationTextBox.Text, "telefon2");
                   }
@@ -865,7 +866,6 @@ namespace Tess
              
           }
       
-
       private void iterateSprzedawcaNabywcaButtonCLick(object sender, RoutedEventArgs e)
       {
           if (validationTextBox.Text != "")
@@ -970,6 +970,126 @@ namespace Tess
                       }
 
                   }
+              }
+          }
+      }
+
+      private void Button_Click_4(object sender, RoutedEventArgs e)
+      {
+         
+          if(validationTextBox.Text!="")
+          {
+              string text=validationTextBox.Text;
+             List<List<string>> headers= Patterning.GetHeaders(text);
+             List<string> sections = Patterning.GetTextWithoutHeaders(text);
+              List<string> lines = Patterning.RemoveEmpltyLines(text);
+              lines.RemoveAt(0);
+              Patterning p=new Patterning();
+            //  foreach (string s 
+            //      in lines)
+               //   System.Windows.MessageBox.Show(s + "*");
+              /*
+              foreach (string s in sections)
+                  System.Windows.MessageBox.Show("text: "+s);
+
+              foreach(List<string> l in headers)
+                  foreach(string s in l)
+                      System.Windows.MessageBox.Show("parametr: "+s);
+
+              */
+             // if (sections.Count == headers.Count)
+                  for (int i = 0; i < headers.Count ; i++)
+                  {
+                      
+                      for (int j = 1; j < headers[i].Count; j++)
+                      {
+                        //  System.Windows.MessageBox.Show("par: " + headers[i][j]);
+                        //  System.Windows.MessageBox.Show("sek: " + sections[i]);
+                          p.IterateFor(sections[i], headers[i][j]);
+                         // System.Windows.Forms.MessageBox.Show(p.results[headers[i][j]]);
+
+                      }
+                      if(Regex.IsMatch(headers[i][0],"tabelka1",RegexOptions.IgnoreCase))
+                      {
+                          
+                          p.IterateTable(lines,1); //towar
+                      
+                      }
+                      else
+                          if (Regex.IsMatch(headers[i][0], "tabelka2", RegexOptions.IgnoreCase))
+                          {
+
+                              p.IterateTable(lines,2); //podsumowanie
+
+                          }
+                  }
+             // else
+               //   System.Windows.MessageBox.Show("");
+             // */
+              foreach (System.Windows.Controls.Control ctr in firmaGrid.Children)
+              {
+                  if (ctr.GetType() == typeof(System.Windows.Controls.TextBox))
+                  {
+                      if (ctr.Tag != null)
+                      {
+
+                          System.Windows.Controls.TextBox box = (System.Windows.Controls.TextBox)ctr;
+                          if (p.results.ContainsKey(ctr.Tag.ToString()))
+                              box.Text = p.results[ctr.Tag.ToString()];
+                      }
+                  }
+              }
+
+              foreach (System.Windows.Controls.Control ctr in fakturaGrid.Children)
+              {
+                  if (ctr.GetType() == typeof(System.Windows.Controls.TextBox))
+                  {
+                      if (ctr.Tag != null)
+                      {
+                          System.Windows.Controls.TextBox box = (System.Windows.Controls.TextBox)ctr;
+                          if (p.results.ContainsKey(box.Tag.ToString()))
+                              box.Text = p.results[box.Tag.ToString()];
+                      }
+
+                  }
+              }
+              foreach (System.Windows.Controls.Control ctr in towarGrid.Children)
+              {
+                  if (ctr.GetType() == typeof(System.Windows.Controls.TextBox))
+                  {
+                      if (ctr.Tag != null)
+                      {
+                          System.Windows.Controls.TextBox box = (System.Windows.Controls.TextBox)ctr;
+                          if (p.results.ContainsKey(box.Tag.ToString()))
+                              box.Text = p.results[box.Tag.ToString()];
+                      }
+
+                  }
+              }
+
+
+          }
+      }
+
+      private void buduj_Wyrazenie_Click(object sender, RoutedEventArgs e)
+      {
+          Patterning p = new Patterning();
+          if (buildRegexTextBox.Text != "")
+              buildRegexTextBox.Text = p.BuildPattern(buildRegexTextBox.Text);
+          string s = buildRegexTextBox.Text;
+          foreach(Match m in Regex.Matches(sprawdzanieWyrazenTextBox.Text,s))
+          {
+              System.Windows.MessageBox.Show("Match!:"+m.Value.ToString());
+          }
+      }
+
+      private void szukaj_Click(object sender, RoutedEventArgs e)
+      {
+          if(wyrazenieTextBox.Text!=null)
+          {
+              foreach (Match m in Regex.Matches(sprawdzanieWyrazenTextBox.Text, wyrazenieTextBox.Text))
+              {
+                  System.Windows.MessageBox.Show("Match!:" + m.Value.ToString());
               }
           }
       }
