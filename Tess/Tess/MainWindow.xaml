@@ -72,7 +72,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="numer:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="0" Height="Auto"/>
                 <Label Content="zaplacono:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="1" Height="Auto" Tag="zaplacono"/>
-                <Label Content="nabywca:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="2" Height="Auto"/>
+                <Label Content="REGON:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="2" Height="Auto"/>
                 <Label Content="data sprz/wyk:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="3" Height="Auto"/>
                 <Label Content="data wyst:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="4" Height="Auto"/>
                 <Label Content="kwota:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="5" Height="Auto" Tag="razem do zaplaty"/>
@@ -94,7 +94,7 @@
 
                 <TextBox x:Name="numerFakturaTextBox" Text="" Grid.Row="0" Grid.Column="1" Tag="numer faktury" />
                 <TextBox x:Name="sprzedawcaFakturaTextBox" Text="" Grid.Row="1" Grid.Column="1" Tag="zaplacono"/>
-                <TextBox x:Name="nabywcaFakturaTextBox" Text="" Grid.Row="2" Grid.Column="1" Tag="nabywca faktura" />
+                <TextBox x:Name="REGONTextBox" Text="" Grid.Row="2" Grid.Column="1" Tag="REGON" />
                 <TextBox x:Name="dataSprzedazyTextBox" Text="" Grid.Row="3" Grid.Column="1" Tag="data sprzedazy" />
                 <TextBox x:Name="dataWystawieniaFakturaTextBox" Text="" Grid.Row="4" Grid.Column="1" Tag="data wystawienia" />
                 <TextBox x:Name="kwotaFakturaTextBox" Text="" Grid.Row="5" Grid.Column="1" Tag="do zaplaty" />
