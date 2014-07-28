@@ -29,6 +29,8 @@ namespace Tess
     public partial class MainWindow : Window
     {
        // string testImagePath = "./phototest.jpg";
+        List<string> res = new List<string>();
+        
         string testImagePath = @"C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\Images\phototest.jpg";
         string testImagePath1 = @"C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\Images\phototest1.jpg";
         bool isSection=false;
@@ -49,6 +51,10 @@ namespace Tess
         {
             InitializeComponent();
             this.WindowState = WindowState.Maximized;
+
+          //  string s = "114,50";
+          //  double w = Double.Parse("60.90");
+          //  System.Windows.MessageBox.Show((w/3).ToString());
             Patterning p = new Patterning();
             BitmapImage imgdata;
             imgdata=new BitmapImage(new Uri(testImagePath,UriKind.RelativeOrAbsolute));
@@ -982,8 +988,12 @@ namespace Tess
               string text=validationTextBox.Text;
              List<List<string>> headers= Patterning.GetHeaders(text);
              List<string> sections = Patterning.GetTextWithoutHeaders(text);
-              List<string> lines = Patterning.RemoveEmpltyLines(text);
-              lines.RemoveAt(0);
+             string str=string.Empty;
+             for (int i = 0; i < sections.Count; i++)
+                 str += sections[i];
+             List<string> lines = Patterning.RemoveEmpltyLines(str);
+           //   List<string> lines = Patterning.RemoveEmpltyLines(text);
+             // lines.RemoveAt(0);
               Patterning p=new Patterning();
             //  foreach (string s 
             //      in lines)
@@ -1000,7 +1010,7 @@ namespace Tess
              // if (sections.Count == headers.Count)
                   for (int i = 0; i < headers.Count ; i++)
                   {
-                      
+                      if (!Regex.IsMatch(headers[i][0], "tabelka1", RegexOptions.IgnoreCase) && !Regex.IsMatch(headers[i][0], "tabelka2", RegexOptions.IgnoreCase)) 
                       for (int j = 1; j < headers[i].Count; j++)
                       {
                         //  System.Windows.MessageBox.Show("par: " + headers[i][j]);
@@ -1009,19 +1019,27 @@ namespace Tess
                          // System.Windows.Forms.MessageBox.Show(p.results[headers[i][j]]);
 
                       }
+                      else
                       if(Regex.IsMatch(headers[i][0],"tabelka1",RegexOptions.IgnoreCase))
                       {
                           
-                          p.IterateTable(lines,1); //towar
+                        //  p.IterateTable(lines,1); //towar
+                          string[] s = sections[i].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                          p.IterateTable(s.ToList(), 1);
                       
                       }
                       else
                           if (Regex.IsMatch(headers[i][0], "tabelka2", RegexOptions.IgnoreCase))
                           {
 
-                              p.IterateTable(lines,2); //podsumowanie
+                             // p.IterateTable(lines,2); //podsumowanie
+                            //  p.IterateTable(sections[i], 2);
+                              string[] s = sections[i].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                              p.IterateTable(s.ToList(), 2);
 
                           }
+                    //  sections.RemoveAt(i);
+                   //   i--;
                   }
              // else
                //   System.Windows.MessageBox.Show("");
@@ -1067,7 +1085,7 @@ namespace Tess
                   }
               }
 
-
+              res = p.toFile;
           }
       }
 
@@ -1092,6 +1110,12 @@ namespace Tess
                   System.Windows.MessageBox.Show("Match!:" + m.Value.ToString());
               }
           }
+      }
+
+      private void wynikiButton_Click(object sender, RoutedEventArgs e)
+      {
+          ResultsWindow rw = new ResultsWindow(res);
+          rw.Show();
       }
 
      

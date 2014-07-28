@@ -15,6 +15,8 @@ namespace Tess
         public Dictionary<string, string> results;
         public Dictionary<string, string[]> frequentlyMistakenSequences;
         public List<string> text;
+        public List<string> toFile;
+        public bool sprzedawca = false;
         
         enum chars
         {
@@ -31,6 +33,7 @@ namespace Tess
             this.FillFrequentlyMistakenSequences();
             this.FillPatterns();
             this.InitiateResults();
+            this.toFile = new List<string>();
            // MessageBox.Show(patterns["example"]);
         }
 
@@ -42,6 +45,7 @@ namespace Tess
             this.FillFrequentlyMistakenSequences();
             this.FillPatterns();
             this.InitiateResults();
+            this.toFile = new List<string>();
         }
 
         public void FillPatterns()
@@ -49,8 +53,9 @@ namespace Tess
            this.patterns.Add("example","płatniości");
         //   patterns["example"]=BuildPattern(patterns["example"]);
            this.patterns.Add("VAT",@".*VAT.*");
-           this.patterns.Add("kwota", @"[0-9]+\,[0-9]{2}(\s|$)");
-           this.patterns.Add("kod pocztowy", "( [0-9OSI\\|]{2}\\-[0-9OSI\\|]{3}[^-])|(^[0-9OSI\\|]{2}\\-[0-9OSI\\|]{3}[^-])");
+           this.patterns.Add("kwota", @"([0-9]{1,3}(\.| )?)*([0-9]{1,3}),([0-9]{2})");
+          // this.patterns.Add("kwota", @"[0-9][0-9]{0,3}+\,[0-9]{2}(\s|$)");
+           this.patterns.Add("kod pocztowy", "( [0-9OSI\\|]{2} ?\\- ?[0-9OSI\\|]{3}[^-])|(^[0-9OSI\\|]{2} ?\\- ?[0-9OSI\\|]{3}[^-])");
             this.patterns.Add("numer faktury",@"");
            // this.patterns.Add("adres email", "[0-9|a-ząęśćźńłóż|_|-]+@[0-9|a-ząęśćźńłóż|_|-]+\\.[a-ząęśćźńłóż]{2,3}");
           //  this.patterns.Add("adres email", "[a-ząęśćźńłóż0-9_.-]+@[a-ząęśćźńłóż0-9_.-]+\\.(\\w)*\\.(\\w{2,4})");
@@ -64,13 +69,16 @@ namespace Tess
             this.patterns.Add("data2", @"([0-9OSI\|]{4}[-|\.|/]{1}[0-9OSI\|]{1,2}[-|\.|/]{1}[0-9OSI\|]{1,2})|([0-9OSI\|]{1,2}[-|\.|/]{1}[0-9OSI\|]{1,2}[-|\.|/]{1}[0-9OSI\|]{4})");
             this.patterns.Add("data", @"([0-9]{4}[-|\.|/]{1}[0-9]{1,2}[-|\.|/]{1}[0-9]{1,2})|([0-9]{1,2}[-|\.|/]{1}[0-9]{1,2}[-|\.|/]{1}[0-9]{4})");
             this.patterns.Add("REGON", @"(REGON ?:? ?)(((\([0-9]{2}\))([- ]?[0-9]){7})|(([- ]?[0-9]){9}))(\s|$)");
-            this.patterns.Add("numer konta", @"([0-9OSI\|]{2} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4})");
+           // this.patterns.Add("numer konta", @"([0-9OSI\|]{2} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4} ?[0-9OSI\|]{4})");
+             this.patterns.Add("numer konta", @"([0-9OSI\|] ?){26}");
           //  this.patterns.Add("ulica", "((ul.)|(ul)|(ul )|(ul. )|(uł )|(uł. )|(uł)|(uł.)|(u1 )|(u1. )|(u1)|(u1.)|(uI )|(uI. )|(uI)|(uI.))([a-ząęśćźńłóż]{3,})");
             //this.patterns.Add("numer ulicy", "((ul.)|(ul)|(ul )|(ul. )|(uł )|(uł. )|(uł)|(uł.)|(u1 )|(u1. )|(u1)|(u1.)|(uI )|(uI. )|(uI)|(uI.))([a-ząęśćźńłóż]{3,})([ ]*[0-9]{1,3})");
             this.patterns.Add("numer ulicy", @"((ul)|(uł)|(u1)|(ui)|(u\|)){1}.? ?([a-ząęśćźńłóż]{3,} *)+( )*[0-9OSI\|]{1,3}[a-ząęśćźńłóża-ząęśćźńłóż]?");
             //this.patterns.Add("strona", @"www\.[^\s]+\.[^\s]+");
             this.patterns.Add("strona", @"www\.[^\s]+\.[^\s]+");
-            this.patterns.Add("ulica", "((ul)|(uł)|(u1)|(ui)|(u\\|)){1}.? ?([a-ząęśćźńłóżś]{3,} *)+");
+            this.patterns.Add("ulica", @"((ul)|(uł)|(u1)|(ui)|(u\|)){1}\.? ?([a-ząęśćźńłóżś]{3,} ?[0-9]{1,3} *)+");
+         //   this.patterns.Add("ulica", @"((ul)|(uł)|(u1)|(ui)|(u\\|)){1}\.? ?([0-9]{0,2} ?[a-ząęśćźńłóżś]{3,} *)+");
+           // this.patterns.Add("ulica", @"(((ul)|(uł)|(u1)|(ui)|(u\\|)){1}\.? ?|^)(( |^)[0-9]{0,2} ?[a-ząęśćźńłóżś]{3,} *)+");
            // this.patterns.Add("ulica", BuildPattern("ul")+"\\.? ?([a-ząęśćźńłóż]{3,} *)+");
            // this.patterns.Add("telefon1", @"\s((\()?([0-9]{1}-?[0-9]{2})(\))?)?(\s)?([0-9]{3}(-|(\s))?[0-9]{2}(-|(\s))?[0-9]{2})((\s)|,)");
             //this.patterns.Add("telefon2", @"\s((\()?([0-9]{1}-?[0-9]{2})(\))?)?(\s)?([0-9]{3}(-|(\s))?[0-9]{2}(-|(\s))?[0-9]{2})[^0-9\-]");
@@ -102,15 +110,15 @@ namespace Tess
     {
 
 
-             string orig = pattern;
+            string orig = pattern;
             string copy = pattern;
-        string nowy= string.Empty;
+    //    string nowy= string.Empty;
  
-            List<string> sek = new List<string>();
-            List<int> ind=new List<int>();
-            List<int> len=new List<int>();
+       //     List<string> sek = new List<string>();
+         //   List<int> ind=new List<int>();
+         //   List<int> len=new List<int>();
             List<KeyValuePair<int, string>> indeksy = new List<KeyValuePair<int, string>>();
-            List<KeyValuePair<int, string>> indeksy2 = new List<KeyValuePair<int, string>>();
+        //    List<KeyValuePair<int, string>> indeksy2 = new List<KeyValuePair<int, string>>();
             
         
    
@@ -136,11 +144,12 @@ namespace Tess
                 
                 int j = 0;
              int i = 0;
-             bool skip = false;
+           ///  bool skip = false;
              for ( i = 0; i < indeksy.Count;i++ )
              {
                  //MessageBox.Show(indeksy[i].Key+":"+indeksy[i].Value);
                  if(i<indeksy.Count-1)
+                 {
                  if(indeksy[i].Key==indeksy[i+1].Key)
                  {
                     // MessageBox.Show(indeksy[i].Key + " ten sam " + indeksy[i+1].Value);
@@ -149,11 +158,16 @@ namespace Tess
                          indeksy.RemoveAt(i + 1);
                          indeksy.RemoveAt(i + 1);
                      }
+                  
+                    
                      else
                      {
                          indeksy.RemoveAt(i);
                          if(indeksy.Count>i+1)indeksy.RemoveAt(i + 1);
                      }
+                 }
+                // if (indeksy[i].Value.Length == indeksy[i + 1].Value.Length)
+                //     indeksy.RemoveAt(i + 1);
                  }
                //  if(ind)
              }
@@ -370,7 +384,7 @@ namespace Tess
             this.results.Add("termin zaplaty", String.Empty);
             this.results.Add("data wystawienia", String.Empty);
             this.results.Add("data sprzedazy", String.Empty); //wykonania uslug
-
+            this.results.Add("REGON", String.Empty);
             this.results.Add("kwota", String.Empty);
             this.results.Add("sposob platnosci", String.Empty);
             this.results.Add("netto faktury", String.Empty);
@@ -378,6 +392,7 @@ namespace Tess
             this.results.Add("zapłacono", String.Empty);
 
             //firmy
+            this.results.Add("nazwa banku", String.Empty);
             this.results.Add("adres email",String.Empty);
             this.results.Add("nazwa", String.Empty);
             this.results.Add("kod pocztowy", String.Empty);
@@ -397,6 +412,7 @@ namespace Tess
             this.results.Add("ilosc towaru", String.Empty);
             this.results.Add("netto towaru", String.Empty);
             this.results.Add("brutto towaru", String.Empty);
+            this.results.Add("VAT", String.Empty);
         }
 
         public void FillFrequentlyMistakenSequences()
@@ -404,10 +420,10 @@ namespace Tess
             this.frequentlyMistakenSequences.Add("0", new string[] { "o", "O" });
             this.frequentlyMistakenSequences.Add("o", new string[] { "0", "O" });
             this.frequentlyMistakenSequences.Add("O", new string[] { "o", "0" });
-            this.frequentlyMistakenSequences.Add("l", new string[] { "I", "i", "ł", "1","\\|" });
-            this.frequentlyMistakenSequences.Add("i", new string[] { "I", "l", "ł", "1", "\\|" });
-            this.frequentlyMistakenSequences.Add("I", new string[] { "i", "l", "ł", "1", "\\|" });
-            this.frequentlyMistakenSequences.Add("ł", new string[] { "i", "l", "I", "1", "\\|" });
+            this.frequentlyMistakenSequences.Add("l", new string[] { "I", "i", "ł", "1","\\|","!" });
+            this.frequentlyMistakenSequences.Add("i", new string[] { "I", "l", "ł", "1", "\\|","!" });
+            this.frequentlyMistakenSequences.Add("I", new string[] { "i", "l", "ł", "1", "\\|","!" });
+            this.frequentlyMistakenSequences.Add("ł", new string[] { "i", "l", "I", "1", "\\|","!" });
             this.frequentlyMistakenSequences.Add("1", new string[] { "i", "l", "ł", "I", "\\|" });
             this.frequentlyMistakenSequences.Add("}", new string[] { "j", "l", "ł", "1", "I" });
             this.frequentlyMistakenSequences.Add("{", new string[] { "j", "l", "ł", "1", "I" });
@@ -439,6 +455,7 @@ namespace Tess
             List<string> lista = new List<string>();
             var array = lista.ToArray(); ;
             {
+                /*
                 //il
                 lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
                 lista.Add("H");
@@ -454,8 +471,23 @@ namespace Tess
                     }
                 array = lista.ToArray();
                 this.frequentlyMistakenSequences.Add("il", array);
+                 * */
+                lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
+                lista.Add("H");
+
+                if (frequentlyMistakenSequences.ContainsKey("l")) foreach (string s in frequentlyMistakenSequences["l"])
+                    {
+                        if (frequentlyMistakenSequences.ContainsKey("i")) foreach (string ss in frequentlyMistakenSequences["i"])
+                            {
+                                lista.Add(ss + s);
+
+                            }
+
+                    }
+                array = lista.ToArray();
+                this.frequentlyMistakenSequences.Add("il", array);
             }
-            {
+            {/*
                 //li
                 lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
                 lista.Add("h");
@@ -475,8 +507,28 @@ namespace Tess
                     }
                 array = lista.ToArray();
                 this.frequentlyMistakenSequences.Add("li", array);
+              * */
+                //li
+                lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
+                lista.Add("h");
+                lista.Add("H");
+
+                if (frequentlyMistakenSequences.ContainsKey("l")) foreach (string s in frequentlyMistakenSequences["l"])
+                    {
+                        if (frequentlyMistakenSequences.ContainsKey("i")) foreach (string ss in frequentlyMistakenSequences["i"])
+                            {
+                                lista.Add(s + ss);
+                                // lista.Add(s + "i");
+
+                            }
+
+                    }
+             
+                array = lista.ToArray();
+                this.frequentlyMistakenSequences.Add("li", array);
             }
             {
+                /*
                 //in
                 lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
                 lista.Add("m");
@@ -495,9 +547,29 @@ namespace Tess
                     }
                 array = lista.ToArray();
                 this.frequentlyMistakenSequences.Add("in", array);
+                 * */
+
+                //in
+                lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
+                lista.Add("m");
+                
+
+                if (frequentlyMistakenSequences.ContainsKey("i")) foreach (string s in frequentlyMistakenSequences["i"])
+                    {
+                        if (frequentlyMistakenSequences.ContainsKey("n")) foreach (string ss in frequentlyMistakenSequences["n"])
+                            {
+                                lista.Add(s + ss);
+                                // lista.Add(s + "i");
+
+                            }
+
+                    }
             }
+            array = lista.ToArray();
+            this.frequentlyMistakenSequences.Add("in", array);
 
             {
+                /*
                 //ni
                 lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
                 lista.Add("m");
@@ -516,9 +588,26 @@ namespace Tess
                     }
                 array = lista.ToArray();
                 this.frequentlyMistakenSequences.Add("ni", array);
+                 * */
+                //ni
+                lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
+                lista.Add("m");
+                if (frequentlyMistakenSequences.ContainsKey("n")) foreach (string s in frequentlyMistakenSequences["n"])
+                    {
+                        if (frequentlyMistakenSequences.ContainsKey("i")) foreach (string ss in frequentlyMistakenSequences["i"])
+                            {
+                                lista.Add(s + ss);
+                                // lista.Add(s + "i");
+
+                            }
+
+                    }
             }
+            array = lista.ToArray();
+            this.frequentlyMistakenSequences.Add("ni", array);
 
             {
+                /*
                 //nr
                 lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
                 lista.Add("m");
@@ -537,9 +626,28 @@ namespace Tess
                     }
                 array = lista.ToArray();
                 this.frequentlyMistakenSequences.Add("nr", array);
+                 * 
+                 * */
+                //nr
+                lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
+                lista.Add("m");
+                if (frequentlyMistakenSequences.ContainsKey("n")) foreach (string s in frequentlyMistakenSequences["n"])
+                    {
+                        if (frequentlyMistakenSequences.ContainsKey("r")) foreach (string ss in frequentlyMistakenSequences["r"])
+                            {
+                                lista.Add(s + ss);
+                                // lista.Add(s + "i");
+
+                            }
+
+                    }
+                array = lista.ToArray();
+                this.frequentlyMistakenSequences.Add("nr", array);
             }
 
+
             {
+                /*
                 //rn
                 lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
                 lista.Add("m");
@@ -558,7 +666,24 @@ namespace Tess
                     }
                 array = lista.ToArray();
                 this.frequentlyMistakenSequences.Add("rn", array);
-            }
+                 * */
+                //rn
+                lista = new List<string>();// (frequentlyMistakenSequences["l"].ToList());
+                lista.Add("m");
+                if (frequentlyMistakenSequences.ContainsKey("r")) foreach (string s in frequentlyMistakenSequences["r"])
+                    {
+                        if (frequentlyMistakenSequences.ContainsKey("n")) foreach (string ss in frequentlyMistakenSequences["n"])
+                            {
+                                lista.Add(s + ss);
+                                // lista.Add(s + "i");
+
+                            }
+
+                    }
+                array = lista.ToArray();
+                this.frequentlyMistakenSequences.Add("rn", array);
+            
+                }
 
             /*
             string pas = string.Empty;
@@ -653,6 +778,7 @@ namespace Tess
             return amount;
         }
 
+     //   public string IterateTable(List<string> section, int type)
         public string IterateTable(List<string> section, int type)
         {
             //List<string> lines = Patterning.RemoveEmpltyLines(text);
@@ -708,17 +834,28 @@ namespace Tess
                 {
                     cells[0][i]="wartość brutto";
                 }
+                else if(Regex.IsMatch(cells[0][i], BuildPattern("brutto"), RegexOptions.IgnoreCase))
+                {
+                    cells[0][i] = "wartość brutto";
+                }
                 string pattern = BuildPattern(patterns["VAT"]);
                // pattern=
                 if(Regex.IsMatch(cells[0][i], pattern, RegexOptions.IgnoreCase))
               //  if (m!=null)
                 {
-                    if (!Regex.IsMatch(Regex.Match(cells[0][i], pattern, RegexOptions.IgnoreCase).ToString(), BuildPattern("wartość"), RegexOptions.IgnoreCase))
+                  //  if (!Regex.IsMatch(Regex.Match(cells[0][i], pattern, RegexOptions.IgnoreCase).ToString(), BuildPattern("wartość"), RegexOptions.IgnoreCase))
+                    if(!Regex.IsMatch(cells[0][i],BuildPattern("kwota"),RegexOptions.IgnoreCase) && !Regex.IsMatch(cells[0][i],BuildPattern("wartość"),RegexOptions.IgnoreCase))
                     cells[0][i] = "VAT";
+                  
                 }
                 if (Regex.IsMatch(cells[0][i], BuildPattern("wartość netto"), RegexOptions.IgnoreCase))
                 {
                     cells[0][i]="wartość netto";
+                }
+               
+                     else if(Regex.IsMatch(cells[0][i], BuildPattern("netto"), RegexOptions.IgnoreCase))
+                {
+                    cells[0][i] = "wartość netto";
                 }
                 else
                     if (Regex.IsMatch(cells[0][i], BuildPattern("cena.*bez podatku"), RegexOptions.IgnoreCase))
@@ -802,14 +939,109 @@ namespace Tess
                         case ("VAT"):
                             if (cells[1][i] != "")
                             {
-                                if (Regex.IsMatch(cells[j][i],"[0-9]+"))
-                                results["VAT"] = cells[j][i];
+                                Match m=Regex.Match(cells[j][i],"[0-9]{1,2}");
+
+                                results["VAT"] = m.Value.ToString();
                             }
                             break;
                     }
                 }
-                MessageBox.Show("ilosc:"+results["ilosc towaru"]+"nazwa:"+results["nazwa towaru"]+"brutto:"+results["brutto towaru"] +"netto:"+results["netto towaru"] );
+                if (results["brutto towaru"] == string.Empty && results["netto towaru"] != string.Empty && results["VAT"] != string.Empty)
+                {
+                    double netto=0.0;
+                    int vat = 0; ;
+                    string sNetto;
+                    bool isOk = true;
+                    sNetto = Regex.Replace(results["netto towaru"], " ", "");
+                    sNetto = Regex.Replace(results["netto towaru"], ",", ".");
+                    try
+                    {
+                         vat = Int32.Parse(results["VAT"]);
+                         netto = double.Parse(sNetto);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        isOk = false;
+                    }
+
+                    if (isOk == true)
+                    {
+                        double vatVal = (netto * vat) / 100.0;
+                        vatVal = Math.Round(vatVal, 2);
+                        double brutto = netto + vatVal;
+                        results["brutto towaru"] = String.Format("{0:0.00}", brutto);
+                        results["brutto towaru"] = Regex.Replace(results["brutto towaru"], ".", ",");
+                    }
+                } //licz brutto ;
+                else if (results["netto towaru"] == string.Empty && results["brutto towaru"] != string.Empty && results["VAT"] != string.Empty)
+                {
+                    double brutto = 0.0;
+                    int vat = 0; ;
+                    string sBrutto;
+                    bool isOk = true;
+                    sBrutto = Regex.Replace(results["brutto towaru"], " ", "");
+                    sBrutto = Regex.Replace(results["brutto towaru"], ",", ".");
+                    try
+                    {
+                        vat = Int32.Parse(results["VAT"]);
+                        brutto = double.Parse(sBrutto);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        isOk = false;
+                    }
+
+                    if (isOk == true)
+                    {
+
+                        double netto = brutto / (1 + (vat / 100.0));
+                        MessageBox.Show(netto.ToString());
+                        results["netto towaru"] = String.Format("{0:0.00}", netto);
+                        MessageBox.Show(results["netto towaru"]);
+                        results["netto towaru"] = Regex.Replace(results["netto towaru"], "\\.", ",");
+                        MessageBox.Show(results["netto towaru"]);
+                    }
                 
+                } //licz netto;
+                else if (results["brutto towaru"] != string.Empty && results["netto towaru"] != string.Empty && results["VAT"] == string.Empty)
+                {
+                    double brutto = 0.0;
+                    double netto = 0.0;
+                    
+                    string sBrutto;
+                    string sNetto;
+                    bool isOk = true;
+                    sBrutto = Regex.Replace(results["brutto towaru"], " ", "");
+                    sBrutto = Regex.Replace(results["brutto towaru"], ",", ".");
+                    sNetto = Regex.Replace(results["netto towaru"], " ", "");
+                    sNetto = Regex.Replace(results["netto towaru"], ",", ".");
+                    try
+                    {
+                        netto = double.Parse(sNetto);
+                        brutto = double.Parse(sBrutto);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        isOk = false;
+                    }
+
+                    if (isOk == true)
+                    {
+                       double vatVal = brutto - netto;
+                       double vat = (vatVal / netto);
+                       vat = vat * 100;
+                        //MessageBox.Show(netto.ToString());
+                        results["VAT"] = String.Format("{0:0}", vat);
+                       // MessageBox.Show(results["netto towaru"]);
+                        results["VAT"] = Regex.Replace(results["VAT"], "\\.", "");
+                        //MessageBox.Show(results["netto towaru"]);
+                    }
+                }//licz vat ;
+                    MessageBox.Show("ilosc:" + results["ilosc towaru"] + " nazwa:" + results["nazwa towaru"] + " brutto:" + results["brutto towaru"] + " netto:" + results["netto towaru"] + " VAT:" + results["VAT"]);
+                toFile.Add(" nazwa:" + results["nazwa towaru"] +"ilosc:" + results["ilosc towaru"]  + " brutto:" + results["brutto towaru"] + " netto:" + results["netto towaru"] + " VAT:" + results["VAT"]);
             }
           
 
@@ -824,6 +1056,23 @@ namespace Tess
             bool miejscowoscCutted = false;
             switch(parameter)
             {
+
+                case ("nazwa banku"):
+                    {
+                        // string pattern = BuildPattern("do zaplaty");
+                        string pattern = BuildPattern("bank");
+                        foreach (string str in lines)
+                            foreach (Match m in Regex.Matches(str, pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                results["nazwa banku"] = Regex.Replace(str, pattern, "");
+                                results["nazwa banku"] = Regex.Replace(results["nazwa banku"], ":", "");
+                                results["nazwa banku"] = Regex.Replace(results["nazwa banku"], patterns["numer konta"], "");
+                           
+                            }
+                        if (results["nazwa banku"].Length > 2)
+                            toFile.Add("nazwa banku:" + results["nazwa banku"] + Environment.NewLine);
+                        break;
+                    }
                 
                 case ("do zaplaty"):
                     {
@@ -854,7 +1103,12 @@ namespace Tess
                                 }
                         if (results["do zaplaty"] == String.Empty)
                             MessageBox.Show("nie ma zaplaty");
+
+                        if(results["do zaplaty"].Length>2)
+                                    toFile.Add("do zaplaty:"+results["do zaplaty"]+Environment.NewLine);
                         break;
+
+                        
                     }
 
                 case ("zaplacono"):
@@ -873,25 +1127,38 @@ namespace Tess
 
                                 results["zaplacono"] = temp;
                             }
-                       
+                        if (results["zaplacono"].Length > 2)
+                            toFile.Add("zaplacono:" + results["zaplacono"] + Environment.NewLine);
                         break;
                     }
                    
                 case ("sposob platnosci"):
                     {
                         foreach (string str in lines)
+                        {
                             foreach (Match m in Regex.Matches(str, patterns["sposob platnosci"], System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                             {
-                        //        MessageBox.Show("sposob:"+m.Value.ToString());
+                                //        MessageBox.Show("sposob:"+m.Value.ToString());
                                 string temp = str;
-                                string pattern = @"((spos[oó]{1}b)|(forma)|(metoda)) ((zap[lł]{1}aty)|(p[lł]{1}atno[sś]{1}ci))";
-                               // string pattern = "((spos[oó]{1}b)|(forma)|(metoda) (p[lł1t]{1}a[lłt1]{1}no[śs]{1}ci:?)|(zap[lłt1]{1}a[1ltł]{1}y):?)";
-                                temp = Regex.Replace(temp, pattern, "", RegexOptions.IgnoreCase);
+                                // string pattern = @"((spos[oó]{1}b)|(forma)|(metoda)) ((zap[lł]{1}aty)|(p[lł]{1}atno[sś]{1}ci))";
+
+                                // string pattern = "((spos[oó]{1}b)|(forma)|(metoda) (p[lł1t]{1}a[lłt1]{1}no[śs]{1}ci:?)|(zap[lłt1]{1}a[1ltł]{1}y):?)";
+                                temp = Regex.Replace(temp, patterns["sposob platnosci"], "", RegexOptions.IgnoreCase);
                                 temp = Regex.Replace(temp, ":", "", RegexOptions.IgnoreCase);
-                               
+                                int index = lines.IndexOf(str);
+                                while (!Regex.IsMatch(temp, "[a-ząęśćźńłóż]{3,}", RegexOptions.IgnoreCase))
+                                {
+                                    index++;
+                                    temp = lines[index];
+                                }
+                                //if (temp != String.Empty)
                                 
+
                                 results["sposob platnosci"] = temp;
                             }
+                        }
+                        if (results["sposob platnosci"].Length > 2)
+                            toFile.Add("sposob platnosci:" + results["sposob platnosci"] + Environment.NewLine);
                         break;
                     }
 
@@ -899,7 +1166,8 @@ namespace Tess
                     {
                         if (lines.Count == 1)
                         {
-                            string pattern = "orygina[lł1]{1}";
+                           // string pattern = "orygina[lł1]{1}";
+                            string pattern = BuildPattern("oryginał");
                             string copy = text;
                             copy = Regex.Replace(copy, "VAT", "", RegexOptions.IgnoreCase);
                             copy = Regex.Replace(copy, "faktura", "", RegexOptions.IgnoreCase);
@@ -909,7 +1177,8 @@ namespace Tess
                             copy = Regex.Replace(copy, ":", "");
                             copy = Regex.Replace(copy, "#", "");
                             copy = Regex.Replace(copy, "\n", "");
-                            results["numer faktury"] = copy;
+                            Match m = Regex.Match(copy, "[a-z0-9/]*");
+                            results["numer faktury"] = m.Value.ToString();
                             
                            // return copy;
                         }
@@ -917,9 +1186,10 @@ namespace Tess
                         { 
                             for(int i=0;i<lines.Count;i++)
                             {
-                                if(Regex.IsMatch(lines[i],"nr",RegexOptions.IgnoreCase))
+                                if(Regex.IsMatch(lines[i],"nr ",RegexOptions.IgnoreCase))
                                 {
-                                    string pattern = "orygina[lł1]{1}";
+                                   // string pattern = "orygina[lł1]{1}";
+                                    string pattern = BuildPattern("oryginał");
                                     string copy = lines[i];
                                     copy = Regex.Replace(copy, "VAT", "", RegexOptions.IgnoreCase);
                                     copy = Regex.Replace(copy, "faktura", "", RegexOptions.IgnoreCase);
@@ -928,29 +1198,37 @@ namespace Tess
                                     copy = Regex.Replace(copy, "nr", "", RegexOptions.IgnoreCase);
                                     copy = Regex.Replace(copy, ":", "");
                                     copy = Regex.Replace(copy, "#", "");
-                                    results["numer faktury"] = copy;
+                                    Match m = Regex.Match(copy, "[a-z0-9/]+");
+                                    results["numer faktury"] = m.Value.ToString();
+                                 //   results["numer faktury"] = copy;
                                  //   return copy;
                                 }
                                 else
                                     if (Regex.IsMatch(lines[i], "faktura", RegexOptions.IgnoreCase))
                                     {
-                                        MessageBox.Show("faktura match");
-                                        string pattern = "orygina[lł1]{1}";
+                                       // MessageBox.Show("faktura match");
+                                       // string pattern = "orygina[lł1]{1}";
+                                        string pattern = BuildPattern("oryginał");
                                         string copy = lines[i];
-                                        copy = Regex.Replace(copy, "VAT", "", RegexOptions.IgnoreCase);
-                                        copy = Regex.Replace(copy, "faktura", "", RegexOptions.IgnoreCase);
-                                        copy = Regex.Replace(copy, "kopia", "", RegexOptions.IgnoreCase);
+                                        copy = Regex.Replace(copy, BuildPattern("VAT"), "", RegexOptions.IgnoreCase);
+                                        copy = Regex.Replace(copy, BuildPattern("faktura"), "", RegexOptions.IgnoreCase);
+                                        copy = Regex.Replace(copy, BuildPattern("kopia"), "", RegexOptions.IgnoreCase);
                                         copy = Regex.Replace(copy, pattern, "", RegexOptions.IgnoreCase);
                                         copy = Regex.Replace(copy, "nr", "", RegexOptions.IgnoreCase);
                                         copy = Regex.Replace(copy, ":", "");
                                         copy = Regex.Replace(copy, "#", "");
                                       //  MessageBox.Show(copy);
-                                        results["numer faktury"] = copy;
+                                        Match m = Regex.Match(copy, "[a-z0-9/]*");
+                                        results["numer faktury"] = m.Value.ToString();
+                                        //results["numer faktury"] = copy;
                                         //return copy;
                                     }
                             }
                         //faktura korygujaca ?
                         }
+
+                        if (results["numer faktury"].Length > 2)
+                            toFile.Add("numer faktury:" + results["numer faktury"] + Environment.NewLine);
                         break;
                     }
                 case ("numer klienta"):
@@ -964,6 +1242,8 @@ namespace Tess
                                 //  if (!results.ContainsKey("NIP")) results.Add("NIP", m.Value.ToString());
                                 results["numer klienta"] = temp;
                             }
+                        if (results["numer klienta"].Length > 2)
+                            toFile.Add("numer klienta:" + results["numer klienta"] + Environment.NewLine);
                         break;
                     }
                 case ("data1"): case("data2"):
@@ -1000,6 +1280,8 @@ namespace Tess
                         results["data1"] = Regex.Replace(results["data1"], "S", "5", RegexOptions.IgnoreCase);
                         results["data1"] = Regex.Replace(results["data1"], "I", "1", RegexOptions.IgnoreCase);
                         results["data1"] = Regex.Replace(results["data1"], @"\|", "1", RegexOptions.IgnoreCase);
+
+
                         break;
                     }
 
@@ -1040,15 +1322,24 @@ namespace Tess
                             results["termin zaplaty"] = Regex.Replace(results["termin zaplaty"], "S", "5", RegexOptions.IgnoreCase);
                             results["termin zaplaty"] = Regex.Replace(results["termin zaplaty"], "I", "1", RegexOptions.IgnoreCase);
                             results["termin zaplaty"] = Regex.Replace(results["termin zaplaty"], @"\|", "1", RegexOptions.IgnoreCase);
-                        }
-                      
-                    }
-                    break;
 
+                            // if (results["numer klienta"].Length > 2)
+                            toFile.Add("termin zaplaty:" + results["termin zaplaty"] + Environment.NewLine);
+                        }
+                        else
+                        {
+                            Match m = Regex.Match(text, patterns["data"], RegexOptions.IgnoreCase);
+                            results["termin zaplaty"] = m.Value.ToString();
+                        }
+
+                      
+                    
+                    break;
+            }
                 case ("data wystawienia"):
                     {
                         string pattern = BuildPattern("data wystawienia");
-                      //  pattern = "(" + pattern + ")|(" + BuildPattern("termin płatności") + ")";
+                        pattern = "(" + pattern + ")|(" + BuildPattern("wystawiona dnia") + ")|([a-z,]+ ?"+BuildPattern("dnia")+")";
                         foreach (string str in lines)
                         {
                             foreach (Match m in Regex.Matches(str, pattern, RegexOptions.IgnoreCase))
@@ -1081,10 +1372,17 @@ namespace Tess
                         results["data wystawienia"] = Regex.Replace(results["data wystawienia"], "S", "5", RegexOptions.IgnoreCase);
                         results["data wystawienia"] = Regex.Replace(results["data wystawienia"], "I", "1", RegexOptions.IgnoreCase);
                         results["data wystawienia"] = Regex.Replace(results["data wystawienia"], @"\|", "1", RegexOptions.IgnoreCase);
-                    }
 
-                    break;
-
+                        if (results["data wystawienia"].Length > 2)
+                            toFile.Add("data wystawienia:" + results["data wystawienia"] + Environment.NewLine);
+                        else
+                        {
+                            Match m = Regex.Match(text, patterns["data"]);
+                            results["data wystawienia"] = m.Value.ToString();
+                        }
+                        
+                        break;
+            }
                 case ("data sprzedazy"):
                     {
                         string pattern = BuildPattern("data sprzedaży");
@@ -1121,17 +1419,20 @@ namespace Tess
                         results["data sprzedazy"] = Regex.Replace(results["data sprzedazy"], "S", "5", RegexOptions.IgnoreCase);
                         results["data sprzedazy"] = Regex.Replace(results["data sprzedazy"], "I", "1", RegexOptions.IgnoreCase);
                         results["data sprzedazy"] = Regex.Replace(results["data sprzedazy"], @"\|", "1", RegexOptions.IgnoreCase);
-                    }
+                    
+                    if (results["data sprzedazy"].Length > 2)
+                        toFile.Add("data sprzedazy:" + results["data sprzedazy"] + Environment.NewLine);
 
                     break;
-
+            }
                 case ("telefon1"):
                 case ("telefon2"):
+                case ("REGON"):
                     {
                         foreach (string str in lines)
                             foreach (Match m in Regex.Matches(str, patterns["telefon1"], System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                             {
-                                if (Regex.IsMatch(str, BuildPattern("faks") + " ?:? ?" + m, RegexOptions.IgnoreCase))
+                                if (Regex.IsMatch(str, "("+BuildPattern("faks") + " ?:? ?)|("+BuildPattern("fax") + " ?:? ?)" + m, RegexOptions.IgnoreCase))
                                 {
                                     results["faks"] = m.Value.ToString();
                                 }
@@ -1141,6 +1442,7 @@ namespace Tess
                                     if (Regex.IsMatch(mat.Value.ToString(), m.Value.ToString(), RegexOptions.IgnoreCase))
                                     {
                                         results["REGON"] = m.Value.ToString();
+                                        MessageBox.Show(results["REGON"]);
                                     }
                                     else
                                     {
@@ -1182,6 +1484,13 @@ namespace Tess
                                 results["telefon2"] = Regex.Replace(results["telefon2"], "I", "1", RegexOptions.IgnoreCase);
                                 results["telefon2"] = Regex.Replace(results["telefon2"], @"\|", "1", RegexOptions.IgnoreCase);
                             }
+
+                        if (results["telefon1"].Length > 2)
+                            toFile.Add("telefon1:" + results["telefon1"] + Environment.NewLine);
+                        if (results["telefon2"].Length > 2)
+                            toFile.Add("telefon2:" + results["telefon2"] + Environment.NewLine);
+                        if (results["REGON"].Length > 2)
+                            toFile.Add("REGON:" + results["REGON"] + Environment.NewLine);
                         break;
                     }
 
@@ -1195,6 +1504,8 @@ namespace Tess
                                 results["faks"] = mat.Value.ToString();
                                 MessageBox.Show("fax:" + results["faks"]);
                             }
+                        if (results["faks"].Length > 2)
+                            toFile.Add("faks:" + results["faks"] + Environment.NewLine);
                         break;
                     }
 
@@ -1211,6 +1522,9 @@ namespace Tess
                         results["NIP"] = Regex.Replace(results["NIP"], "S", "5", RegexOptions.IgnoreCase);
                         results["NIP"] = Regex.Replace(results["NIP"], "I", "1", RegexOptions.IgnoreCase);
                         results["NIP"] = Regex.Replace(results["NIP"], @"\|", "1", RegexOptions.IgnoreCase);
+
+                        if (results["NIP"].Length > 7)
+                            toFile.Add("NIP:" + results["NIP"] + Environment.NewLine);
                         break;
                     }
                 case ("kod pocztowy"):
@@ -1257,16 +1571,42 @@ namespace Tess
                                  results["miejscowosc"] = Regex.Replace(results["miejscowosc"], pattern, "", RegexOptions.IgnoreCase);
                                  results["miejscowosc"] = Regex.Replace(results["miejscowosc"], ":", "", RegexOptions.IgnoreCase);
                             //    MessageBox.Show("result:"+results["miejscowosc"]);
-                                if (results["miejscowosc"].Length < 3)
-                                {
-                                    int index = lines.IndexOf(str);
-                                    results["miejscowosc"] = lines[index+1];
-                                }
+                              //  if (results["miejscowosc"].Length < 3)
+                              //  {
+                              //      int index = lines.IndexOf(str);
+                              //      results["miejscowosc"] = lines[index+1];
+                              //  }
+
+
+                            }
+                             pattern = "[a-z]+, ?"+BuildPattern("dnia")+"(:| ){1}";
+                            foreach (Match m in Regex.Matches(str, pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                //   MessageBox.Show("mijsce:"+m.Value.ToString());
+                                results["miejscowosc"] = Regex.Replace(m.Value.ToString(), " ?" + BuildPattern("dnia") + "(:| ){1}", "", RegexOptions.IgnoreCase);
+                                pattern = BuildPattern("dokumentu");
+                                //results["miejscowosc"] = Regex.Replace(results["miejscowosc"], pattern, "", RegexOptions.IgnoreCase);
+                                results["miejscowosc"] = Regex.Replace(results["miejscowosc"], ":", "", RegexOptions.IgnoreCase);
+                                results["miejscowosc"] = Regex.Replace(results["miejscowosc"], ",", "", RegexOptions.IgnoreCase);
+
+                                //    MessageBox.Show("result:"+results["miejscowosc"]);
+                                //  if (results["miejscowosc"].Length < 3)
+                                //  {
+                                //      int index = lines.IndexOf(str);
+                                //      results["miejscowosc"] = lines[index+1];
+                                //  }
 
 
                             }
                         }
                     }
+                        
+                        
+                        if (results["kod pocztowy"].Length > 2)
+                            toFile.Add("kod pocztowy:" + results["kod pocztowy"] + Environment.NewLine);
+                        if (results["miejscowosc"].Length > 2)
+                            toFile.Add("miejscowosc:" + results["miejscowosc"] + Environment.NewLine);
+                         
                     break;
                     }
                 case ("nazwa"):
@@ -1293,7 +1633,10 @@ namespace Tess
                               //  if (temp != String.Empty)
                              //       results["nazwa"] = temp;
                              //   else results["nazwa"] = lines[1];
+                                sprzedawca = true;
                             }
+
+                           
                             foreach (Match m in Regex.Matches(str, @"nabywca.*", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                             {
                                 string temp = m.Value.ToString();
@@ -1315,6 +1658,26 @@ namespace Tess
                                 //if (temp != String.Empty)
                                     results["nazwa"] = temp;
                                // else results["nazwa"] = lines[1];
+                                    sprzedawca = false;
+                            }
+                           
+                        }
+                        if (results["nazwa"].Length > 2)
+                        {
+                            if(sprzedawca==true)
+                                toFile.Add("sprzedawca" + Environment.NewLine + "nazwa:" + results["nazwa"] + Environment.NewLine);
+                            else
+                            toFile.Add("nabywca" + Environment.NewLine + "nazwa:" + results["nazwa"] + Environment.NewLine);
+                        }
+                        else
+                        {
+                            int i = 0;
+                            while(results["nazwa"].Length < 3)
+                            {
+                                string s = lines[i];
+                                if (Regex.IsMatch(s, "[a-z]{3,}", RegexOptions.IgnoreCase))
+                                    results["nazwa"] = s;
+                                i++;
                             }
                         }
                         
@@ -1360,28 +1723,62 @@ namespace Tess
                         case("ulica"):
                         {
 
-                            foreach(string str in lines)
+                            foreach (string str in lines)
                             {
                                 foreach (Match m in Regex.Matches(str, patterns["ulica"], System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                 {
-                                   // System.Windows.MessageBox.Show("ulica: " + m.Value.ToString());
+                                    // System.Windows.MessageBox.Show("ulica: " + m.Value.ToString());
                                     results["ulica"] = m.Value.ToString();
-                                   // string pattern = "((ul)|(uł)|(u1)|(ui)){1}";
+                                    // string pattern = "((ul)|(uł)|(u1)|(ui)){1}";
                                     string pattern = BuildPattern("ul");
-                               //     MessageBox.Show("wzor na ulice:"+pattern);
+                                    pattern = "(^| )(" + pattern + ")";
+                                    //     MessageBox.Show("wzor na ulice:"+pattern);
                                     foreach (Match ma in Regex.Matches(results["ulica"], pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                     {
-                                        
-                                           // results["ulica"] = Regex.Replace(results["ulica"], ma.Value.ToString(), "");
-                                         results["ulica"] = Regex.Replace(results["ulica"], pattern, "");
+
+                                        // results["ulica"] = Regex.Replace(results["ulica"], ma.Value.ToString(), "");
+                                        results["ulica"] = Regex.Replace(results["ulica"], pattern, "");
 
                                     }
 
-                                    results["ulica"] = Regex.Replace(results["ulica"], @"\W", "");
+                                    // results["ulica"] = Regex.Replace(results["ulica"], @"\W", "");
+                                    results["ulica"] = Regex.Replace(results["ulica"], @"\.", "");
                                     results["ulica"] = Regex.Replace(results["ulica"], @"_", "");
+                                  //  if(Regex.IsMatch())
                                     results["ulica"] = Regex.Replace(results["ulica"], @"[0-9]", "");
                                 }
                             }
+                            if(results["ulica"]==string.Empty)
+                            {
+                                string pattern=@"(\d){0,3} ?[a-ząęćńóźśżł]{3,} [0-9]{1,3}[A-Z]?";
+                                foreach (string str in lines)
+                                {
+                                    foreach (Match m in Regex.Matches(str, pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                                    {
+                                        results["ulica"] = m.Value.ToString();
+                                        results["ulica"] = Regex.Replace(results["ulica"], @"\.", "");
+                                        results["ulica"] = Regex.Replace(results["ulica"], @"_", "");
+                                        results["numer ulicy"] = results["ulica"];
+                                        Match mat = Regex.Match(results["ulica"], @"(\d){1,3} ?[a-ząęćńóźśżł]{3,} [0-9]{1,3}[A-Z]?", RegexOptions.IgnoreCase);
+                                        Match mat4 = Regex.Match(results["ulica"], @"(\d){0,3} ?[a-ząęćńóźśżł]{3,} [0-9]{1,3}[A-Z]?", RegexOptions.IgnoreCase);
+                                        if (mat.Success)
+                                        {
+                                            Match mat2=Regex.Match(mat.Value.ToString(), @"[a-ząęćńóźśżł]{3,} [0-9]{1,3}[A-Z]?",RegexOptions.IgnoreCase);
+                                             Match mat3=Regex.Match(mat2.Value.ToString(), @" [0-9]{1,3}[A-Z]?",RegexOptions.IgnoreCase);
+                                             results["ulica"] = Regex.Replace(mat.Value.ToString(), mat3.Value.ToString(), "", RegexOptions.IgnoreCase);
+                                        }
+                                        else if (mat4.Success)
+                                        {
+                                            results["ulica"] = Regex.Replace(mat4.Value.ToString(), @"[0-9]{1,3}[a-z]{1}", "", RegexOptions.IgnoreCase);
+                                        }
+                                            
+                                        else
+                                            results["ulica"] = Regex.Replace(results["ulica"], @"[0-9]", "", RegexOptions.IgnoreCase);
+                                    }
+                                }
+                            }
+                            if (results["ulica"].Length > 2)
+                                toFile.Add("ulica:" + results["ulica"] + Environment.NewLine);
                         break;
                         }
 
@@ -1396,22 +1793,31 @@ namespace Tess
 
                                    // MessageBox.Show(m.Value.ToString());
                                     results["numer ulicy"] = m.Value.ToString();
-                                    results["numer ulicy"] = Regex.Replace(results["numer ulicy"], results["ulica"], "");
+                                    results["numer ulicy"] = Regex.Replace(results["numer ulicy"], results["ulica"], "", RegexOptions.IgnoreCase);
                                     //string pattern = @"((ul)|(uł)|(u1)|(u\\|)){1}\.*";
-                                    string pattern = BuildPattern("ul")+@"\.?";
-                                    results["numer ulicy"] = Regex.Replace(results["numer ulicy"], pattern, "");
+                                   // string pattern = BuildPattern("ul")+@"\.?";
+                                    string pattern = @"[0-9]{1,3}[a-ząęśćńźóżł]{0,1}";
+                                   // results["numer ulicy"] = Regex.Replace(results["numer ulicy"], pattern, "");
+                                    results["numer ulicy"] = Regex.Match(results["numer ulicy"], pattern, RegexOptions.IgnoreCase).Value.ToString();
                                 //    results["numer ulicy"] = Regex.Replace(results["numer ulicy"], @"\.", "");
                                   //  results["numer ulicy"] = Regex.Replace(results["numer ulicy"], @"\D", "");
                                  //   MessageBox.Show(results["numer ulicy"]);
                                 }
 
                             }
-
+                            if (Regex.IsMatch(results["numer ulicy"], "[a-ząęśćńźżół]{2,}", RegexOptions.IgnoreCase))
+                            {
+                                results["numer ulicy"] = Regex.Replace(results["numer ulicy"], ".*[a-ząęśćńźżół]{2,}", "", RegexOptions.IgnoreCase);
+                              
+                            }
                            
                             results["numer ulicy"] = Regex.Replace(results["numer ulicy"], "O", "0", RegexOptions.IgnoreCase);
                             results["numer ulicy"] = Regex.Replace(results["numer ulicy"], "S", "5", RegexOptions.IgnoreCase);
                             results["numer ulicy"] = Regex.Replace(results["numer ulicy"], "I", "1", RegexOptions.IgnoreCase);
                             results["numer ulicy"] = Regex.Replace(results["numer ulicy"], @"\|", "1", RegexOptions.IgnoreCase);
+
+                            if (results["numer ulicy"]!=String.Empty)
+                                toFile.Add("numer ulicy:" + results["numer ulicy"] + Environment.NewLine);
                             break;
                         }
                 case("adres email"):
@@ -1425,6 +1831,8 @@ namespace Tess
                                 results["adres email"] = Regex.Replace(results["adres email"], "pl$", ".pl");
                                 }
                         }
+                        if (results["adres email"].Length > 2)
+                            toFile.Add("adres email:" + results["adres email"] + Environment.NewLine);
                         break;
                     }
                     case("strona"):
@@ -1432,12 +1840,14 @@ namespace Tess
 
                         foreach(string str in lines)
                         {
-                                foreach (Match m in Regex.Matches(str, patterns["strona"]))
+                            foreach (Match m in Regex.Matches(str, patterns["strona"], RegexOptions.IgnoreCase))
                                 {
                                 results["strona"] =  m.Value.ToString();
                          
                                 }
                         }
+                        if (results["strona"].Length > 2)
+                            toFile.Add("strona:" + results["strona"] + Environment.NewLine);
                         break;
                     }
                 
@@ -1446,7 +1856,7 @@ namespace Tess
 
                         foreach (string str in lines)
                         {
-                            foreach (Match m in Regex.Matches(str, patterns["numer konta"]))
+                            foreach (Match m in Regex.Matches(str, patterns["numer konta"], RegexOptions.IgnoreCase))
                             {
                             //    MessageBox.Show(m.Value.ToString());
                                 results["numer konta"] = m.Value.ToString();
@@ -1460,6 +1870,9 @@ namespace Tess
                         results["numer konta"] = Regex.Replace(results["numer konta"], "S", "5", RegexOptions.IgnoreCase);
                         results["numer konta"] = Regex.Replace(results["numer konta"], "I", "1", RegexOptions.IgnoreCase);
                         results["numer konta"] = Regex.Replace(results["numer konta"], @"\|", "1", RegexOptions.IgnoreCase);
+
+                        if (results["numer konta"].Length > 2)
+                            toFile.Add("numer konta:" + results["numer konta"] + Environment.NewLine);
                         break;
                     }
                    
@@ -1477,11 +1890,16 @@ namespace Tess
                 results["miejscowosc"] = Regex.Replace(results["miejscowosc"], results["ulica"], "");
                 results["miejscowosc"] = Regex.Replace(results["miejscowosc"], results["numer ulicy"], "");
                 results["miejscowosc"] = Regex.Replace(results["miejscowosc"], BuildPattern("ul") + ".? ?", "",RegexOptions.IgnoreCase);
+
+              
             }
             if (results["telefon1"] == String.Empty && results["telefon2"] == String.Empty && results["faks"] != String.Empty)
             {
                 results["telefon1"] = results["faks"];
-                results["telefon2"] = results["faks"]; 
+                results["telefon2"] = results["faks"];
+
+                if (results["telefon1"].Length > 2)
+                    toFile.Add("telefon1:" + results["telefon1"] + Environment.NewLine);
 
             }
             /*
@@ -1510,12 +1928,15 @@ namespace Tess
                 if (s[s.Length-1] == ' ') s.Substring(0,s.Length-1);
                 if (s[s.Length - 1] == ',') s.Substring(0, s.Length - 1);
                 results[parameter] = s;
-                return results[parameter];
+                
                 if(results["numer faktury"]!=string.Empty)
                 {
                     results["numer faktury"]=Regex.Replace(results["numer faktury"],"\"","");
                     results["numer faktury"] = Regex.Replace(results["numer faktury"], "`", "");
+                    if (results["numer faktury"].Length > 2)
+                        toFile.Add("numer faktury:" + results["numer faktury"] + Environment.NewLine);
                 }
+                return results[parameter];
             }
             else
             {

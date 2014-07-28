@@ -27,3 +27,5 @@ C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\obj\Debug\Na
 C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\obj\Debug\NavWindow.g.cs
 C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\obj\Debug\Dictionary.baml
 C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\obj\Debug\Dictionary.g.cs
+C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\obj\Debug\ResultsWindow.baml
+C:\Users\urbanowicz\documents\visual studio 2013\Projects\Tess\Tess\obj\Debug\ResultsWindow.g.cs

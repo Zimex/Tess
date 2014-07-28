@@ -1,0 +1,9 @@
+﻿<Window x:Class="Tess.ResultsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ResultsWindow" Height="300" Width="300">
+    <Grid>
+        <TextBox x:Name="resultTextBox" HorizontalAlignment="Left" Height="269" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="292"/>
+
+    </Grid>
+</Window>

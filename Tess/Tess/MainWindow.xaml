@@ -120,7 +120,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="numer faktury:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="0" Height="Auto"/>
+                <Label Content="nazwa banku:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="0" Height="Auto"/>
                 <Label Content="nazwa:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="1" Height="Auto"/>
                 <Label Content="ilosc:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="2" Height="Auto"/>
                 <Label Content="netto:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Row="3" Height="Auto"/>
@@ -134,7 +134,7 @@
                 <Button  Content="Zapisz" Grid.Row="4" Grid.Column="2" Click="saveButton_Click" />
                 <Button  Content="Zapisz" Grid.Row="5" Grid.Column="2" Click="saveButton_Click" />
 
-                <TextBox x:Name="numerFakturyTowarTextBox" Text="" Grid.Row="0" Grid.Column="1" Tag="numer faktury" />
+                <TextBox x:Name="nazwaBankuTextBox" Text="" Grid.Row="0" Grid.Column="1" Tag="nazwa banku" />
                 <TextBox x:Name="nazwaTowarFakturaTextBox" Text="" Grid.Row="1" Grid.Column="1" Tag="nazwa towaru" />
                 <TextBox x:Name="iloscTowarTextBox" Text="" Grid.Row="2" Grid.Column="1" Tag="ilosc towaru" />
                 <TextBox x:Name="nettoTowarTextBox" Text="" Grid.Row="3" Grid.Column="1" Tag="netto towaru"/>
@@ -221,6 +221,7 @@
             <Button Content="parametry" HorizontalAlignment="Left" Margin="421,184,0,0" VerticalAlignment="Top" Width="75" Click="iterateNumerFakturyButtonClick" />
             <Button Content="sprz/nab" HorizontalAlignment="Left" Margin="421,209,0,0" VerticalAlignment="Top" Width="75" Click="iterateSprzedawcaNabywcaButtonCLick" />
             <Button Content="naglowek" HorizontalAlignment="Left" Margin="421,234,0,0" VerticalAlignment="Top" Width="75" Click="iterateNaglowekButtonCLick" />
+            <Button x:Name="wynikiButton" Content="wyniki" HorizontalAlignment="Left" Margin="421,109,0,0" VerticalAlignment="Top" Width="75" Click="wynikiButton_Click"/>
         </Grid>
 
         <GroupBox Header="GroupBox" HorizontalAlignment="Left" Margin="617,10,0,0" VerticalAlignment="Top" Height="79" Width="140" RenderTransformOrigin="-0.057,-0.275">
