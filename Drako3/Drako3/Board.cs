@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace Drako3
@@ -21,12 +23,31 @@ namespace Drako3
         double scale;
         double hexHeight;
         double hexWidth;
+        public Polygon activePlayer;
+        public Fraction activeFraction;
+        public Image libraryImage = new Image();
+        public Image dragonLibrary = new Image();
+
+        public Image dwarfLibrary = new Image();
+       
         
 
         public  Board(List<Figure> figures)
         {
             var content = Application.Current.Host.Content;
              scale = (double)content.ScaleFactor / 100;
+             activeFraction = Fraction.Dragon;
+             activePlayer = new Polygon();
+            Image libraryImage=new Image();
+            Image dragonLibrary=new Image();
+            
+            Image dwarfLibrary=new Image();
+            BitmapImage src = new BitmapImage();
+            src.UriSource = new Uri("Images/Dwarf.jpg", UriKind.Relative);
+            dwarfLibrary.Source = src;
+            BitmapImage src2 = new BitmapImage();
+            src.UriSource = new Uri("Images/Dragon.jpg", UriKind.Relative);
+            dragonLibrary.Source = src2;
           //  screenSize=new Size((int)Math.Ceiling(content.ActualWidth * scale),(int)Math.Ceiling(content.ActualHeight * scale));
                screenSize=new Size((int)Math.Ceiling(content.ActualWidth * scale),(int)Math.Ceiling(content.ActualHeight * scale));
 
@@ -46,7 +67,17 @@ namespace Drako3
              Hex.hexWidth = hexWidth;
              hexs = new List<Hex>();
             corners = new List<Point>();
-            
+            activePlayer.Points.Add(new Point(5, 5));
+            activePlayer.Points.Add(new Point(25, 5));
+
+            activePlayer.Points.Add(new Point(25, 25));
+
+            activePlayer.Points.Add(new Point(5, 25));
+            activePlayer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
+            activePlayer.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 255, 0, 0));
+                
+
+
             for (int j = 0; j < 3;j++ )
             {
                // hexs.Add(new Hex(new Point(center.X - hexWidth)));
@@ -154,11 +185,52 @@ namespace Drako3
             ResetPolygons(hexs);
     
         }
+       public void ChangeActivePlayer(Fraction f)
+        {
+           if(f==Fraction.Dwarf)
+           {
+                activePlayer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
+                 activePlayer.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155,255 , 0, 0));
+                 activeFraction = Fraction.Dragon;
+
+           }
+           else{
+                activePlayer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 0, 0, 255));
+                 activePlayer.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 0, 255));
+                 activeFraction = Fraction.Dwarf;
+
+
+           }
+        }
        public static void ResetPolygons(List<Hex> hexs)
         {
+
             foreach (Hex h in hexs)
                 h.ResetPolygon();
         }
+       public  Point ConvertPhonePointToBoardPoint(Point p, PageOrientation o)
+       {
+           
+           if (o == PageOrientation.LandscapeRight)
+            {
+                double temp = p.X;
+               
+                p.X = this.screenSize.Height - p.Y - this.center.X;
+                p.Y = -(this.center.Y-temp);
+
+            }
+       
+
+            else if (o == PageOrientation.LandscapeLeft)
+            {
+                double temp = p.X;
+             
+                p.X = -(this.screenSize.Height - p.Y - this.center.X);
+                p.Y = ((this.center.Y - temp));
+            }
+        
+           return p;
+       }
         public void DrawBoard( Grid g) //List<Polygon> drawBoard()
         {
             
@@ -218,6 +290,7 @@ namespace Drako3
                 //Polygons.Add(p);
             }
  * */
+            
             for (int i = 0; i < hexs.Count; i++)
             {
                if(hexs[i].figure==null) g.Children.Add(hexs[i].polygon);
@@ -228,7 +301,9 @@ namespace Drako3
                 if (hexs[i].figure != null) g.Children.Add(hexs[i].polygon);
 
             }
+            g.Children.Add(activePlayer);
             
+
             return; //Polygons;
         }
 

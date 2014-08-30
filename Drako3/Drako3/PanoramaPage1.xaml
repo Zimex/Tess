@@ -14,17 +14,44 @@
     shell:SystemTray.IsVisible="False">
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="LayoutRoot" Tap="LayoutRoot_Tap">
-        <phone:Panorama Tap="Panorama_Tap">
+    <Grid x:Name="LayoutRoot">
+        <phone:Panorama>
 
             <!--Panorama item one-->
-            <phone:PanoramaItem Height="Auto" Width="800" Tap="PanoramaItem_Tap">
-                <Grid x:Name="BoardGrid" HorizontalAlignment="Left" Height="480" Margin="-10,-35,0,0" VerticalAlignment="Top" Width="800"/>
+            <phone:PanoramaItem Height="Auto" Width="Auto" Tap="PanoramaItem_Tap">
+
+                <Grid x:Name="BoardGrid" HorizontalAlignment="Left" Height="Auto" Margin="-10,-35,0,0" VerticalAlignment="Top" Width="Auto">
+
+
+                    <Image x:Name="libraryImage" Source="Images/Dragon.jpg" HorizontalAlignment="Left" Height="195" Margin="25,25,0,0"   VerticalAlignment="Top" Width="133" Tap="libraryImage_Tap" Canvas.ZIndex="1"/>
+                </Grid>
 
             </phone:PanoramaItem>
-            <phone:PanoramaItem Height="Auto" Width="800" Tap="PanoramaItem_Tap">
-                <Button Content="Button" HorizontalAlignment="Left" Margin="338,200,0,0" VerticalAlignment="Top"/>
+            <phone:PanoramaItem Height="Auto" Width="{Binding}">
+                <Grid x:Name="HandGrid" Width="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,-40,30,0">
 
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="0" Grid.Column="3"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+
+                    <Image Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+
+                </Grid>
             </phone:PanoramaItem>
 
             <!--Panorama item two-->

@@ -23,6 +23,17 @@ namespace Drako3
        {
            return true;
        }
+       public Fraction ReturnFraction()
+       {
+
+           if (this is Dragon)
+           {
+               return Fraction.Dragon;
+           }
+           else 
+               return Fraction.Dwarf;
+           
+       }
 
     }
 }

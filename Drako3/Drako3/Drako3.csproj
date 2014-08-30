@@ -94,9 +94,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Board.cs" />
+    <Compile Include="Card.cs" />
     <Compile Include="Dragon.cs" />
     <Compile Include="Dwarf.cs" />
     <Compile Include="Figure.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Hex.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -176,6 +178,35 @@
     </Content>
     <Content Include="Images\004.2.jpg" />
     <Content Include="Images\board4.png" />
+    <Content Include="Images\Cards\D1.png" />
+    <Content Include="Images\Cards\D10.png" />
+    <Content Include="Images\Cards\D11.png" />
+    <Content Include="Images\Cards\D2.png" />
+    <Content Include="Images\Cards\D3.png" />
+    <Content Include="Images\Cards\D4.png" />
+    <Content Include="Images\Cards\D5.png" />
+    <Content Include="Images\Cards\D6.png" />
+    <Content Include="Images\Cards\D7.png" />
+    <Content Include="Images\Cards\D8.png" />
+    <Content Include="Images\Cards\D9.png" />
+    <Content Include="Images\Cards\K1.png" />
+    <Content Include="Images\Cards\K2.png" />
+    <Content Include="Images\Cards\K3.png" />
+    <Content Include="Images\Cards\K4.png" />
+    <Content Include="Images\Cards\K10.png" />
+    <Content Include="Images\Cards\K11.png" />
+    <Content Include="Images\Cards\K12.png" />
+    <Content Include="Images\Cards\K13.png" />
+    <Content Include="Images\Cards\K14.png" />
+    <Content Include="Images\Cards\K15.png" />
+    <Content Include="Images\Cards\K16.png" />
+    <Content Include="Images\Cards\K5.png" />
+    <Content Include="Images\Cards\K6.png" />
+    <Content Include="Images\Cards\K7.png" />
+    <Content Include="Images\Cards\K8.png" />
+    <Content Include="Images\Cards\K9.png" />
+    <Content Include="Images\Dragon.jpg" />
+    <Content Include="Images\Dwarf.jpg" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
