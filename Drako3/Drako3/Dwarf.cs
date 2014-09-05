@@ -24,6 +24,7 @@ namespace Drako3
         {
             type = t;
             position = p;
+            isSelected = false;
             switch(type)
             {
                 case(DwarfType.Crossbowman):

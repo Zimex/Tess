@@ -13,8 +13,10 @@ using System.Windows.Media.Imaging;
 
 namespace Drako3
 {
+
     public partial class PanoramaPage1 : PhoneApplicationPage
     {
+        public Game game;
         public List<Hex> hexs;
         public Board board;
         List<Polygon> p;
@@ -24,82 +26,46 @@ namespace Drako3
         Dragon dragon = new Dragon(new Point(0, 0));
         List<Figure> figures = new List<Figure>();
         Figure selectedFigure = null;
-        Player P1,P2;
-        
-     
+        Player P1, P2;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            /*string strItemIndex;
+            if (NavigationContext.QueryString.TryGetValue("goto", out strItemIndex))
+                panorama.DefaultItem = panorama.Items[Convert.ToInt32(strItemIndex)];
+            
+            if(game.playedCard!=null)
+            {
+                playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri(game.playedCard.src, UriKind.RelativeOrAbsolute));
+            }
+             * */
+         //   this = new PanoramaPage1();
+            base.OnNavigatedTo(e);
+        }
 
+        public string ImagePath
+        {
+            get;
+            set;
+        }
         public PanoramaPage1()
         {
+
             InitializeComponent();
-       //     BitmapImage src = new BitmapImage();
+            Card.InitiateActionsDictionary();
+            panorama.DefaultItem = panoramaItemBoard;
             P1 = new Player("Zimex", Fraction.Dragon, HandGrid);
             P1.DrawInitialHand();
             P2 = new Player("Zaremox", Fraction.Dwarf, HandGrid);
             P2.DrawInitialHand();
             P1.RenderHand();
-            
-            //libraryImage.Source = dragonLibrary.Source;
-         /*   Image im = HandGrid.Children[0] as Image;
-            src.UriSource = new Uri("Images/Cards/K01.png", UriKind.Relative);
-            im.Source = src;
-            Image im2 = HandGrid.Children[4] as Image;
-            src.UriSource = new Uri("Images/Dragon.jpg", UriKind.Relative);
-            im2.Source = src;
-          * */
-           // src.UriSource
-         //   src.BeginInit();
-           // src.UriSource = new Uri("Images/Dwarf.jpg", UriKind.Relative);
-          //  src.CacheOption = BitmapCacheOption.OnLoad;
-          //  src.EndInit();
+            libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri(@"/Images/Dragon.jpg", UriKind.RelativeOrAbsolute));
+            //ImagePath = "Images/Dragon.jpg";
+            //libraryImage.DataContext = ImagePath;
+            //ImageSource s = libraryImage.Source;
+            //string ss = libraryImage.Source.ToString();
 
-           // img = new Image();
-           // img.Source = src;
-           // HandGrid.DataContext = new GridLength(400);
-          //  for (int i = 0; i < 4; i++)
-            //    HandGrid.ColumnDefinitions.Add(new ColumnDefinition());
-           // HandGrid.DataContext
-            ImageSource s;
-
-            /*foreach (Image img2 in HandGrid.Children)
-            {
-                s = img2.Source;
-            }
-            */
-//foreach(Image img in HandGrid.Children)
-//            {
-//                BitmapImage src = new BitmapImage();
-//                int index = HandGrid.Children.IndexOf(img);
-
-//                if (index >= P1.hand.Count)
-//                {
-                    
-//                    src.UriSource = new Uri("Images/Dwarf.jpg", UriKind.Relative);
-//                    // src.UriSource = new Uri(P1.hand[0].src, UriKind.Relative);
-
-//                    img.Source = src;
-//                } 
-//                else
-//                {
-//                   // src.UriSource = new Uri(P1.hand[index].src, UriKind.Relative);
-//                   // src.UriSource = new Uri(P1.hand[index].src, UriKind.Relative);
-//                    src.UriSource = new Uri("Images/Dragon.jpg", UriKind.Relative);
-//                    img.Source = src;
-
-
-//                }
-//                Image i = HandGrid.Children[0] as Image;
-//                s = i.Source;
-//            }
-            //src.UriSource = new Uri("Images/Dwarf.jpg", UriKind.Relative);
-            //img.Source = src;
-            //    def.Width = new GridLength(100);
-                
-           // }
-         //  Grid g = HandGrid;
-         //  ImageSource s;
-           foreach (Image img in HandGrid.Children)
-                s= img.Source;
-        //    foreach()
             leader = new Dwarf(DwarfType.Leader, new Point(1, -2));
             crossbowman = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1));
             webber = new Dwarf(DwarfType.Webber, new Point(1, 1));
@@ -112,12 +78,14 @@ namespace Drako3
             figures.Add(dragon);
 
             board = new Board(figures);
-            board.DrawBoard(BoardGrid);
+            game = new Game(GameType.HOT_SEATS, P1, P2, board, libraryImage);
+            //board.DrawBoard(BoardGrid);
+            game.board.DrawBoard(BoardGrid);
 
 
-            //board.DrawBoard(LayoutRoot);
 
-            hexs = board.hexs;
+            // hexs = board.hexs;
+            hexs = game.board.hexs;
         }
         public void SelectFigure(Hex h)
         {
@@ -125,6 +93,7 @@ namespace Drako3
             if (h.figure != null)
             {
                 figure = h.figure;
+                h.figure.isSelected = true;
 
                 if (figure.GetType() == typeof(Dragon))
                 {
@@ -164,699 +133,325 @@ namespace Drako3
 
         private void PanoramaItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-           ImageSource s;
-            foreach (Image img in HandGrid.Children)
-                s = img.Source;
-           // board.activePlayer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 55, 0, 0));
-          //  board.activePlayer.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 255, 0, 0));
-        
+
             Point p = e.GetPosition(null);
             if (this.Orientation == PageOrientation.LandscapeLeft)
             {
-                if (p.X >= board.screenSize.Width - 30 && p.X <= board.screenSize.Width - 5 && p.Y >= 5 && p.Y <= 25)
+                if (p.X >= game.board.screenSize.Width - 30 && p.X <= game.board.screenSize.Width - 5 && p.Y >= 5 && p.Y <= 25)
                 {
 
-                    board.ChangeActivePlayer(P1.ReturnActiveFraction());
-                    if (P1.isActiv == true)
+                    game.board.ChangeActivePlayer(game.P1.ReturnActiveFraction());
+                    game.ChangeTurn();
+                    if (game.P1.ReturnActiveFraction() == Fraction.Dragon)
                     {
-                        P1.isActiv = false;
-                        P2.isActiv = true;
+                        libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri(@"/Images/Dragon.jpg", UriKind.RelativeOrAbsolute));
                     }
                     else
                     {
-                        P2.isActiv = false;
-                        P1.isActiv = true;
+                        libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri(@"/Images/Dwarf.jpg", UriKind.RelativeOrAbsolute));
                     }
-                    // BoardGrid.Children.Add(board.activePlayer);
+
+
                     return;
                 }
             }
             else if (this.Orientation == PageOrientation.LandscapeRight)
             {
-                if (p.X >= 5 && p.X <= 25 && p.Y >= board.screenSize.Height - 30 && p.Y <= board.screenSize.Height - 5)
+                if (p.X >= 5 && p.X <= 25 && p.Y >= game.board.screenSize.Height - 30 && p.Y <= game.board.screenSize.Height - 5)
                 {
 
-                    board.ChangeActivePlayer(P1.ReturnActiveFraction());
-                    if (P1.isActiv == true)
+                    game.board.ChangeActivePlayer(game.P1.ReturnActiveFraction());
+                    game.ChangeTurn();
+                    if (game.P1.ReturnActiveFraction() == Fraction.Dragon)
                     {
-                        P1.isActiv = false;
-                        P2.isActiv = true;
+                        libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri(@"/Images/Dragon.jpg", UriKind.RelativeOrAbsolute));
                     }
                     else
                     {
-                        P2.isActiv = false;
-                        P1.isActiv = true;
+                        libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri(@"/Images/Dwarf.jpg", UriKind.RelativeOrAbsolute));
                     }
-                    // BoardGrid.Children.Add(board.activePlayer);
+
                     return;
                 }
             }
 
-            p=board.ConvertPhonePointToBoardPoint(p, this.Orientation);
-
-            //  MessageBox.Show(p.X.ToString() + " " + p.Y.ToString());
-            //Box1.Text = p.X.ToString() + " " + p.Y.ToString();
-            /*
-            if (this.Orientation == PageOrientation.LandscapeRight)
-            {
-                double temp = p.X;
-               // p.X = -p.Y + board.center.Y;
-               // p.Y = temp - board.center.Y;
-                //p.X = -p.Y;
-                p.X = board.screenSize.Height - p.Y - board.center.X;
-                p.Y = -(board.center.Y-temp);
-
-            }
-
-            else if (this.Orientation == PageOrientation.LandscapeLeft)
-            {
-                double temp = p.X;
-              //  p.X=
-                //p.Y = -board.center.Y + temp;
-                p.X = -(board.screenSize.Height - p.Y - board.center.X);
-                p.Y = ((board.center.Y - temp));
-               // p.X = -p.Y + board.center.Y;
-                //  p.X = board.screenSize.Width - p.X;
-               // p.Y = temp - board.center.Y;
-                //  p.Y = temp+board.screenSize.Height;
-
-                //  p.X = -p.X-(board.screenSize.Width- board.center.X/2.0);
-             //   p.Y = -p.Y;
-               // p.X = -p.X;
-                //p.X = p.X - (board.screenSize.Height - board.center.Y) + 150 + Hex.hexWidth;
-                //  p.Y = p.Y - 100;
-                //         p.X += -(board.screenSize.Height - board.center.Y);
-                // p.X = board.screenSize.Width - p.X;
-                //  p.Y = board.screenSize.Height - p.Y;
-
-            }
-             * */
-            // p.X += -board.center.Y;
-
+            p = game.board.ConvertPhonePointToBoardPoint(p, this.Orientation);
             Hex h = Hex.PixelToHex(p, hexs);
-
-
             if (h != null)
             {
-                // Hex h2 = Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-                // SelectFigure(h2);
-                if (selectedFigure == null)
+                if (selectedFigure == null && game.playedCard != null) //zaznaczenie
                 {
-                     if(h.figure!=null)
-                    if (board.activeFraction == h.figure.ReturnFraction())
-                    {
-                        selectedFigure = h.figure;
-                        //   foreach (Hex h2 in hexs)
-                        //       h2.ResetPolygon();
-                        //  Board.ResetPolygons(hexs);
-                        SelectFigure(h);
-                    }
-                    // h.polygon.Stroke.GetValue(Color.FromArgb);
-                    // polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
-
-                }
-
-                else
-                    if (selectedFigure == h.figure)
-                    {
-
-                        Board.ResetPolygons(hexs);
-                        Board.ResetPolygons(hexs);
-
-                        selectedFigure = null;
-                    }
-                    else
-                        if (h.figure == null && selectedFigure != null)
+                    if (h.figure != null)
+                        if (game.board.activeFraction == h.figure.ReturnFraction())
                         {
-                            // Hex.GetHexByFigure(hexs, selectedFigure).
-                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, 2, hexs))
-                            {
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                                selectedFigure = null;
+                            selectedFigure = h.figure;
+                            SelectFigure(h);
 
+                            if (game.playedCard.FlyActionValue() > 0)
+                            {
+                                foreach (List<Hex> list in Hex.GetMoveRange(Hex.GetHexByFigure(hexs, selectedFigure), game.playedCard.FlyActionValue(), hexs))
+                                {
+
+                                    foreach (Hex eachHex in list)
+                                    {
+                                        eachHex.inMoveRange = true;
+                                        Hex.rangeFigure = selectedFigure;
+                                    }
+                                }
                                 Board.ResetPolygons(hexs);
                                 Board.ResetPolygons(hexs);
                             }
+                            else
+                                if (game.playedCard.SingleMoveActionValue() > 0)
+                                {
+                                    List<List<Hex>> range = Hex.GetMoveRange(Hex.GetHexByFigure(hexs, selectedFigure), game.playedCard.SingleMoveActionValue(), hexs);
+                                    foreach (List<Hex> list in range)
+                                    {
+
+                                        foreach (Hex eachHex in list)
+                                        {
+                                            eachHex.inMoveRange = true;
+                                            Hex.rangeFigure = selectedFigure;
+                                        }
+                                    }
+                                    Board.ResetPolygons(hexs);
+                                    Board.ResetPolygons(hexs);
+                                }
+
                         }
-
-
-            }
-            /*
-             * 
-        if(h!=null)
-        {
-            Polygon pp = new Polygon();
-            pp.StrokeThickness = 5;
-            pp.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 255, 0, 1));
-                //( new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1)));
-            foreach(Point pnt in h.corners)
-            {
-                pp.Points.Add(pnt);
-            }
-                
-            Board b = new Board();
-            List<Polygon> pol = b.drawBoard();
-            LayoutRoot.Children.Clear();
-            hexs = b.hexs;
-            for (int i = 0; i < pol.Count; i++)
-            {
-                LayoutRoot.Children.Add(pol[i]);
-            }
-            pp.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1));
-            LayoutRoot.Children.Add(pp);
-        }
-         
-            
-            }
-            
-        }
-        /*
-        private void screenTapped(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            Point p = e.GetPosition(null);
-
-            //  MessageBox.Show(p.X.ToString() + " " + p.Y.ToString());
-            //Box1.Text = p.X.ToString() + " " + p.Y.ToString();
-            if (this.Orientation == PageOrientation.LandscapeRight)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                p.Y = temp - board.center.Y;
-            }
-            else if (this.Orientation == PageOrientation.LandscapeLeft)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                //  p.X = board.screenSize.Width - p.X;
-                p.Y = temp - board.center.Y;
-                //  p.Y = temp+board.screenSize.Height;
-
-                //  p.X = -p.X-(board.screenSize.Width- board.center.X/2.0);
-                p.Y = -p.Y;
-                p.X = -p.X;
-                p.X = p.X - (board.screenSize.Height - board.center.Y) + 150 + Hex.hexWidth;
-                //  p.Y = p.Y - 100;
-                //         p.X += -(board.screenSize.Height - board.center.Y);
-                // p.X = board.screenSize.Width - p.X;
-                //  p.Y = board.screenSize.Height - p.Y;
-
-            }
-            // p.X += -board.center.Y;
-
-            Hex h = Hex.PixelToHex(p, hexs);
-
-
-            if (h != null)
-            {
-                // Hex h2 = Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-                // SelectFigure(h2);
-                if (selectedFigure == null)
-                {
-                    // if(h.figure!=null)
-                    selectedFigure = h.figure;
-                    //   foreach (Hex h2 in hexs)
-                    //       h2.ResetPolygon();
-                    //  Board.ResetPolygons(hexs);
-                    SelectFigure(h);
-                    // h.polygon.Stroke.GetValue(Color.FromArgb);
-                    // polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
 
                 }
 
                 else
-                    if (selectedFigure == h.figure)
+                    if (selectedFigure == h.figure && selectedFigure!=null)//odznaczenie
                     {
-
+                        h.figure.isSelected = false;
+                        foreach (Hex each in hexs)
+                        {
+                            each.inMoveRange = false;
+                            Hex.rangeFigure = null;
+                        }
                         Board.ResetPolygons(hexs);
                         Board.ResetPolygons(hexs);
 
                         selectedFigure = null;
                     }
                     else
-                        if (h.figure == null && selectedFigure != null)
+                        if (h.figure == null && selectedFigure != null && game.playedCard != null) //ruch
                         {
-                            // Hex.GetHexByFigure(hexs, selectedFigure).
-                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, 2, hexs))
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                            selectedFigure = null;
-                            Board.ResetPolygons(hexs);
-                            Board.ResetPolygons(hexs);
 
+                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, game.playedCard.SingleMoveActionValue(), hexs))
+                            {
+                               
+                                foreach (Hex hex in hexs)
+                                {
+                                    hex.inMoveRange = false;
+                                    Hex.rangeFigure = null;
+
+                                }
+                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
+                                selectedFigure.isSelected = false;
+                                selectedFigure = null;
+                                //try
+                                game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                game.activPlayer.RenderHand();
+                                game.playedCard = null;
+                                playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+
+                                game.ActionsLeft--;
+                                Board.ResetPolygons(hexs);
+                                Board.ResetPolygons(hexs);
+                            }
+                            else if (h != null)
+                                if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, game.playedCard.FlyActionValue(), hexs))
+                                {
+                                    foreach (Hex hex in hexs)
+                                    {
+                                        hex.inMoveRange = false;
+                                        Hex.rangeFigure = null;
+
+                                    }
+                                    selectedFigure.MoveTo(h.axialCoordinates, hexs);
+                                    selectedFigure.isSelected = false;
+                                    selectedFigure = null;
+                                    //try
+                                    game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                    game.activPlayer.RenderHand();
+                                    game.playedCard = null;
+                                    playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                    game.ActionsLeft--;
+
+                                    Board.ResetPolygons(hexs);
+                                    Board.ResetPolygons(hexs);
+                                }
+                        }
+                        else if(selectedFigure!=null && h.figure!=null && game.playedCard!=null)//atak
+                        {
+                            if (selectedFigure.ReturnFraction() != h.figure.ReturnFraction())
+                            {
+                                if (game.playedCard.SingleAttackActionValue() > 0)
+                                {
+                                    Hex selectedHex = Hex.GetHexByFigure(hexs, selectedFigure);
+                                    List<Hex> neighbors = Hex.Neighbors(selectedHex, hexs);
+                                    foreach (Hex each in neighbors)
+                                    {
+                                        if (each == h)
+                                        {
+                                            if (h.figure is Dwarf)
+                                            {
+                                                Dwarf k = h.figure as Dwarf;
+                                                k.hp = k.hp - game.playedCard.SingleAttackActionValue();
+                                                selectedFigure.isSelected = false;
+                                                selectedFigure = null;
+                                                //try
+                                                game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                                game.activPlayer.RenderHand();
+                                                game.playedCard = null;
+                                                game.ActionsLeft--;
+                                                playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                                foreach(Hex each2 in hexs)
+                                                {
+                                                    each2.inMoveRange = false;
+                                                    Hex.rangeFigure = null;
+                                                }
+
+                                                
+                                                if (k.hp < 0)
+                                                {
+                                                    figures.Remove(k);
+                                                    Hex.GetHexByFigure(hexs,k).figure = null;
+
+                                                }
+                                                Board.ResetPolygons(hexs);
+                                                Board.ResetPolygons(hexs); 
+                                            }
+                                            else
+                                                if (h.figure is Dragon)
+                                                {
+                                                    Dragon d = h.figure as Dragon;
+                                                    d.shieldHp = d.shieldHp - game.playedCard.SingleAttackActionValue();
+
+                                                    selectedFigure.isSelected = false;
+                                                    selectedFigure = null;
+                                                    //try
+                                                    game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                                    game.activPlayer.RenderHand();
+                                                    game.playedCard = null;
+                                                    game.ActionsLeft--;
+                                                    playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                                    foreach (Hex each2 in hexs)
+                                                    {
+                                                        each2.inMoveRange = false;
+                                                        Hex.rangeFigure = null;
+                                                    }
+
+
+                                                    if (d.shieldHp < 0)
+                                                    {
+                                                        figures.Remove(d);
+                                                        Hex.GetHexByFigure(hexs, d).figure = null;
+
+                                                    }
+                                                    Board.ResetPolygons(hexs);
+                                                    Board.ResetPolygons(hexs); 
+                                                    
+                                                }
+
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
+            }
 
-            }
-            /*
-             * 
-        if(h!=null)
-        {
-            Polygon pp = new Polygon();
-            pp.StrokeThickness = 5;
-            pp.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 255, 0, 1));
-                //( new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1)));
-            foreach(Point pnt in h.corners)
-            {
-                pp.Points.Add(pnt);
-            }
-                
-            Board b = new Board();
-            List<Polygon> pol = b.drawBoard();
-            LayoutRoot.Children.Clear();
-            hexs = b.hexs;
-            for (int i = 0; i < pol.Count; i++)
-            {
-                LayoutRoot.Children.Add(pol[i]);
-            }
-            pp.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1));
-            LayoutRoot.Children.Add(pp);
-        }
-         * */
-        
         }
 
         private void libraryImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-          //  board.DrawBoard(BoardGrid);
-
+            if(Card.DrawCard(game.activPlayer, 2))
+            game.ActionsLeft--;
+            //  game.activPlayer.
         }
 
-        /*private void Panorama_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+
+
+        private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Point p = e.GetPosition(null);
-
-            //  MessageBox.Show(p.X.ToString() + " " + p.Y.ToString());
-            //Box1.Text = p.X.ToString() + " " + p.Y.ToString();
-            if (this.Orientation == PageOrientation.LandscapeRight)
+            
+            Image img = sender as Image;
+            int r = Grid.GetRow(img);
+            int c = Grid.GetColumn(img);
+            int n = r * 4 + c;
+            if (game.CardsToDiscard == 0)
+            { 
+            if (n < game.activPlayer.hand.Count)
             {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                p.Y = temp - board.center.Y;
-            }
-            else if (this.Orientation == PageOrientation.LandscapeLeft)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                //  p.X = board.screenSize.Width - p.X;
-                p.Y = temp - board.center.Y;
-                //  p.Y = temp+board.screenSize.Height;
-
-                //  p.X = -p.X-(board.screenSize.Width- board.center.X/2.0);
-                p.Y = -p.Y;
-                p.X = -p.X;
-                p.X = p.X - (board.screenSize.Height - board.center.Y) + 150 + Hex.hexWidth;
-                //  p.Y = p.Y - 100;
-                //         p.X += -(board.screenSize.Height - board.center.Y);
-                // p.X = board.screenSize.Width - p.X;
-                //  p.Y = board.screenSize.Height - p.Y;
-
-            }
-            // p.X += -board.center.Y;
-
-            Hex h = Hex.PixelToHex(p, hexs);
-
-
-            if (h != null)
-            {
-                // Hex h2 = Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-                // SelectFigure(h2);
-                if (selectedFigure == null)
+                Card card = game.activPlayer.hand[n];
+                //game.activPlayer.hand.RemoveAt(n);
+                // game.activPlayer.RenderHand();
+                game.playedCard = card;
+                if (game.playedCard != null)
                 {
-                    // if(h.figure!=null)
-                    selectedFigure = h.figure;
-                    //   foreach (Hex h2 in hexs)
-                    //       h2.ResetPolygon();
-                    //  Board.ResetPolygons(hexs);
-                    SelectFigure(h);
-                    // h.polygon.Stroke.GetValue(Color.FromArgb);
-                    // polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
-
+                    playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+                    new Uri(game.playedCard.src, UriKind.RelativeOrAbsolute));
                 }
 
-                else
-                    if (selectedFigure == h.figure)
+
+
+                // panorama.
+                //   panorama.SetValue(Panorama.SelectedIndexProperty, panorama.Items[0]);
+                (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Collapsed;
+                panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1 + 1) % panorama.Items.Count]);
+                panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Visible;
+
+
+                /******************************************
+                 * http://xme.im/slide-or-change-panorama-selected-item-programatically
+                 Do zrobienia na kiedy indziej
+                 private void slidePanorama(Panorama pan) {     FrameworkElement panWrapper = VisualTreeHelper.GetChild(pan, 0) as FrameworkElement;     FrameworkElement panTitle = VisualTreeHelper.GetChild(panWrapper, 1) as FrameworkElement;     //Get the panorama layer to calculate all panorama items size     FrameworkElement panLayer = VisualTreeHelper.GetChild(panWrapper, 2) as FrameworkElement;     //Get the title presenter to calculate the title size     FrameworkElement panTitlePresenter = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(panTitle, 0) as FrameworkElement, 1) as FrameworkElement;       //Current panorama item index     int curIndex = pan.SelectedIndex;       //Get the next of next panorama item     FrameworkElement third = VisualTreeHelper.GetChild(pan.Items[(curIndex + 2) % pan.Items.Count] as PanoramaItem, 0) as FrameworkElement;       //Be sure the RenderTransform is TranslateTransform     if (!(pan.RenderTransform is TranslateTransform)         || !(panTitle.RenderTransform is TranslateTransform))     {         pan.RenderTransform = new TranslateTransform();         panTitle.RenderTransform = new TranslateTransform();     }       //Increase width of panorama to let it render the next slide (if not, default panorama is 480px and the null area appear if we transform it)     pan.Width = 960;       //Animate panorama control to the right     Storyboard sb = new Storyboard();     DoubleAnimation a = new DoubleAnimation();     a.From = 0;     a.To = -(pan.Items[curIndex] as PanoramaItem).ActualWidth; //Animate the x transform to a width of one item     a.Duration = new Duration(TimeSpan.FromMilliseconds(700));     a.EasingFunction = new CircleEase(); //This is default panorama easing effect     sb.Children.Add(a);     Storyboard.SetTarget(a, pan.RenderTransform);     Storyboard.SetTargetProperty(a, new PropertyPath(TranslateTransform.XProperty));       //Animate panorama title separately     DoubleAnimation aTitle = new DoubleAnimation();     aTitle.From = 0;     aTitle.To = (panLayer.ActualWidth - panTitlePresenter.ActualWidth) / (pan.Items.Count - 1) * 1.5; //Calculate where should the title animate to     aTitle.Duration = a.Duration;     aTitle.EasingFunction = a.EasingFunction; //This is default panorama easing effect     sb.Children.Add(aTitle);     Storyboard.SetTarget(aTitle, panTitle.RenderTransform);     Storyboard.SetTargetProperty(aTitle, new PropertyPath(TranslateTransform.XProperty));       //Start the effect     sb.Begin();       //After effect completed, we change the selected item     a.Completed += (obj, args) =>     {         //Reset panorama width         pan.Width = 480;         //Change the selected item         (pan.Items[curIndex] as PanoramaItem).Visibility = Visibility.Collapsed;         pan.SetValue(Panorama.SelectedItemProperty, pan.Items[(curIndex + 1) % pan.Items.Count]);         pan.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));         (pan.Items[curIndex] as PanoramaItem).Visibility = Visibility.Visible;         //Reset panorama render transform         (pan.RenderTransform as TranslateTransform).X = 0;         //Reset title render transform         (panTitle.RenderTransform as TranslateTransform).X = 0;           //Because of the next of next item will be load after we change the selected index to next item         //I do not want it appear immediately without any effect, so I create a custom effect for it         if (!(third.RenderTransform is TranslateTransform))         {             third.RenderTransform = new TranslateTransform();         }         Storyboard sb2 = new Storyboard();         DoubleAnimation aThird = new DoubleAnimation() { From = 100, To = 0, Duration = new Duration(TimeSpan.FromMilliseconds(300)) };           sb2.Children.Add(aThird);         Storyboard.SetTarget(aThird, third.RenderTransform);         Storyboard.SetTargetProperty(aThird, new PropertyPath(TranslateTransform.XProperty));         sb2.Begin();     }; } 
+                 * ****************************************/
+
+
+                // NavigationService.Navigate(new Uri("/PanoramaPage1.xaml?goto=0", UriKind.Relative));
+            }
+            }
+            else
+            {
+                if (n < game.activPlayer.hand.Count)
+                {
+                    Card card = game.activPlayer.hand[n];
+                    game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(card.id));
+                    game.CardsToDiscard--;
+                    game.activPlayer.RenderHand();
+                    if (game.CardsToDiscard == 0)
                     {
-
-                        Board.ResetPolygons(hexs);
-                        Board.ResetPolygons(hexs);
-
-                        selectedFigure = null;
+                        (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Collapsed;
+                        panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1 + 1) % panorama.Items.Count]);
+                        panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                        (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Visible;
                     }
-                    else
-                        if (h.figure == null && selectedFigure != null)
-                        {
-                            // Hex.GetHexByFigure(hexs, selectedFigure).
-                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, 2, hexs))
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                            selectedFigure = null;
-                            Board.ResetPolygons(hexs);
-                            Board.ResetPolygons(hexs);
-
-                        }
-
-
-            }
-            /*
-             * 
-        if(h!=null)
-        {
-            Polygon pp = new Polygon();
-            pp.StrokeThickness = 5;
-            pp.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 255, 0, 1));
-                //( new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1)));
-            foreach(Point pnt in h.corners)
-            {
-                pp.Points.Add(pnt);
-            }
-                
-            Board b = new Board();
-            List<Polygon> pol = b.drawBoard();
-            LayoutRoot.Children.Clear();
-            hexs = b.hexs;
-            for (int i = 0; i < pol.Count; i++)
-            {
-                LayoutRoot.Children.Add(pol[i]);
-            }
-            pp.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1));
-            LayoutRoot.Children.Add(pp);
-        }
-         
-            
+                   
+                }
             }
             
         }
-        /*
-        private void screenTapped(object sender, System.Windows.Input.GestureEventArgs e)
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Point p = e.GetPosition(null);
-
-            //  MessageBox.Show(p.X.ToString() + " " + p.Y.ToString());
-            //Box1.Text = p.X.ToString() + " " + p.Y.ToString();
-            if (this.Orientation == PageOrientation.LandscapeRight)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                p.Y = temp - board.center.Y;
-            }
-            else if (this.Orientation == PageOrientation.LandscapeLeft)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                //  p.X = board.screenSize.Width - p.X;
-                p.Y = temp - board.center.Y;
-                //  p.Y = temp+board.screenSize.Height;
-
-                //  p.X = -p.X-(board.screenSize.Width- board.center.X/2.0);
-                p.Y = -p.Y;
-                p.X = -p.X;
-                p.X = p.X - (board.screenSize.Height - board.center.Y) + 150 + Hex.hexWidth;
-                //  p.Y = p.Y - 100;
-                //         p.X += -(board.screenSize.Height - board.center.Y);
-                // p.X = board.screenSize.Width - p.X;
-                //  p.Y = board.screenSize.Height - p.Y;
-
-            }
-            // p.X += -board.center.Y;
-
-            Hex h = Hex.PixelToHex(p, hexs);
-
-
-            if (h != null)
-            {
-                // Hex h2 = Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-                // SelectFigure(h2);
-                if (selectedFigure == null)
-                {
-                    // if(h.figure!=null)
-                    selectedFigure = h.figure;
-                    //   foreach (Hex h2 in hexs)
-                    //       h2.ResetPolygon();
-                    //  Board.ResetPolygons(hexs);
-                    SelectFigure(h);
-                    // h.polygon.Stroke.GetValue(Color.FromArgb);
-                    // polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
-
-                }
-
-                else
-                    if (selectedFigure == h.figure)
-                    {
-
-                        Board.ResetPolygons(hexs);
-                        Board.ResetPolygons(hexs);
-
-                        selectedFigure = null;
-                    }
-                    else
-                        if (h.figure == null && selectedFigure != null)
-                        {
-                            // Hex.GetHexByFigure(hexs, selectedFigure).
-                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, 2, hexs))
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                            selectedFigure = null;
-                            Board.ResetPolygons(hexs);
-                            Board.ResetPolygons(hexs);
-
-                        }
-
-
-            }
-            /*
-             * 
-        if(h!=null)
-        {
-            Polygon pp = new Polygon();
-            pp.StrokeThickness = 5;
-            pp.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 255, 0, 1));
-                //( new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1)));
-            foreach(Point pnt in h.corners)
-            {
-                pp.Points.Add(pnt);
-            }
-                
-            Board b = new Board();
-            List<Polygon> pol = b.drawBoard();
-            LayoutRoot.Children.Clear();
-            hexs = b.hexs;
-            for (int i = 0; i < pol.Count; i++)
-            {
-                LayoutRoot.Children.Add(pol[i]);
-            }
-            pp.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1));
-            LayoutRoot.Children.Add(pp);
-        }
-         
+            e.Cancel = true;
+            NavigationService.Navigate(new Uri("/GameMenu.xaml", UriKind.Relative));
 
         }
-        */
-        /*
-        private void LayoutRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            Point p = e.GetPosition(null);
-
-            //  MessageBox.Show(p.X.ToString() + " " + p.Y.ToString());
-            //Box1.Text = p.X.ToString() + " " + p.Y.ToString();
-            if (this.Orientation == PageOrientation.LandscapeRight)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                p.Y = temp - board.center.Y;
-            }
-            else if (this.Orientation == PageOrientation.LandscapeLeft)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                //  p.X = board.screenSize.Width - p.X;
-                p.Y = temp - board.center.Y;
-                //  p.Y = temp+board.screenSize.Height;
-
-                //  p.X = -p.X-(board.screenSize.Width- board.center.X/2.0);
-                p.Y = -p.Y;
-                p.X = -p.X;
-                p.X = p.X - (board.screenSize.Height - board.center.Y) + 150 + Hex.hexWidth;
-                //  p.Y = p.Y - 100;
-                //         p.X += -(board.screenSize.Height - board.center.Y);
-                // p.X = board.screenSize.Width - p.X;
-                //  p.Y = board.screenSize.Height - p.Y;
-
-            }
-            // p.X += -board.center.Y;
-
-            Hex h = Hex.PixelToHex(p, hexs);
 
 
-            if (h != null)
-            {
-                // Hex h2 = Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-                // SelectFigure(h2);
-                if (selectedFigure == null)
-                {
-                    // if(h.figure!=null)
-                    selectedFigure = h.figure;
-                    //   foreach (Hex h2 in hexs)
-                    //       h2.ResetPolygon();
-                    //  Board.ResetPolygons(hexs);
-                    SelectFigure(h);
-                    // h.polygon.Stroke.GetValue(Color.FromArgb);
-                    // polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
-
-                }
-
-                else
-                    if (selectedFigure == h.figure)
-                    {
-
-                        Board.ResetPolygons(hexs);
-                        Board.ResetPolygons(hexs);
-
-                        selectedFigure = null;
-                    }
-                    else
-                        if (h.figure == null && selectedFigure != null)
-                        {
-                            // Hex.GetHexByFigure(hexs, selectedFigure).
-                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, 2, hexs))
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                            selectedFigure = null;
-                            Board.ResetPolygons(hexs);
-                            Board.ResetPolygons(hexs);
-
-                        }
 
 
-            }
-            /*
-             * 
-        if(h!=null)
-        {
-            Polygon pp = new Polygon();
-            pp.StrokeThickness = 5;
-            pp.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 255, 0, 1));
-                //( new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1)));
-            foreach(Point pnt in h.corners)
-            {
-                pp.Points.Add(pnt);
-            }
-                
-            Board b = new Board();
-            List<Polygon> pol = b.drawBoard();
-            LayoutRoot.Children.Clear();
-            hexs = b.hexs;
-            for (int i = 0; i < pol.Count; i++)
-            {
-                LayoutRoot.Children.Add(pol[i]);
-            }
-            pp.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1));
-            LayoutRoot.Children.Add(pp);
-        }
-         
-            
-            }
-            
-        }
-        /*
-        private void screenTapped(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            Point p = e.GetPosition(null);
-
-            //  MessageBox.Show(p.X.ToString() + " " + p.Y.ToString());
-            //Box1.Text = p.X.ToString() + " " + p.Y.ToString();
-            if (this.Orientation == PageOrientation.LandscapeRight)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                p.Y = temp - board.center.Y;
-            }
-            else if (this.Orientation == PageOrientation.LandscapeLeft)
-            {
-                double temp = p.X;
-                p.X = -p.Y + board.center.Y;
-                //  p.X = board.screenSize.Width - p.X;
-                p.Y = temp - board.center.Y;
-                //  p.Y = temp+board.screenSize.Height;
-
-                //  p.X = -p.X-(board.screenSize.Width- board.center.X/2.0);
-                p.Y = -p.Y;
-                p.X = -p.X;
-                p.X = p.X - (board.screenSize.Height - board.center.Y) + 150 + Hex.hexWidth;
-                //  p.Y = p.Y - 100;
-                //         p.X += -(board.screenSize.Height - board.center.Y);
-                // p.X = board.screenSize.Width - p.X;
-                //  p.Y = board.screenSize.Height - p.Y;
-
-            }
-            // p.X += -board.center.Y;
-
-            Hex h = Hex.PixelToHex(p, hexs);
-
-
-            if (h != null)
-            {
-                // Hex h2 = Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-                // SelectFigure(h2);
-                if (selectedFigure == null)
-                {
-                    // if(h.figure!=null)
-                    selectedFigure = h.figure;
-                    //   foreach (Hex h2 in hexs)
-                    //       h2.ResetPolygon();
-                    //  Board.ResetPolygons(hexs);
-                    SelectFigure(h);
-                    // h.polygon.Stroke.GetValue(Color.FromArgb);
-                    // polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
-
-                }
-
-                else
-                    if (selectedFigure == h.figure)
-                    {
-
-                        Board.ResetPolygons(hexs);
-                        Board.ResetPolygons(hexs);
-
-                        selectedFigure = null;
-                    }
-                    else
-                        if (h.figure == null && selectedFigure != null)
-                        {
-                            // Hex.GetHexByFigure(hexs, selectedFigure).
-                            if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, 2, hexs))
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                            selectedFigure = null;
-                            Board.ResetPolygons(hexs);
-                            Board.ResetPolygons(hexs);
-
-                        }
-
-
-            }
-            /*
-             * 
-        if(h!=null)
-        {
-            Polygon pp = new Polygon();
-            pp.StrokeThickness = 5;
-            pp.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 255, 0, 1));
-                //( new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1)));
-            foreach(Point pnt in h.corners)
-            {
-                pp.Points.Add(pnt);
-            }
-                
-            Board b = new Board();
-            List<Polygon> pol = b.drawBoard();
-            LayoutRoot.Children.Clear();
-            hexs = b.hexs;
-            for (int i = 0; i < pol.Count; i++)
-            {
-                LayoutRoot.Children.Add(pol[i]);
-            }
-            pp.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 1));
-            LayoutRoot.Children.Add(pp);
-        }
-         
-
-        }
-        
-      */
     }
 }

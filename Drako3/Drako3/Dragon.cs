@@ -18,6 +18,7 @@ namespace Drako3
         public Dragon(Point p)
         {
             position = p;
+            isSelected = false;
         }
     }
 }

@@ -72,6 +72,22 @@ namespace Drako3
 
            }
        }
+
+       public int GetHandCardIndexFromId(int i)
+       {
+           int index=-1;
+           foreach(Card c in hand)
+           {
+               if (c.id == i)
+               {
+                   index = hand.IndexOf(c);
+                   return index;
+               }
+           }
+           return index;
+
+       }
+
        public void RenderHand()
         {
             foreach (Image img in grid.Children)

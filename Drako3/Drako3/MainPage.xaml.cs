@@ -30,7 +30,9 @@ namespace Drako3
         private void newGameButton_Click(object sender, RoutedEventArgs e)
         {
             //NavigationService.Navigate(new Uri("/NewGamePage.xaml", UriKind.Relative));
+          //  PanoramaPage1 window = new PanoramaPage1();
             NavigationService.Navigate(new Uri("/PanoramaPage1.xaml", UriKind.Relative));
+            
 
         }
 

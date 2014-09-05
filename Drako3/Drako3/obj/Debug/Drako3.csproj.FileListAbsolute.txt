@@ -73,3 +73,5 @@ C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\Drako3.csproj.GenerateResour
 C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\Drako3.dll
 C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\Drako3.pdb
 C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\XapCacheFile.xml
+C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\GameMenu.g.cs
+C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\GameMenu.g.cs

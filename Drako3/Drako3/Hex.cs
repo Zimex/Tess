@@ -17,7 +17,10 @@ namespace Drako3
       public static double hexHeight;
       public static double hexWidth;
       public Figure figure = null;
+      public static Figure rangeFigure;
       public Polygon polygon = new Polygon();
+      public bool inMoveRange=false;
+     // System.Windows.Media.Color color = System.Windows.Media.Color.FromArgb(155, 0, 255, 1);
 
         public Hex()
         {
@@ -36,6 +39,11 @@ namespace Drako3
             ResetPolygon();
         }
       
+        
+      
+        
+        
+
         public static Microsoft.Xna.Framework.Vector3 ConvertAxialToCube(Point p)
         {
             return new Microsoft.Xna.Framework.Vector3((float)p.X,(float)(-p.X-p.Y),(float)p.Y);
@@ -72,11 +80,37 @@ namespace Drako3
 
 
             }
+
             if (Hex.DoesVisitedContainsHex(visited, to))
             {
                 return true;
             }
                 return false;
+        }
+
+        public static List<List<Hex>> GetMoveRange(Hex h, int moves, List<Hex> hexs)
+        {
+            
+            List<List<Hex>> visited = new List<List<Hex>>();
+            visited.Add(new List<Hex>());
+            visited[visited.Count - 1].Add(h);
+
+            for (int i = 1; i <= moves; i++)
+            {
+                visited.Add(new List<Hex>());
+                foreach (Hex hex in visited[i - 1])
+                {
+                    foreach (Hex h2 in GetUnblockedNeighbors(hexs, hex, visited))
+                        visited[visited.Count - 1].Add(h2);
+                    //visited.Add(GetUnblockedNeighbors(hexs, h,visited));
+
+                }
+
+
+            }
+            if(visited.Count>0)
+            visited.RemoveAt(0);
+            return visited;
         }
         public static List<Hex> GetUnblockedNeighbors(List<Hex> hexs, Hex h, List<List<Hex>> visited)
         {
@@ -212,22 +246,61 @@ namespace Drako3
             if (figure != null) s += "figure:" + figure.ToString() + Environment.NewLine;
             return s;
         }
+
+        public void moveRange()
+        {
+
+        }
            
         public void ResetPolygon()
         {
             //this.polygon = new Polygon();
-            this.polygon.StrokeThickness = 3;
+            if (this.figure != null)
+            {
+                if (this.figure.isSelected)
+                    this.polygon.StrokeThickness = 5;
+                else
+                    this.polygon.StrokeThickness = 3;
+
+            }
+            else
+                this.polygon.StrokeThickness = 3;
             
             foreach (Point pnt in corners)
             {
                 polygon.Points.Add(pnt);
             }
-            if(figure==null)
+            if (figure == null)
             {
-            polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 255, 1));
-           // polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
-            polygon.Fill=new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0,0,0,0));
-            }   
+                polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 255, 1));
+
+                if (inMoveRange && rangeFigure!=null)
+                {
+                    if(rangeFigure is Dragon)
+                    polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20,255,0,0));
+                    else if((rangeFigure as Dwarf).type==DwarfType.Leader)
+                    {
+                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 128, 0));
+
+                    }
+                    else if((rangeFigure as Dwarf).type==DwarfType.Webber)
+                    {
+                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 128, 255, 0));
+
+                    }
+                    else if((rangeFigure as Dwarf).type==DwarfType.Crossbowman)
+                    {
+                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 255, 0));
+
+                    }
+                }
+                else
+                {
+                    // polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
+                    polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 0, 0, 0));
+
+                }
+            }
             else
             {
                 if (figure.GetType() == typeof(Dragon))
@@ -239,26 +312,26 @@ namespace Drako3
                 {
                     Dwarf d = figure as Dwarf;
 
-                    switch(d.type)
+                    switch (d.type)
                     {
-                        case(DwarfType.Crossbowman):
+                        case (DwarfType.Crossbowman):
                             polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 255, 0));
                             polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 255, 255, 0));
-               
+
                             break;
                         case (DwarfType.Leader):
                             polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 128, 0));
                             polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 255, 128, 0));
-               
+
                             break;
                         case (DwarfType.Webber):
                             polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 128, 255, 0));
                             polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 128, 255, 0));
-               
+
 
                             break;
                     }
-                   // polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 0, 0, 255));
+                    // polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 0, 0, 255));
                 }
             }
 

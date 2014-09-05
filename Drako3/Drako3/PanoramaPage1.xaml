@@ -11,23 +11,24 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Landscape"  Orientation="Landscape"
-    shell:SystemTray.IsVisible="False">
-
+    shell:SystemTray.IsVisible="False"
+    BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot">
-        <phone:Panorama>
+        <phone:Panorama x:Name="panorama" DefaultItem="ItemHand">
 
             <!--Panorama item one-->
-            <phone:PanoramaItem Height="Auto" Width="Auto" Tap="PanoramaItem_Tap">
+            <phone:PanoramaItem x:Name="panoramaItemBoard" Height="Auto" Width="Auto" Tap="PanoramaItem_Tap">
 
                 <Grid x:Name="BoardGrid" HorizontalAlignment="Left" Height="Auto" Margin="-10,-35,0,0" VerticalAlignment="Top" Width="Auto">
 
+                    <Image x:Name="playedCardImage"  HorizontalAlignment="Left" Height="195" Margin="25,25,0,0"  Width="133" Canvas.ZIndex="1" VerticalAlignment="Bottom"/>
 
-                    <Image x:Name="libraryImage" Source="Images/Dragon.jpg" HorizontalAlignment="Left" Height="195" Margin="25,25,0,0"   VerticalAlignment="Top" Width="133" Tap="libraryImage_Tap" Canvas.ZIndex="1"/>
+                    <Image x:Name="libraryImage" Source="{Binding ImagePath}" HorizontalAlignment="Left" Height="195" Margin="25,25,0,0"   VerticalAlignment="Top" Width="133" Tap="libraryImage_Tap" Canvas.ZIndex="1"/>
                 </Grid>
 
             </phone:PanoramaItem>
-            <phone:PanoramaItem Height="Auto" Width="{Binding}">
+            <phone:PanoramaItem x:Name="panoramaItemHand" Height="Auto" Width="{Binding}">
                 <Grid x:Name="HandGrid" Width="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,-40,30,0">
 
                     <Grid.ColumnDefinitions>
@@ -41,15 +42,15 @@
 
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Image Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
-                    <Image Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
-                    <Image Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
-                    <Image Grid.Row="0" Grid.Column="3"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
+                    <Image Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
+                    <Image Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
+                    <Image Grid.Row="0" Grid.Column="3"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
 
-                    <Image Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
-                    <Image Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
-                    <Image Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
-                    <Image Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto"/>
+                    <Image Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
+                    <Image Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
+                    <Image Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
+                    <Image Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0"   VerticalAlignment="Center" Width="Auto" Tap="Image_Tap"/>
 
                 </Grid>
             </phone:PanoramaItem>

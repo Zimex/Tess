@@ -90,6 +90,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -99,6 +100,9 @@
     <Compile Include="Dwarf.cs" />
     <Compile Include="Figure.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameMenu.xaml.cs">
+      <DependentUpon>GameMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Hex.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -129,6 +133,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="GameMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -177,6 +185,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\004.2.jpg" />
+    <Content Include="Images\004.jpg" />
+    <Content Include="Images\010.jpg" />
     <Content Include="Images\board4.png" />
     <Content Include="Images\Cards\D1.png" />
     <Content Include="Images\Cards\D10.png" />
