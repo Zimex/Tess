@@ -10,18 +10,52 @@ namespace Drako3
     
     public class Hex
     {
-      public  Point center;
-      public  Point axialCoordinates; // 0,0...6,6
-      public  List<Point> corners = new List<Point>();
-      public bool isBlocked=false;
+      private  Point center;
+      private Point axialCoordinates; // 0,0...6,6
+      private List<Point> corners = new List<Point>();
+      private bool isBlocked = false;
       public static double hexHeight;
       public static double hexWidth;
-      public Figure figure = null;
+      private Figure figure = null;
       public static Figure rangeFigure;
-      public Polygon polygon = new Polygon();
-      public bool inMoveRange=false;
+      private Polygon polygon = new Polygon();
+      private bool inMoveRange = false;
      // System.Windows.Media.Color color = System.Windows.Media.Color.FromArgb(155, 0, 255, 1);
-
+        public Point Center
+      {
+          get { return center; }
+          set { center = value; }
+      }
+        public Point AxialCoordinates
+        {
+            get { return axialCoordinates; }
+            set { axialCoordinates = value; }
+        }
+        public List<Point> Corners
+        {
+            get { return corners; }
+            set { corners = value; }
+        }
+        public bool IsBlocked
+        {
+            get { return isBlocked; }
+            set { isBlocked = value; }
+        }
+        public Figure Figure
+        {
+            get { return figure; }
+            set { figure = value; }
+        }
+        public Polygon Polygon
+        {
+            get { return polygon; }
+            set { polygon = value; }
+        }
+        public bool InMoveRange 
+        {
+            get { return inMoveRange; }
+            set { inMoveRange = value; }
+        }
         public Hex()
         {
             ResetPolygon();
@@ -38,11 +72,6 @@ namespace Drako3
             axialCoordinates = ax;
             ResetPolygon();
         }
-      
-        
-      
-        
-        
 
         public static Microsoft.Xna.Framework.Vector3 ConvertAxialToCube(Point p)
         {
@@ -123,6 +152,93 @@ namespace Drako3
                 }
             }
             return neighbors;
+
+        }
+
+        public static Hex GetHexByPosition(Point p , List<Hex> hexs) //axialcoords
+        {
+            foreach(Hex h in hexs )
+            {
+                if(h.axialCoordinates==p)
+                {
+                    return h;
+                }
+            }
+            return null;
+        }
+
+        public static List<Hex> GetStraightLines(List<Hex> hexs, Hex h)
+        {
+            List<Hex> lines = new List<Hex>();
+            Hex temp = h;
+            Point originalPosition = h.axialCoordinates;
+            Point position = h.axialCoordinates;
+
+            for (int i = 1; i < 5;i++ )
+            {
+                position.X++;
+                temp = GetHexByPosition(position, hexs);
+                if (temp != null)
+                    lines.Add(temp);
+
+            }
+            position = originalPosition;
+            
+            for (int i = 1; i < 5; i++)
+            {
+                position.X--;
+                temp = GetHexByPosition(position, hexs);
+                if (temp != null)
+                    lines.Add(temp);
+
+            }
+
+            position = originalPosition;
+
+            for (int i = 1; i < 5; i++)
+            {
+                position.Y--;
+                temp = GetHexByPosition(position, hexs);
+                if (temp != null)
+                    lines.Add(temp);
+
+            }
+
+            position = originalPosition;
+
+            for (int i = 1; i < 5; i++)
+            {
+                position.Y++;
+                temp = GetHexByPosition(position, hexs);
+                if (temp != null)
+                    lines.Add(temp);
+
+            }
+
+            position = originalPosition;
+
+            for (int i = 1; i < 5; i++)
+            {
+                position.Y++;
+                position.X--;
+                temp = GetHexByPosition(position, hexs);
+                if (temp != null)
+                    lines.Add(temp);
+
+            }
+
+            position = originalPosition;
+
+            for (int i = 1; i < 5; i++)
+            {
+                position.Y--;
+                position.X++;
+                temp = GetHexByPosition(position, hexs);
+                if (temp != null)
+                    lines.Add(temp);
+
+            }
+                return lines;
 
         }
 
@@ -257,7 +373,7 @@ namespace Drako3
             //this.polygon = new Polygon();
             if (this.figure != null)
             {
-                if (this.figure.isSelected)
+                if (this.figure.IsSelected)
                     this.polygon.StrokeThickness = 5;
                 else
                     this.polygon.StrokeThickness = 3;
@@ -278,17 +394,17 @@ namespace Drako3
                 {
                     if(rangeFigure is Dragon)
                     polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20,255,0,0));
-                    else if((rangeFigure as Dwarf).type==DwarfType.Leader)
+                    else if((rangeFigure as Dwarf).Type==DwarfType.Leader)
                     {
                         polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 128, 0));
 
                     }
-                    else if((rangeFigure as Dwarf).type==DwarfType.Webber)
+                    else if((rangeFigure as Dwarf).Type==DwarfType.Webber)
                     {
                         polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 128, 255, 0));
 
                     }
-                    else if((rangeFigure as Dwarf).type==DwarfType.Crossbowman)
+                    else if((rangeFigure as Dwarf).Type==DwarfType.Crossbowman)
                     {
                         polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 255, 0));
 
@@ -312,7 +428,7 @@ namespace Drako3
                 {
                     Dwarf d = figure as Dwarf;
 
-                    switch (d.type)
+                    switch (d.Type)
                     {
                         case (DwarfType.Crossbowman):
                             polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 255, 0));

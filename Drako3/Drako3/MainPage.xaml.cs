@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Drako3.Resources;
+using System.Threading;
 
 namespace Drako3
 {
@@ -17,6 +18,7 @@ namespace Drako3
         public MainPage()
         {
             InitializeComponent();
+           
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
@@ -27,15 +29,22 @@ namespace Drako3
             Application.Current.Terminate();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            MenuStoryBoard.Begin();
+            
+          //  LoadGameStoryBoard.Begin();
+            base.OnNavigatedTo(e);
+        }
+
         private void newGameButton_Click(object sender, RoutedEventArgs e)
         {
-            //NavigationService.Navigate(new Uri("/NewGamePage.xaml", UriKind.Relative));
-          //  PanoramaPage1 window = new PanoramaPage1();
+      
             NavigationService.Navigate(new Uri("/PanoramaPage1.xaml", UriKind.Relative));
             
 
         }
-
+        
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
         //{
@@ -52,4 +61,5 @@ namespace Drako3
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
     }
+    
 }

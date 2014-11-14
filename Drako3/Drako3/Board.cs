@@ -11,179 +11,185 @@ using System.Windows.Shapes;
 
 namespace Drako3
 {
+    /// <summary>
+    /// Klasa hexagonalnej planszy do gry
+    /// </summary>
    public class Board
     {
-       public Size screenSize;
-       public  Double boardSize;
-        public Point center;
-        //Point[] corners;
-        public List<Point> corners;
-        public List<Hex> hexs;
-        int margin = 12;
-        double scale;
-        double hexHeight;
-        double hexWidth;
-        public Polygon activePlayer;
-        public Fraction activeFraction;
-        public Image libraryImage = new Image();
-        public Image dragonLibrary = new Image();
-
-        public Image dwarfLibrary = new Image();
-       
-        
+        private Point center;
+        private Size screenSize;
+        private  Double boardSize;
+        private List<Point> corners;
+        private List<Hex> hexs;
+        private int margin = 12;
+        private double scale;
+        private double hexHeight;
+        private double hexWidth;
+        private  Polygon activePlayer;
+        private  Fraction activeFraction;
+        private  Image libraryImage = new Image();
+        private  Image dragonLibrary = new Image();
+        private  Image dwarfLibrary = new Image();
 
         public  Board(List<Figure> figures)
         {
             var content = Application.Current.Host.Content;
-             scale = (double)content.ScaleFactor / 100;
-             activeFraction = Fraction.Dragon;
-             activePlayer = new Polygon();
-            Image libraryImage=new Image();
-            Image dragonLibrary=new Image();
-            
-            Image dwarfLibrary=new Image();
+            scale = (double)content.ScaleFactor / 100;
+            activeFraction = Fraction.Dragon;
+            activePlayer = new Polygon();
             BitmapImage src = new BitmapImage();
             src.UriSource = new Uri("Images/Dwarf.jpg", UriKind.Relative);
             dwarfLibrary.Source = src;
             BitmapImage src2 = new BitmapImage();
             src.UriSource = new Uri("Images/Dragon.jpg", UriKind.Relative);
             dragonLibrary.Source = src2;
-          //  screenSize=new Size((int)Math.Ceiling(content.ActualWidth * scale),(int)Math.Ceiling(content.ActualHeight * scale));
-               screenSize=new Size((int)Math.Ceiling(content.ActualWidth * scale),(int)Math.Ceiling(content.ActualHeight * scale));
-
-            //size.Width = (int)Math.Ceiling(content.ActualWidth * scale);
-           // size.Height = (int)Math.Ceiling(content.ActualHeight * scale);
-        //    if()
-           // center = new Point(screenSize.Height -screenSize.Width/2,  screenSize.Width / 2);
-                center = new Point(screenSize.Height/2,  screenSize.Width / 2);
-
-            //boardSize = new Size(screenSize.Width  - margin, screenSize.Width - margin);
+            screenSize=new Size((int)Math.Ceiling(content.ActualWidth * scale),(int)Math.Ceiling(content.ActualHeight * scale));
+            center = new Point(screenSize.Height/2,  screenSize.Width / 2);
             boardSize = screenSize.Width - margin;
-           // center.X += boardSize/ 2 *  ((1 / 0.866) - 1);
-           // corners = new Point[4] { new Point((center.Y - boardSize.Height / 2), (center.X - boardSize.Width / 2)), new Point((center.Y + boardSize.Height / 2), (center.X - boardSize.Width / 2)), new Point((center.Y + boardSize.Height / 2), (center.X + boardSize.Width / 2)), new Point((center.Y - boardSize.Height / 2), (center.X + boardSize.Width / 2)) };
-             hexHeight = (boardSize / 5)/(Math.Sqrt(3)/2);
-             Hex.hexHeight = hexHeight;
-             hexWidth = Math.Sqrt(3) / 2 * hexHeight;
-             Hex.hexWidth = hexWidth;
-             hexs = new List<Hex>();
+            hexHeight = (boardSize / 5)/(Math.Sqrt(3)/2);
+            Hex.hexHeight = hexHeight;
+            hexWidth = Math.Sqrt(3) / 2 * hexHeight;
+            Hex.hexWidth = hexWidth;
+            hexs = new List<Hex>();
             corners = new List<Point>();
             activePlayer.Points.Add(new Point(5, 5));
             activePlayer.Points.Add(new Point(25, 5));
-
             activePlayer.Points.Add(new Point(25, 25));
-
             activePlayer.Points.Add(new Point(5, 25));
             activePlayer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
             activePlayer.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 255, 0, 0));
                 
-
-
             for (int j = 0; j < 3;j++ )
             {
-               // hexs.Add(new Hex(new Point(center.X - hexWidth)));
                 hexs.Add(new Hex(new Point(((center.X - hexWidth) + j * hexWidth), (center.Y - 1.5 * hexHeight)), new Point(j, -2)));
-              //  hexs[hexs.Count - 1].axialCoordinates = new Point(j, -2);
                 for (int i = 0; i < 6; i++)
                 {
                     double angle = 2 * Math.PI / 6 * (i + 0.5);
-                    // double d = (1 / 0.866)-1;
-                    // d = 1.0 - d;
                     double x = (((center.X - hexWidth)+j*hexWidth) + hexHeight/2  * Math.Cos(angle));
                     double y = ((center.Y-1.5*hexHeight) + hexHeight / 2 * Math.Sin(angle));
-                   // hexs[j].Add(new Point(x, y));
-                    hexs[hexs.Count-1].corners.Add(new Point(x, y));
-
+                    hexs[hexs.Count-1].Corners.Add(new Point(x, y));
                 }
             }
-            
-            
+                       
             for (int j = 0; j < 4; j++)
             {
-                //hexs.Add(new List<Point>());
                 hexs.Add(new Hex(new Point(((center.X - hexWidth*1.5) + j * hexWidth), (center.Y - 0.75 * hexHeight))));
-                hexs[hexs.Count - 1].axialCoordinates = new Point(j-1, -1);
-
+                hexs[hexs.Count - 1].AxialCoordinates = new Point(j-1, -1);
                 for (int i = 0; i < 6; i++)
                 {
                     double angle = 2 * Math.PI / 6 * (i + 0.5);
-                    // double d = (1 / 0.866)-1;
-                    // d = 1.0 - d;
                     double x = (((center.X-hexWidth*1.5) + j * hexWidth) + hexHeight / 2 * Math.Cos(angle));
                     double y = ((center.Y - 0.75 * hexHeight) + hexHeight / 2 * Math.Sin(angle));
-                   // hexs[j+3].Add(new Point(x, y));
-                    hexs[hexs.Count - 1].corners.Add(new Point(x, y));
-
-
+                    hexs[hexs.Count - 1].Corners.Add(new Point(x, y));
                 }
             }
 
             for (int j = 0; j < 5; j++)
             {
-               // hexs.Add(new List<Point>());
                 hexs.Add(new Hex(new Point(((center.X - hexWidth * 2) + j * hexWidth), (center.Y ))));
-                hexs[hexs.Count - 1].axialCoordinates = new Point(j-2, -0);
+                hexs[hexs.Count - 1].AxialCoordinates = new Point(j-2, -0);
 
                 for (int i = 0; i < 6; i++)
                 {
                     double angle = 2 * Math.PI / 6 * (i + 0.5);
-                    // double d = (1 / 0.866)-1;
-                    // d = 1.0 - d;
                     double x = (((center.X - hexWidth * 2) + j * hexWidth) + hexHeight / 2 * Math.Cos(angle));
                     double y = ((center.Y  ) + hexHeight / 2 * Math.Sin(angle));
-                  //  hexs[j + 7].Add(new Point(x, y));
-                    hexs[hexs.Count - 1].corners.Add(new Point(x, y));
+                    hexs[hexs.Count - 1].Corners.Add(new Point(x, y));
 
                 }
             }
 
             for (int j = 0; j < 4; j++)
             {
-               // hexs.Add(new List<Point>());
                 hexs.Add(new Hex(new Point(((center.X - hexWidth * 1.5) + j * hexWidth), (center.Y+0.75 * hexHeight))));
-                hexs[hexs.Count - 1].axialCoordinates = new Point(j-2, 1);
+                hexs[hexs.Count - 1].AxialCoordinates = new Point(j-2, 1);
 
                 for (int i = 0; i < 6; i++)
                 {
                     double angle = 2 * Math.PI / 6 * (i + 0.5);
-                    // double d = (1 / 0.866)-1;
-                    // d = 1.0 - d;
                     double x = (((center.X - hexWidth * 1.5) + j * hexWidth) + hexHeight / 2 * Math.Cos(angle));
                     double y = ((center.Y + 0.75 * hexHeight) + hexHeight / 2 * Math.Sin(angle));
-                   // hexs[j + 12].Add(new Point(x, y));
-                    hexs[hexs.Count - 1].corners.Add(new Point(x, y));
+                    hexs[hexs.Count - 1].Corners.Add(new Point(x, y));
 
                 }
             }
             
             for (int j = 0; j < 3; j++)
             {
-               // hexs.Add(new List<Point>());
                 hexs.Add(new Hex(new Point(((center.X - hexWidth ) + j * hexWidth), (center.Y + 1.5 * hexHeight))));
-                hexs[hexs.Count - 1].axialCoordinates = new Point(j-2, 2);
+                hexs[hexs.Count - 1].AxialCoordinates = new Point(j-2, 2);
 
                 for (int i = 0; i < 6; i++)
                 {
                     double angle = 2 * Math.PI / 6 * (i + 0.5);
-                    // double d = (1 / 0.866)-1;
-                    // d = 1.0 - d;
                     double x = (((center.X - hexWidth) + j * hexWidth) + hexHeight / 2 * Math.Cos(angle));
                     double y = ((center.Y + 1.5 * hexHeight) + hexHeight / 2 * Math.Sin(angle));
-                 //   hexs[j+16].Add(new Point(x, y));
-                    hexs[hexs.Count - 1].corners.Add(new Point(x, y));
+                    hexs[hexs.Count - 1].Corners.Add(new Point(x, y));
 
                 }
             }
-           // Hex d=Hex.GetHexByAxialCoordinates(hexs, new Point(0, 0));
-           // d.figure = new Dragon(d.axialCoordinates);
             foreach(Figure f in figures)
             {
-                 Hex.GetHexByAxialCoordinates(hexs, f.position).figure = f;
-               // a.figure=f;
+                 Hex.GetHexByAxialCoordinates(hexs, f.Position).Figure = f;
             }
-           // foreach (Hex h in hexs)
-            //    h.ResetPolygon();
             ResetPolygons(hexs);
     
+        }
+
+        public Point Center
+        {
+            get { return center; }
+            set { center = value; }
+        }
+        public Size ScreenSize
+        {
+            get { return screenSize; }
+            set { screenSize = value; }
+        }
+        public Double BoardSize
+        {
+            get { return boardSize; }
+            set { boardSize = value; }
+        }
+        public List<Point> Corners
+        {
+            get { return corners; }
+            set { corners = value; }
+        }
+        public List<Hex> Hexs
+        {
+            get { return hexs; }
+            set { hexs = value; }
+        }
+        public int Margin
+        {
+            get { return margin; }
+            set { margin = value; }
+        }
+        public Double Scale
+        {
+            get { return scale; }
+            set { scale = value; }
+        }
+        public Double HexHeight
+        {
+            get { return hexHeight; }
+            set { hexHeight = value; }
+        }
+        public Double HexWidth
+        {
+            get { return hexWidth; }
+            set { hexWidth = value; }
+        }
+        public Polygon ActivePlayer
+        {
+            get { return activePlayer; }
+            set { activePlayer = value; }
+        }
+        public Fraction ActiveFraction
+        {
+            get { return activeFraction; }
+            set { activeFraction = value; }
         }
        public void ChangeActivePlayer(Fraction f)
         {
@@ -234,77 +240,22 @@ namespace Drako3
         public void DrawBoard( Grid g) //List<Polygon> drawBoard()
         {
             
-        //    Polygon p = new Polygon();
-           // Polygon p2 = new Polygon();
-           // Polygon p3 = new Polygon();
-           // Polygon p4 = new Polygon();
-
-          //  List<Polygon> Polygons = new List<Polygon>();
-          //  p2.StrokeThickness = 3;
-          //  p3.StrokeThickness = 3;
-          //  p4.StrokeThickness = 3;
-            /*
-            p.StrokeThickness = 5;
-            p.HorizontalAlignment = HorizontalAlignment.Left;
-            p.VerticalAlignment = VerticalAlignment.Top;
-            for (int i = 0; i < corners.Count; i++)
-                p.Points.Add(corners[i]);
-
-            for (int i = 0; i < hexs[0].Count; i++)
-                p2.Points.Add(hexs[0][i]);
-            for (int i = 0; i < hexs[1].Count; i++)
-                p3.Points.Add(hexs[1][i]);
-            for (int i = 0; i < hexs[2].Count; i++)
-                p4.Points.Add(hexs[2][i]);
-            /*
-            p.Points.Add(new Point((center.Y - boardSize.Height / 2) , (center.X - boardSize.Width / 2) ));
-            p.Points.Add(new Point((center.Y + boardSize.Height / 2) , (center.X - boardSize.Width / 2) ));
-            p.Points.Add(new Point((center.Y + boardSize.Height / 2) , (center.X + boardSize.Width / 2) ));
-            p.Points.Add(new Point((center.Y - boardSize.Height / 2) , (center.X + boardSize.Width / 2) ));
-            */
-            /*
-              p.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155,0,255,0));
-              p2.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 255, 0));
-              p3.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 255, 0));
-              p4.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 255, 0));
-  
-            
-            Polygons.Add(p);
-              Polygons.Add(p2);
-              Polygons.Add(p3);
-              Polygons.Add(p4);
-             * 
-             * */
-/*
-            for (int i = 0; i < hexs.Count;i++ )
-            {
-                Polygon p = hexs[i].polygon;
-               // p.StrokeThickness = 3;
-               // for(int j=0;j<hexs[i].Count;j++)
-              //  foreach(Point pnt in hexs[i].corners)
-                //{
-                  //  p.Points.Add(pnt);
-               // }
-               // p.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(155, 0, 255, 1));
-                hexs[i].polygon = p;
-                //Polygons.Add(p);
-            }
- * */
+        
             
             for (int i = 0; i < hexs.Count; i++)
             {
-               if(hexs[i].figure==null) g.Children.Add(hexs[i].polygon);
+               if(hexs[i].Figure==null) g.Children.Add(hexs[i].Polygon);
 
             }
             for (int i = 0; i < hexs.Count; i++)
             {
-                if (hexs[i].figure != null) g.Children.Add(hexs[i].polygon);
+                if (hexs[i].Figure != null) g.Children.Add(hexs[i].Polygon);
 
             }
             g.Children.Add(activePlayer);
             
 
-            return; //Polygons;
+            return; 
         }
 
 

@@ -35,7 +35,6 @@ C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\AppManifest.xa
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Properties\WMAppManifest.xml
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Drako3_Debug_AnyCPU.xap
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Microsoft.Phone.Controls.dll
-C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\Drako3.csprojResolveAssemblyReference.cache
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\App.g.cs
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\MainPage.g.cs
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\NewGamePage.g.cs
@@ -75,3 +74,4 @@ C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\Drako3.pdb
 C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\XapCacheFile.xml
 C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\GameMenu.g.cs
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\GameMenu.g.cs
+C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\Drako3.csprojResolveAssemblyReference.cache

@@ -20,10 +20,10 @@ namespace Drako3
         public List<Hex> hexs;
         public Board board;
         List<Polygon> p;
-        Dwarf leader = new Dwarf(DwarfType.Leader, new Point(1, -2));
-        Dwarf crossbowman = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1));
-        Dwarf webber = new Dwarf(DwarfType.Webber, new Point(1, 1));
-        Dragon dragon = new Dragon(new Point(0, 0));
+        Dwarf leader;// = new Dwarf(DwarfType.Leader, new Point(1, -2));
+        Dwarf crossbowman;// = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1));
+        Dwarf webber;// = new Dwarf(DwarfType.Webber, new Point(1, 1));
+        Dragon dragon;// = new Dragon(new Point(0, 0));
         List<Figure> figures = new List<Figure>();
         Figure selectedFigure = null;
         Player P1, P2;
@@ -61,15 +61,18 @@ namespace Drako3
             P1.RenderHand();
             libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
                 new Uri(@"/Images/Dragon.jpg", UriKind.RelativeOrAbsolute));
+           // DragonImage.Width = Application.Current.Host.Content.ActualWidth;
+            //DragonImage.Height = Application.Current.Host.Content.ActualHeight;
+
             //ImagePath = "Images/Dragon.jpg";
             //libraryImage.DataContext = ImagePath;
             //ImageSource s = libraryImage.Source;
             //string ss = libraryImage.Source.ToString();
 
-            leader = new Dwarf(DwarfType.Leader, new Point(1, -2));
-            crossbowman = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1));
-            webber = new Dwarf(DwarfType.Webber, new Point(1, 1));
-            dragon = new Dragon(new Point(0, 0));
+            leader = new Dwarf(DwarfType.Leader, new Point(1, -2),this);
+            crossbowman = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1),this);
+            webber = new Dwarf(DwarfType.Webber, new Point(1, 1),this);
+            dragon = new Dragon(new Point(0, 0), this);
             figures = new List<Figure>();
             selectedFigure = null;
             figures.Add(leader);
@@ -78,51 +81,52 @@ namespace Drako3
             figures.Add(dragon);
 
             board = new Board(figures);
-            game = new Game(GameType.HOT_SEATS, P1, P2, board, libraryImage);
+            game = new Game(GameType.HOT_SEATS, P1, P2, board, libraryImage,this);
             //board.DrawBoard(BoardGrid);
             game.board.DrawBoard(BoardGrid);
 
 
 
             // hexs = board.hexs;
-            hexs = game.board.hexs;
+            hexs = game.board.Hexs;
+          List<Hex> lines=  Hex.GetStraightLines(hexs, Hex.GetHexByPosition(new Point(0, 0),hexs));
         }
         public void SelectFigure(Hex h)
         {
             Figure figure;
-            if (h.figure != null)
+            if (h.Figure != null)
             {
-                figure = h.figure;
-                h.figure.isSelected = true;
+                figure = h.Figure;
+                h.Figure.IsSelected = true;
 
                 if (figure.GetType() == typeof(Dragon))
                 {
-                    h.polygon.StrokeThickness = 5;
-                    h.polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
-                    h.polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
+                    h.Polygon.StrokeThickness = 5;
+                    h.Polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
+                    h.Polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
                 }
                 else if (figure.GetType() == typeof(Dwarf))
                 {
                     Dwarf d = figure as Dwarf;
 
-                    switch (d.type)
+                    switch (d.Type)
                     {
                         case (DwarfType.Crossbowman):
-                            h.polygon.StrokeThickness = 5;
-                            h.polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 255, 0));
-                            h.polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 0));
+                            h.Polygon.StrokeThickness = 5;
+                            h.Polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 255, 0));
+                            h.Polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 0));
 
                             break;
                         case (DwarfType.Leader):
-                            h.polygon.StrokeThickness = 5;
-                            h.polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 128, 0));
-                            h.polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 128, 0));
+                            h.Polygon.StrokeThickness = 5;
+                            h.Polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 128, 0));
+                            h.Polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 128, 0));
 
                             break;
                         case (DwarfType.Webber):
-                            h.polygon.StrokeThickness = 5;
-                            h.polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 128, 255, 0));
-                            h.polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 128, 255, 0));
+                            h.Polygon.StrokeThickness = 5;
+                            h.Polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 128, 255, 0));
+                            h.Polygon.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 128, 255, 0));
 
 
                             break;
@@ -137,7 +141,7 @@ namespace Drako3
             Point p = e.GetPosition(null);
             if (this.Orientation == PageOrientation.LandscapeLeft)
             {
-                if (p.X >= game.board.screenSize.Width - 30 && p.X <= game.board.screenSize.Width - 5 && p.Y >= 5 && p.Y <= 25)
+                if (p.X >= game.board.ScreenSize.Width - 30 && p.X <= game.board.ScreenSize.Width - 5 && p.Y >= 5 && p.Y <= 25)
                 {
 
                     game.board.ChangeActivePlayer(game.P1.ReturnActiveFraction());
@@ -159,7 +163,7 @@ namespace Drako3
             }
             else if (this.Orientation == PageOrientation.LandscapeRight)
             {
-                if (p.X >= 5 && p.X <= 25 && p.Y >= game.board.screenSize.Height - 30 && p.Y <= game.board.screenSize.Height - 5)
+                if (p.X >= 5 && p.X <= 25 && p.Y >= game.board.ScreenSize.Height - 30 && p.Y <= game.board.ScreenSize.Height - 5)
                 {
 
                     game.board.ChangeActivePlayer(game.P1.ReturnActiveFraction());
@@ -185,10 +189,14 @@ namespace Drako3
             {
                 if (selectedFigure == null && game.playedCard != null) //zaznaczenie
                 {
-                    if (h.figure != null)
-                        if (game.board.activeFraction == h.figure.ReturnFraction())
+
+                    if (h.Figure != null)
+                    {
+                        if (game.DoubleMove && game.WasMovedInDouble == h.Figure)
+                            return;
+                        if (game.board.ActiveFraction == h.Figure.ReturnFraction())
                         {
-                            selectedFigure = h.figure;
+                            selectedFigure = h.Figure;
                             SelectFigure(h);
 
                             if (game.playedCard.FlyActionValue() > 0)
@@ -198,7 +206,7 @@ namespace Drako3
 
                                     foreach (Hex eachHex in list)
                                     {
-                                        eachHex.inMoveRange = true;
+                                        eachHex.InMoveRange = true;
                                         Hex.rangeFigure = selectedFigure;
                                     }
                                 }
@@ -214,7 +222,7 @@ namespace Drako3
 
                                         foreach (Hex eachHex in list)
                                         {
-                                            eachHex.inMoveRange = true;
+                                            eachHex.InMoveRange = true;
                                             Hex.rangeFigure = selectedFigure;
                                         }
                                     }
@@ -223,25 +231,131 @@ namespace Drako3
                                 }
 
                         }
-
+                    }
                 }
 
                 else
-                    if (selectedFigure == h.figure && selectedFigure!=null)//odznaczenie
+                    if (selectedFigure == h.Figure && selectedFigure!=null)//odznaczenie
                     {
-                        h.figure.isSelected = false;
+                        h.Figure.IsSelected = false;
                         foreach (Hex each in hexs)
                         {
-                            each.inMoveRange = false;
+                            each.InMoveRange = false;
                             Hex.rangeFigure = null;
                         }
                         Board.ResetPolygons(hexs);
                         Board.ResetPolygons(hexs);
-
+                        
                         selectedFigure = null;
                     }
-                    else
-                        if (h.figure == null && selectedFigure != null && game.playedCard != null) //ruch
+                    else if(game.DoubleAttack) //drugi atak
+                    {
+                        {
+                            if (game.WasAttackingInDouble == selectedFigure)
+                                return;
+                            game.DoubleAttack = false;
+                            game.WasAttackingInDouble = null;
+                            Dragon d = h.Figure as Dragon;
+                            if (d.ShieldHp >= game.playedCard.SingleAttackActionValue())
+                            {
+                                d.ShieldHp = d.ShieldHp - game.playedCard.SingleAttackActionValue();
+
+                                selectedFigure.IsSelected = false;
+                                selectedFigure = null;
+                                //try
+                                game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                game.ActivPlayer.RenderHand();
+                                game.playedCard = null;
+                                game.ActionsLeft--;
+                                playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                foreach (Hex each2 in hexs)
+                                {
+                                    each2.InMoveRange = false;
+                                    Hex.rangeFigure = null;
+                                }
+                            }
+                            else if (d.ShieldHp > 0 && game.playedCard.SingleAttackActionValue() > d.ShieldHp)
+                            {
+                                game.DamageToDragon = game.playedCard.SingleAttackActionValue() - d.ShieldHp;
+                                d.ShieldHp = 0;
+                                selectedFigure.IsSelected = false;
+                                selectedFigure = null;
+                                //try
+                                game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                game.ActivPlayer.RenderHand();
+                                game.playedCard = null;
+                                game.ActionsLeft--;
+                                playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                foreach (Hex each2 in hexs)
+                                {
+                                    each2.InMoveRange = false;
+                                    Hex.rangeFigure = null;
+                                }
+                                (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                                panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1) % panorama.Items.Count]);
+                                panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+                                //przejscie do karty smoka i zadnaie obrazen
+                            }
+                            else if (d.ShieldHp == 0)//przejscie do karty smoka i nadanie obrazen
+                            {
+                                selectedFigure.IsSelected = false;
+                                selectedFigure = null;
+                                //try
+                                game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                game.ActivPlayer.RenderHand();
+                                game.playedCard = null;
+                                game.ActionsLeft--;
+                                playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                foreach (Hex each2 in hexs)
+                                {
+                                    each2.InMoveRange = false;
+                                    Hex.rangeFigure = null;
+                                }
+                                game.DamageToDragon = game.playedCard.SingleAttackActionValue();
+                                (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                                panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1) % panorama.Items.Count]);
+                                panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+
+                            }
+
+
+                            //  if (d.ShieldHp < 0)
+                            //{
+                            //  figures.Remove(d);
+                            //Hex.GetHexByFigure(hexs, d).figure = null;
+
+                            // }
+                            Board.ResetPolygons(hexs);
+                            Board.ResetPolygons(hexs);
+
+                        }
+                    }
+                    else if(game.DoubleMove)//drugi ruch
+                    {
+                        foreach (Hex hex in hexs)
+                        {
+                            hex.InMoveRange = false;
+                            Hex.rangeFigure = null;
+
+                        }
+                        selectedFigure.MoveTo(h.AxialCoordinates, hexs);
+                        selectedFigure.IsSelected = false;
+                        selectedFigure = null;
+                        game.WasMovedInDouble = null;
+                        //try
+                         game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                          game.ActivPlayer.RenderHand();
+                         game.playedCard = null;
+                         playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+
+                           game.ActionsLeft--;
+                        game.DoubleMove = false;
+                        Board.ResetPolygons(hexs);
+                        Board.ResetPolygons(hexs);
+                    }else
+                        if (h.Figure == null && selectedFigure != null && game.playedCard != null) //ruch
                         {
 
                             if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, game.playedCard.SingleMoveActionValue(), hexs))
@@ -249,16 +363,16 @@ namespace Drako3
                                
                                 foreach (Hex hex in hexs)
                                 {
-                                    hex.inMoveRange = false;
+                                    hex.InMoveRange = false;
                                     Hex.rangeFigure = null;
 
                                 }
-                                selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                                selectedFigure.isSelected = false;
+                                selectedFigure.MoveTo(h.AxialCoordinates, hexs);
+                                selectedFigure.IsSelected = false;
                                 selectedFigure = null;
                                 //try
-                                game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
-                                game.activPlayer.RenderHand();
+                                game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                game.ActivPlayer.RenderHand();
                                 game.playedCard = null;
                                 playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
 
@@ -266,34 +380,142 @@ namespace Drako3
                                 Board.ResetPolygons(hexs);
                                 Board.ResetPolygons(hexs);
                             }
-                            else if (h != null)
-                                if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, game.playedCard.FlyActionValue(), hexs))
+                            else
+                                if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, game.playedCard.DoubleMoveActionValue(), hexs)) //podwojny ruch
                                 {
+
                                     foreach (Hex hex in hexs)
                                     {
-                                        hex.inMoveRange = false;
+                                        hex.InMoveRange = false;
                                         Hex.rangeFigure = null;
 
                                     }
-                                    selectedFigure.MoveTo(h.axialCoordinates, hexs);
-                                    selectedFigure.isSelected = false;
+                                    game.WasMovedInDouble = selectedFigure;
+                                    selectedFigure.MoveTo(h.AxialCoordinates, hexs);
+                                    selectedFigure.IsSelected = false;
                                     selectedFigure = null;
                                     //try
-                                    game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
-                                    game.activPlayer.RenderHand();
-                                    game.playedCard = null;
-                                    playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
-                                    game.ActionsLeft--;
+                                   // game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                  //  game.activPlayer.RenderHand();
+                                   // game.playedCard = null;
+                                   // playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
 
+                                 //   game.ActionsLeft--;
+                                    game.DoubleMove = true;
                                     Board.ResetPolygons(hexs);
                                     Board.ResetPolygons(hexs);
                                 }
+                                else if (h != null)
+                                    if (Hex.CanBeMovedTo(Hex.GetHexByFigure(hexs, selectedFigure), h, game.playedCard.FlyActionValue(), hexs))
+                                    {
+                                        foreach (Hex hex in hexs)
+                                        {
+                                            hex.InMoveRange = false;
+                                            Hex.rangeFigure = null;
+
+                                        }
+                                        selectedFigure.MoveTo(h.AxialCoordinates, hexs);
+                                        selectedFigure.IsSelected = false;
+                                        selectedFigure = null;
+                                        //try
+                                        game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                        game.ActivPlayer.RenderHand();
+                                        game.playedCard = null;
+                                        playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                        game.ActionsLeft--;
+
+                                        Board.ResetPolygons(hexs);
+                                        Board.ResetPolygons(hexs);
+                                    }
                         }
-                        else if(selectedFigure!=null && h.figure!=null && game.playedCard!=null)//atak
+                        else if(selectedFigure!=null && h.Figure!=null && game.playedCard!=null)//atak
                         {
-                            if (selectedFigure.ReturnFraction() != h.figure.ReturnFraction())
+                            if (selectedFigure.ReturnFraction() != h.Figure.ReturnFraction())
                             {
-                                if (game.playedCard.SingleAttackActionValue() > 0)
+                                if(game.playedCard.DoubleAttackActionValue() > 0)//double attack
+                                {
+                                    {
+                                        Dragon d = h.Figure as Dragon;
+                                        game.DoubleAttack = true;
+                                        game.WasAttackingInDouble = selectedFigure;
+                                        if (d.ShieldHp >= game.playedCard.SingleAttackActionValue())
+                                        {
+                                            d.ShieldHp = d.ShieldHp - game.playedCard.SingleAttackActionValue();
+
+                                            selectedFigure.IsSelected = false;
+                                            selectedFigure = null;
+                                            //try
+                                           // game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                           // game.activPlayer.RenderHand();
+                                          //  game.playedCard = null;
+                                          //  game.ActionsLeft--;
+                                         //   playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                            foreach (Hex each2 in hexs)
+                                            {
+                                                each2.InMoveRange = false;
+                                                Hex.rangeFigure = null;
+                                            }
+                                        }
+                                        else if (d.ShieldHp > 0 && game.playedCard.SingleAttackActionValue() > d.ShieldHp)
+                                        {
+                                            game.DamageToDragon = game.playedCard.SingleAttackActionValue() - d.ShieldHp;
+                                            d.ShieldHp = 0;
+                                            selectedFigure.IsSelected = false;
+                                            selectedFigure = null;
+                                            //try
+                                           // game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                            //game.activPlayer.RenderHand();
+                                            //game.playedCard = null;
+                                            //game.ActionsLeft--;
+                                            //playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                            foreach (Hex each2 in hexs)
+                                            {
+                                                each2.InMoveRange = false;
+                                                Hex.rangeFigure = null;
+                                            }
+                                            (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                                            panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1) % panorama.Items.Count]);
+                                            panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                            (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+                                            //przejscie do karty smoka i zadnaie obrazen
+                                        }
+                                        else if (d.ShieldHp == 0)//przejscie do karty smoka i nadanie obrazen
+                                        {
+                                            selectedFigure.IsSelected = false;
+                                            selectedFigure = null;
+                                            //try
+                                            //game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
+                                            //game.activPlayer.RenderHand();
+                                            //game.playedCard = null;
+                                            //game.ActionsLeft--;
+                                            //playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                            foreach (Hex each2 in hexs)
+                                            {
+                                                each2.InMoveRange = false;
+                                                Hex.rangeFigure = null;
+                                            }
+                                            game.DamageToDragon = game.playedCard.SingleAttackActionValue();
+                                            (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                                            panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1) % panorama.Items.Count]);
+                                            panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                            (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+
+                                        }
+
+
+                                        //  if (d.ShieldHp < 0)
+                                        //{
+                                        //  figures.Remove(d);
+                                        //Hex.GetHexByFigure(hexs, d).figure = null;
+
+                                        // }
+                                        Board.ResetPolygons(hexs);
+                                        Board.ResetPolygons(hexs);
+
+                                    }
+                                }
+                            else
+                                if (game.playedCard.SingleAttackActionValue() > 0)//single attack
                                 {
                                     Hex selectedHex = Hex.GetHexByFigure(hexs, selectedFigure);
                                     List<Hex> neighbors = Hex.Neighbors(selectedHex, hexs);
@@ -301,61 +523,110 @@ namespace Drako3
                                     {
                                         if (each == h)
                                         {
-                                            if (h.figure is Dwarf)
+                                            if (h.Figure is Dwarf) //atak w krasnoluda
                                             {
-                                                Dwarf k = h.figure as Dwarf;
-                                                k.hp = k.hp - game.playedCard.SingleAttackActionValue();
-                                                selectedFigure.isSelected = false;
+                                                Dwarf k = h.Figure as Dwarf;
+                                                k.Hp = k.Hp - game.playedCard.SingleAttackActionValue();
+                                                selectedFigure.IsSelected = false;
                                                 selectedFigure = null;
                                                 //try
-                                                game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
-                                                game.activPlayer.RenderHand();
+                                                game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                                game.ActivPlayer.RenderHand();
                                                 game.playedCard = null;
                                                 game.ActionsLeft--;
                                                 playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
                                                 foreach(Hex each2 in hexs)
                                                 {
-                                                    each2.inMoveRange = false;
+                                                    each2.InMoveRange = false;
                                                     Hex.rangeFigure = null;
                                                 }
 
                                                 
-                                                if (k.hp < 0)
+                                                if (k.Hp < 0)
                                                 {
                                                     figures.Remove(k);
-                                                    Hex.GetHexByFigure(hexs,k).figure = null;
+                                                    Hex.GetHexByFigure(hexs,k).Figure = null;
 
                                                 }
                                                 Board.ResetPolygons(hexs);
                                                 Board.ResetPolygons(hexs); 
                                             }
                                             else
-                                                if (h.figure is Dragon)
+                                                if (h.Figure is Dragon) //atak w smoka
                                                 {
-                                                    Dragon d = h.figure as Dragon;
-                                                    d.shieldHp = d.shieldHp - game.playedCard.SingleAttackActionValue();
-
-                                                    selectedFigure.isSelected = false;
-                                                    selectedFigure = null;
-                                                    //try
-                                                    game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(game.playedCard.id));
-                                                    game.activPlayer.RenderHand();
-                                                    game.playedCard = null;
-                                                    game.ActionsLeft--;
-                                                    playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
-                                                    foreach (Hex each2 in hexs)
+                                                    Dragon d = h.Figure as Dragon;
+                                                    if (d.ShieldHp >= game.playedCard.SingleAttackActionValue())
                                                     {
-                                                        each2.inMoveRange = false;
-                                                        Hex.rangeFigure = null;
+                                                        d.ShieldHp = d.ShieldHp - game.playedCard.SingleAttackActionValue();
+
+                                                        selectedFigure.IsSelected = false;
+                                                        selectedFigure = null;
+                                                        //try
+                                                        game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                                        game.ActivPlayer.RenderHand();
+                                                        game.playedCard = null;
+                                                        game.ActionsLeft--;
+                                                        playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                                        foreach (Hex each2 in hexs)
+                                                        {
+                                                            each2.InMoveRange = false;
+                                                            Hex.rangeFigure = null;
+                                                        }
+                                                    }
+                                                    else if(d.ShieldHp > 0 && game.playedCard.SingleAttackActionValue() >d.ShieldHp)
+                                                    {
+                                                        game.DamageToDragon = game.playedCard.SingleAttackActionValue() - d.ShieldHp;
+                                                        d.ShieldHp = 0;
+                                                        selectedFigure.IsSelected = false;
+                                                        selectedFigure = null;
+                                                        //try
+                                                        game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                                        game.ActivPlayer.RenderHand();
+                                                        game.playedCard = null;
+                                                        game.ActionsLeft--;
+                                                        playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                                        foreach (Hex each2 in hexs)
+                                                        {
+                                                            each2.InMoveRange = false;
+                                                            Hex.rangeFigure = null;
+                                                        }
+                                                        (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                                                        panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1) % panorama.Items.Count]);
+                                                        panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                                        (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+                                                        //przejscie do karty smoka i zadnaie obrazen
+                                                    }
+                                                    else if(d.ShieldHp==0)//przejscie do karty smoka i nadanie obrazen
+                                                    {
+                                                        game.DamageToDragon = game.playedCard.SingleAttackActionValue();
+
+                                                        selectedFigure.IsSelected = false;
+                                                        selectedFigure = null;
+                                                        //try
+                                                        game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(game.playedCard.Id));
+                                                        game.ActivPlayer.RenderHand();
+                                                        game.playedCard = null;
+                                                        game.ActionsLeft--;
+                                                        playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage();
+                                                        foreach (Hex each2 in hexs)
+                                                        {
+                                                            each2.InMoveRange = false;
+                                                            Hex.rangeFigure = null;
+                                                        }
+                                                        (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                                                        panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1) % panorama.Items.Count]);
+                                                        panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                                        (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+
                                                     }
 
 
-                                                    if (d.shieldHp < 0)
-                                                    {
-                                                        figures.Remove(d);
-                                                        Hex.GetHexByFigure(hexs, d).figure = null;
+                                                  //  if (d.ShieldHp < 0)
+                                                    //{
+                                                      //  figures.Remove(d);
+                                                        //Hex.GetHexByFigure(hexs, d).figure = null;
 
-                                                    }
+                                                   // }
                                                     Board.ResetPolygons(hexs);
                                                     Board.ResetPolygons(hexs); 
                                                     
@@ -374,42 +645,52 @@ namespace Drako3
 
         private void libraryImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if(Card.DrawCard(game.activPlayer, 2))
+            if (game.DoubleMove || game.DoubleAttack)
+                return;
+            if(Card.DrawCard(game.ActivPlayer, 2))
             game.ActionsLeft--;
-            //  game.activPlayer.
+            if (game.ActionsLeft < 2)
+            {
+                (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(3) % panorama.Items.Count]);
+                panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                (panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+            }
+                //  game.activPlayer.
         }
 
 
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            
+            if (game.DoubleMove)
+                return;
             Image img = sender as Image;
             int r = Grid.GetRow(img);
             int c = Grid.GetColumn(img);
             int n = r * 4 + c;
             if (game.CardsToDiscard == 0)
             { 
-            if (n < game.activPlayer.hand.Count)
+            if (n < game.ActivPlayer.Hand.Count)
             {
-                Card card = game.activPlayer.hand[n];
+                Card card = game.ActivPlayer.Hand[n];
                 //game.activPlayer.hand.RemoveAt(n);
                 // game.activPlayer.RenderHand();
                 game.playedCard = card;
                 if (game.playedCard != null)
                 {
                     playedCardImage.Source = new System.Windows.Media.Imaging.BitmapImage(
-                    new Uri(game.playedCard.src, UriKind.RelativeOrAbsolute));
+                    new Uri(game.playedCard.Src, UriKind.RelativeOrAbsolute));
                 }
 
 
 
                 // panorama.
                 //   panorama.SetValue(Panorama.SelectedIndexProperty, panorama.Items[0]);
-                (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Collapsed;
-                panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(1 + 1) % panorama.Items.Count]);
+                (panorama.Items[3] as PanoramaItem).Visibility = Visibility.Collapsed;
+                panorama.SetValue(Panorama.SelectedItemProperty, panorama.Items[(2) % panorama.Items.Count]);
                 panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Visible;
+                (panorama.Items[3] as PanoramaItem).Visibility = Visibility.Visible;
 
 
                 /******************************************
@@ -424,12 +705,12 @@ namespace Drako3
             }
             else
             {
-                if (n < game.activPlayer.hand.Count)
+                if (n < game.ActivPlayer.Hand.Count)
                 {
-                    Card card = game.activPlayer.hand[n];
-                    game.activPlayer.hand.RemoveAt(game.activPlayer.GetHandCardIndexFromId(card.id));
+                    Card card = game.ActivPlayer.Hand[n];
+                    game.ActivPlayer.Hand.RemoveAt(game.ActivPlayer.GetHandCardIndexFromId(card.Id));
                     game.CardsToDiscard--;
-                    game.activPlayer.RenderHand();
+                    game.ActivPlayer.RenderHand();
                     if (game.CardsToDiscard == 0)
                     {
                         (panorama.Items[1] as PanoramaItem).Visibility = Visibility.Collapsed;
@@ -447,6 +728,70 @@ namespace Drako3
         {
             e.Cancel = true;
             NavigationService.Navigate(new Uri("/GameMenu.xaml", UriKind.Relative));
+
+        }
+
+        private void DragonImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            int w = (int)DragonImage.Width;
+            int h = (int)DragonImage.Height;
+            Point p = e.GetPosition(sender as System.Windows.Controls.Image);
+            if (game.DamageToDragon > 0)
+            {
+                if (p.X > 0 && p.X < 0.18 * w && p.Y > 0.38 * h && p.Y < 0.88 * h && dragon.WingsHp>0 && dragon.ShieldHp==0)  //skrzydla
+                {
+                    dragon.WingsHp--;
+                   // if(dragon.WingsHp==0 && dragon.ShieldHp==0 && dragon.LegsdHp==0 && dragon.FireHp==0)
+                    if(dragon.IsDead())
+                    {
+                        //usun smoka
+                        figures.Remove(dragon);
+                        Hex.GetHexByFigure(hexs, dragon).Figure = null;
+
+                        
+                    }
+                    game.DamageToDragon--;
+                    if (game.DamageToDragon == 0 && game.ActionsLeft == 0)
+                        game.ChangeTurn();
+
+                    //MessageBox.Show("Wings");
+                    
+                }
+                else
+                    if (p.X > 0.38 * w && p.X < 0.88 * w && p.Y > 0.77 * h && p.Y < h && dragon.LegsHp>0 && dragon.ShieldHp==0)  //Nogi
+                    {
+                        dragon.LegsHp--;
+                        if (dragon.IsDead())
+                        {
+                            //usun smoka
+                            figures.Remove(dragon);
+                            Hex.GetHexByFigure(hexs, dragon).Figure = null;
+
+
+                        }
+                        game.DamageToDragon--;
+                        if (game.DamageToDragon == 0 && game.ActionsLeft == 0)
+                            game.ChangeTurn();
+                      //  MessageBox.Show("Legs");
+                    }
+                    else
+                        if (p.X > 0.82 * w && p.X < w && p.Y > 0.38 * h && p.Y < 0.88 * h && dragon.ShieldHp==0 && dragon.FireHp>0)  //Ogien
+                        {
+                            dragon.FireHp--;
+                            if (dragon.IsDead())
+                            {
+                                //usun smoka
+                                figures.Remove(dragon);
+                                Hex.GetHexByFigure(hexs, dragon).Figure = null;
+
+
+                            }
+                            game.DamageToDragon--;
+                            if (game.DamageToDragon == 0 && game.ActionsLeft == 0)
+                                game.ChangeTurn();
+                         //   MessageBox.Show("Fire");
+                        }
+            }
 
         }
 

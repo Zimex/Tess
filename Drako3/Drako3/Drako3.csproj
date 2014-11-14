@@ -184,7 +184,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\004.2.jpg" />
+    <Content Include="Images\001.jpg" />
     <Content Include="Images\004.jpg" />
     <Content Include="Images\010.jpg" />
     <Content Include="Images\board4.png" />
@@ -216,6 +216,8 @@
     <Content Include="Images\Cards\K8.png" />
     <Content Include="Images\Cards\K9.png" />
     <Content Include="Images\Dragon.jpg" />
+    <Content Include="Images\DragonProfileHigh.jpg" />
+    <Content Include="Images\drakoCOunter.png" />
     <Content Include="Images\Dwarf.jpg" />
   </ItemGroup>
   <ItemGroup>

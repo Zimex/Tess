@@ -1,11 +1,11 @@
-﻿<xapCache source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Drako3_Debug_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="2014-09-05 18:37:04">
-  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\Drako3.dll" archivePath="Drako3.dll" lastWriteTime="2014-09-05 18:37:01" />
+﻿<xapCache source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Drako3_Debug_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="2014-11-12 22:21:55">
+  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\Drako3.dll" archivePath="Drako3.dll" lastWriteTime="2014-11-12 22:21:51" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="2014-07-15 18:47:14" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="2014-07-15 18:47:14" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="2014-07-15 18:47:14" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="2014-07-15 18:47:14" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="2014-07-15 18:47:14" />
-  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\004.2.jpg" archivePath="Images\004.2.jpg" lastWriteTime="2014-07-15 19:54:11" />
+  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\001.jpg" archivePath="Images\001.jpg" lastWriteTime="2014-09-05 19:03:07" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\004.jpg" archivePath="Images\004.jpg" lastWriteTime="2014-09-03 23:08:03" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\010.jpg" archivePath="Images\010.jpg" lastWriteTime="2014-09-03 23:07:40" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\board4.png" archivePath="Images\board4.png" lastWriteTime="2014-07-15 20:01:43" />
@@ -37,10 +37,12 @@
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\Cards\K8.png" archivePath="Images\Cards\K8.png" lastWriteTime="2014-08-29 22:10:50" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\Cards\K9.png" archivePath="Images\Cards\K9.png" lastWriteTime="2014-08-29 22:10:50" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\Dragon.jpg" archivePath="Images\Dragon.jpg" lastWriteTime="2014-04-10 22:53:03" />
+  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\DragonProfileHigh.jpg" archivePath="Images\DragonProfileHigh.jpg" lastWriteTime="2014-09-05 19:03:08" />
+  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\drakoCOunter.png" archivePath="Images\drakoCOunter.png" lastWriteTime="2014-09-05 20:10:01" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Images\Dwarf.jpg" archivePath="Images\Dwarf.jpg" lastWriteTime="2014-04-10 22:55:31" />
-  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="2014-08-24 22:16:11" />
+  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="2014-11-12 21:56:16" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="2014-07-15 18:47:14" />
   <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="2014-07-15 18:47:14" />
   <file source="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.0\Libraries\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="2013-01-01 17:57:00" />
-  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="2014-07-15 18:47:27" />
+  <file source="C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\Bin\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="2014-11-12 21:56:16" />
 </xapCache>

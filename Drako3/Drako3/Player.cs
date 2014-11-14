@@ -14,15 +14,49 @@ namespace Drako3
     }
    public  class Player
     {
-        public string name;
-        public List<Card> hand=new List<Card>();
-        public List<Card> graveyard=new List<Card>();
-        public List<Card> library=new List<Card>();
-
-        public Grid grid;
-       public Fraction fraction ;
-       public bool isActiv;
+        private string name;
+        private List<Card> hand = new List<Card>();
+        private List<Card> graveyard = new List<Card>();
+        private List<Card> library = new List<Card>();
+        private Grid grid;
+        private Fraction fraction;
+        private bool isActiv;
         //public bool fraction; //0-Dragon, 1-Dwarf
+       public string Name
+        {
+            get {return name ;}
+            set {name=value ;}
+        }
+       public List<Card> Hand
+       {
+           get { return hand; }
+           set { hand = value; }
+       }
+       public List<Card> Graveyard
+       {
+           get { return graveyard; }
+           set { graveyard = value; }
+       }
+       public List<Card> Library
+       {
+           get { return library; }
+           set { library = value; }
+       }
+       public Grid Grid
+       {
+           get { return grid; }
+           set { grid = value; }
+       }
+       public Fraction Fraction
+       {
+           get { return fraction; }
+           set { fraction = value; }
+       }
+       public bool IsActiv
+       {
+           get { return isActiv; }
+           set { isActiv = value; }
+       }
         public Player(string n, Fraction f, Grid g)
         {
             grid = g;
@@ -51,12 +85,7 @@ namespace Drako3
         public void DrawInitialHand()
         {
             hand = new List<Card>();
-            /*
-            hand.Add(new Card(1,fraction));
-            hand.Add(new Card(2, fraction));
-            hand.Add(new Card(3, fraction));
-            hand.Add(new Card(4, fraction));
-             * */
+       
             Card.DrawCard(this, 4);
         }
        public Fraction ReturnActiveFraction()
@@ -78,7 +107,7 @@ namespace Drako3
            int index=-1;
            foreach(Card c in hand)
            {
-               if (c.id == i)
+               if (c.Id == i)
                {
                    index = hand.IndexOf(c);
                    return index;
@@ -109,16 +138,14 @@ namespace Drako3
                     {
 
                         src.UriSource = new Uri("Images/Dragon.jpg", UriKind.Relative);
-                        // src.UriSource = new Uri(P1.hand[0].src, UriKind.Relative);
 
                         img.Source = src;
                     }
                 }
                 else
                 {
-                     src.UriSource = new Uri(this.hand[index].src, UriKind.Relative);
-                    // src.UriSource = new Uri(P1.hand[index].src, UriKind.Relative);
-                  //  src.UriSource = new Uri("Images/Dragon.jpg", UriKind.Relative);
+                     src.UriSource = new Uri(this.hand[index].Src, UriKind.Relative);
+                  
                     img.Source = src;
 
 

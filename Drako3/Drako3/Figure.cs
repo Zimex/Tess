@@ -10,12 +10,25 @@ namespace Drako3
     
    public abstract class Figure
     {
-        public Point position;
-        public bool isSelected;
+        private Point position;
+        private bool isSelected;
+
+       public Point Position
+        {
+            get { return position; }
+            set { position = value; }
+
+        }
+       public bool IsSelected
+       {
+           get { return isSelected; }
+           set { isSelected = value; }
+
+       }
        public  virtual bool MoveTo(Point p,List<Hex> hexs)
         {
-           Hex.GetHexByAxialCoordinates(hexs,p).figure=Hex.GetHexByAxialCoordinates(hexs,position).figure;
-           Hex.GetHexByAxialCoordinates(hexs,position).figure = null;
+           Hex.GetHexByAxialCoordinates(hexs,p).Figure=Hex.GetHexByAxialCoordinates(hexs,position).Figure;
+           Hex.GetHexByAxialCoordinates(hexs,position).Figure = null;
            
             position = p;
             return true;

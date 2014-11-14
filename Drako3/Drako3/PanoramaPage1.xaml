@@ -14,9 +14,58 @@
     shell:SystemTray.IsVisible="False"
     BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <!--LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="LayoutRoot">
-        <phone:Panorama x:Name="panorama" DefaultItem="ItemHand">
+    <Grid x:Name="LayoutRoot" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <phone:Panorama x:Name="panorama" DefaultItem="ItemHand" HorizontalAlignment="Center" VerticalAlignment="Center">
 
+            <phone:PanoramaItem x:Name="panoramaItemDwarfs" Height="Auto" Width="800" Tap="PanoramaItem_Tap">
+
+                <Grid x:Name="DwarfsGrid" Height="480" Margin="-10,-35,0,0" VerticalAlignment="Top" Width="800">
+                    <Image x:Name="DwarfsImage" HorizontalAlignment="Left" Height="480" Margin="0,0,0,0" VerticalAlignment="Center" Width="755" Source="/Images/004.jpg" Stretch="Fill"/>
+                    <Image x:Name="crossbowmanCounter1" HorizontalAlignment="Left" Height="69" Margin="167,383,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="crossbowmanCounter2" HorizontalAlignment="Left" Height="69" Margin="83,382,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="crossbowmanCounter3" HorizontalAlignment="Left" Height="69" Margin="22,322,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="crossbowmanCounter4" HorizontalAlignment="Left" Height="69" Margin="22,242,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="crossbowmanCounter5" HorizontalAlignment="Left" Height="69" Margin="23,160,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    
+                    <Image x:Name="webberCounter1" HorizontalAlignment="Left" Height="69" Margin="598,381,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="webberCounter2" HorizontalAlignment="Left" Height="69" Margin="659,323,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="webberCounter3" HorizontalAlignment="Left" Height="69" Margin="658,242,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="webberCounter4" HorizontalAlignment="Left" Height="69" Margin="659,161,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+
+                    <Image x:Name="leaderCounter1" HorizontalAlignment="Left" Height="69" Margin="238,155,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="leaderCounter2" HorizontalAlignment="Left" Height="69" Margin="238,74,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="leaderCounter3" HorizontalAlignment="Left" Height="69" Margin="299,15,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="leaderCounter4" HorizontalAlignment="Left" Height="69" Margin="382,15,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="leaderCounter5" HorizontalAlignment="Left" Height="69" Margin="443,74,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+                    <Image x:Name="leaderCounter6" HorizontalAlignment="Left" Height="69" Margin="444,156,0,0" VerticalAlignment="Top" Width="71" Source="/Images/drakoCOunter.png" RenderTransformOrigin="1.803,-0.754" Visibility="Collapsed"/>
+
+
+                </Grid>
+
+            </phone:PanoramaItem>
+            <phone:PanoramaItem x:Name="panoramaItemDragon" Height="Auto" Width="800" >
+
+                <Grid x:Name="DragonGrid" HorizontalAlignment="Left" Height="480" Margin="0,-35,0,0" VerticalAlignment="Top" Width="800">
+                    <Image x:Name="DragonImage" HorizontalAlignment="Left" Height="480" Margin="0,0,0,0" VerticalAlignment="Center" Width="755" Source="/Images/010.jpg" Stretch="Fill" Tap="DragonImage_Tap"/>
+                    <Image x:Name="shield1" HorizontalAlignment="Left" Height="72" Margin="213,34,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="shield2" HorizontalAlignment="Left" Height="72" Margin="301,24,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="shield3" HorizontalAlignment="Left" Height="72" Margin="384,25,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="shield4" HorizontalAlignment="Left" Height="72" Margin="469,36,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+
+                    <Image x:Name="wings1" HorizontalAlignment="Left" Height="72" Margin="33,248,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="wings2" HorizontalAlignment="Left" Height="72" Margin="20,330,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+
+                    <Image x:Name="fire2" HorizontalAlignment="Left" Height="72" Margin="663,330,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="fire1" HorizontalAlignment="Left" Height="72" Margin="652,248,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+
+                    <Image x:Name="legs3" HorizontalAlignment="Left" Height="72" Margin="427,386,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="legs2" HorizontalAlignment="Left" Height="72" Margin="343,396,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+                    <Image x:Name="legs1" HorizontalAlignment="Left" Height="72" Margin="258,383,0,0" VerticalAlignment="Top" Width="74" Source="/Images/drakoCOunter.png" Visibility="Collapsed"/>
+
+
+                </Grid>
+
+            </phone:PanoramaItem>
             <!--Panorama item one-->
             <phone:PanoramaItem x:Name="panoramaItemBoard" Height="Auto" Width="Auto" Tap="PanoramaItem_Tap">
 

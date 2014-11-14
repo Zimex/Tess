@@ -9,23 +9,49 @@ namespace Drako3
 {
     public class Card
     {
-        public int id;
+        private int id;
         private static bool areActionsInitialized = false;
-        public Fraction fraction;
-        public Action action1=null;
-        public Action action2 = null;
-        public static int dragonCards=11;
+        private Fraction fraction;
+        private Action action1=null;
+        private Action action2 = null;
+        public static int dragonCards = 11;
         public static int dwarfCards = 16;
         public static int dragonCardsLeft = 11;
         public static int dwarfCardsLeft = 16;
-        public  string src;
-        public static Dictionary<int, List<Action>> dragonActionsDictionary=new Dictionary<int,List<Action>>();
-        public static Dictionary<int, List<Action>> dwarfsActionsDictionary=new Dictionary<int,List<Action>>();
+        private string src;
+        private static Dictionary<int, List<Action>> dragonActionsDictionary = new Dictionary<int, List<Action>>();
+        private static Dictionary<int, List<Action>> dwarfsActionsDictionary = new Dictionary<int, List<Action>>();
 
+        public int Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+        public Fraction Fraction
+        {
+            get { return fraction; }
+            set { fraction = value; }
+        }
+        public Action Action1
+        {
+            get { return action1; }
+            set { action1 = value; }
+        }
+        public Action Action2
+        {
+            get { return action2; }
+            set { action2 = value; }
+        }
+       
         public bool AreActionsInitialized
         {
             get;
             set;
+        }
+        public string Src
+        {
+            get { return src; }
+            set { src = value; }
         }
         public Card(int i,Fraction f)
         {
@@ -33,14 +59,11 @@ namespace Drako3
             int n;
             if (f == Fraction.Dragon)
             {
-
                 n = Card.dragonCards;
                 action1 = dragonActionsDictionary[i][0];
                 if (dragonActionsDictionary[i].Count > 1)
                     action2 = dragonActionsDictionary[i][1];
                 else action2 = action1;
-
-
             }
             else
             {
@@ -56,46 +79,48 @@ namespace Drako3
             {
                 id = i;
                 fraction = f;
-               // src = new BitmapImage();
-                string c;
-                
-                if (fraction == Fraction.Dwarf)
-                
-                    c = "K";
-                
+                string c;                
+                if (fraction == Fraction.Dwarf)               
+                    c = "K";               
                     else
                     c = "D";
-                //if (i < 10) c += 0;
-                //src.UriSource = new Uri("Images/Cards/"+c+id.ToString(), UriKind.Relative);
                 src = "Images/Cards/" + c + id.ToString()+".png";
             }
-
-        }
-      
+        }      
         public int SingleMoveActionValue()
         {
 
-            if (action1.actionType == ActionType.SINGLE_MOVE)
-                return action1.value;
-            if (action2.actionType == ActionType.SINGLE_MOVE)
-                return action2.value;
+            if (action1.ActionType == ActionType.SINGLE_MOVE)
+                return action1.Value;
+            if (action2.ActionType == ActionType.SINGLE_MOVE)
+                return action2.Value;
+            return 0;
+        }
+
+        public int DoubleAttackActionValue()
+        {
+
+            if (action1.ActionType == ActionType.DOUBLE_ATTACK)
+                return action1.Value;
+            if (action2.ActionType == ActionType.DOUBLE_ATTACK)
+                return action2.Value;
             return 0;
         }
         public int DoubleMoveActionValue()
         {
 
-            if (action1.actionType == ActionType.DOUBLE_MOVE)
-                return action1.value;
-            if (action2.actionType == ActionType.DOUBLE_MOVE)
-                return action2.value;
+            if (action1.ActionType == ActionType.DOUBLE_MOVE)
+                return action1.Value;
+            if (action2.ActionType == ActionType.DOUBLE_MOVE)
+                return action2.Value;
             return 0;
         }
         public int FlyActionValue()
         {
 
-            if (action1.actionType == ActionType.FLY)
+            if (action1.ActionType == ActionType.FLY)
                 return 5;
-            if (action2.actionType == ActionType.FLY)
+            if (action2.ActionType == ActionType.FLY)
                 return 5;
             return 0;
         }
@@ -103,10 +128,10 @@ namespace Drako3
         public int SingleAttackActionValue()
         {
 
-            if (action1.actionType == ActionType.SINGLE_ATTACK)
-                return action1.value;
-            if (action2.actionType == ActionType.SINGLE_ATTACK)
-                return action2.value; 
+            if (action1.ActionType == ActionType.SINGLE_ATTACK)
+                return action1.Value;
+            if (action2.ActionType == ActionType.SINGLE_ATTACK)
+                return action2.Value; 
             return 0;
         }
         public static  KeyValuePair<int, List<Action>>  AddAction(int id,Action a1)
@@ -118,7 +143,6 @@ namespace Drako3
             return result;
 
         }
-
         public static KeyValuePair<int, List<Action>> AddAction(int id, Action a1, Action a2)
         {
             KeyValuePair<int, List<Action>> result = new KeyValuePair<int, List<Action>>();
@@ -132,10 +156,7 @@ namespace Drako3
 
         public static void InitiateActionsDictionary()
         {
-           
-          //  l.Add()
             KeyValuePair<int, List<Action>> list = new KeyValuePair<int, List<Action>>();
-
             if (!areActionsInitialized)
             {
                 list = AddAction(1, new Action(ActionType.FIRE, 1));
@@ -220,49 +241,34 @@ namespace Drako3
                 dwarfsActionsDictionary.Add(list.Key, list.Value);
             }
             areActionsInitialized = true;
-                /*
-            dragonActionsDictionary.Add(AddAction(1, new Action(ActionType.FIRE, 1)).Key,AddAction(1, new Action(ActionType.FIRE, 1)).Value);
-            dragonActionsDictionary.Add(AddAction(2, new Action(ActionType.SINGLE_ATTACK, 3)).Key,AddAction(2, new Action(ActionType.SINGLE_ATTACK, 3)).Value);
-            dragonActionsDictionary.Add(AddAction(3, new Action(ActionType.FLY, 1)).Key,AddAction(3, new Action(ActionType.FLY, 1)).Value);
-            dragonActionsDictionary.Add(AddAction(4, new Action(ActionType.BLOCK, 1)).Key,AddAction(4,new Action(ActionType.BLOCK, 1)).Value);
-            dragonActionsDictionary.Add(AddAction(5, new Action(ActionType.SINGLE_ATTACK, 2),new Action(ActionType.SINGLE_MOVE,1))
-            dragonActionsDictionary.Add(AddAction(6, new Action(ActionType.SINGLE_MOVE, 2)).Key
-            dragonActionsDictionary.Add(AddAction(7, new Action(ActionType.SINGLE_MOVE, 1)).Key
-            dragonActionsDictionary.Add(AddAction(8, new Action(ActionType.FIRE, 2)).Key
-            dragonActionsDictionary.Add(AddAction(9, new Action(ActionType.SINGLE_ATTACK, 2),new Action(ActionType.SINGLE_MOVE,2)).Key
-            dragonActionsDictionary.Add(AddAction(10, new Action(ActionType.SINGLE_ATTACK, 1),new Action(ActionType.BLOCK,1)).Key
-            dragonActionsDictionary.Add(AddAction(11, new Action(ActionType.SINGLE_ATTACK, 1),new Action(ActionType.SINGLE_MOVE,2)).Key
-        */
           }
 
         public static bool DrawCard(Player p, int amount)
         {
 
-            if (p.hand.Count + amount > 8) return false;
+            if (p.Hand.Count + amount > 8) return false;
             Card c;
             int i;
             Random r = new Random((int)DateTime.Now.Ticks);
             for (int j = 0; j < amount; j++)
             {
-                if (p.library.Count == 0)
+                if (p.Library.Count == 0)
                 {
 
                 }
                 else
                 {
-                    i = r.Next(p.library.Count - 1);
-                    c = p.library[i];
-                    p.library.RemoveAt(i);
-                    if (p.fraction == Fraction.Dragon)
+                    i = r.Next(p.Library.Count - 1);
+                    c = p.Library[i];
+                    p.Library.RemoveAt(i);
+                    if (p.Fraction == Fraction.Dragon)
                         Card.dragonCardsLeft--;
                     else
                         Card.dwarfCardsLeft--;
-                    p.hand.Add(new Card(c.id, p.fraction));
+                    p.Hand.Add(new Card(c.id, p.Fraction));
                 }
             }
-
             p.RenderHand();
-
             return true;
         }
     }
