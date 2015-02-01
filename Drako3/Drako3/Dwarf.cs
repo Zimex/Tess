@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-enum DwarfType
+public enum DwarfType
 {
     Crossbowman,
     Webber,
@@ -15,8 +16,8 @@ enum DwarfType
 }
 namespace Drako3
 {
-
-    class Dwarf: Figure
+    [DataContract]
+   public class Dwarf: Figure
     {
         private DwarfType type;
         private int hp;
@@ -27,38 +28,55 @@ namespace Drako3
         private List<Image> leaderImageList = new List<Image>();
         private List<Image> dwarfImageList = new List<Image>();
 
-
+        [DataMember]
+        public int OriginalHp
+        {
+            get { return originalHp; }
+            set { }
+        }
+        [DataMember]
         public DwarfType Type
         {
             get { return type; }
             set { type = value; }
         }
+        [DataMember]
         public int Hp
         {
             get { return hp; }
-            set { hp = value; PutDamageOnDwarf(); }
+            set {
+                if (value >= 0) hp = value;
+                else hp = 0;
+            }
         }
+        [DataMember]
         public PanoramaPage1 Page
         {
             get { return page; }
             set { page = value;  }
         }
+        [DataMember]
         public List<Image> CrossbowmanImageList
         {
             get { return crossbowmanImageList; }
             set { crossbowmanImageList = value; }
         }
+        [DataMember]
         public List<Image> WebberImageList
         {
             get { return webberImageList; }
             set { webberImageList = value; }
         }
+        [DataMember]
         public List<Image> LeaderImageList
         {
             get { return leaderImageList; }
             set { leaderImageList = value; }
         }
+        public Dwarf()
+        {
 
+        }
         //public int b=1;
         public Dwarf(DwarfType t, Point p, PanoramaPage1 pag)
         {
@@ -175,12 +193,32 @@ namespace Drako3
         }
       
 
-        public void PutDamageOnDwarf()
+        public void PutDamageOnDwarf(int dmg, List<Figure> figures,List<Hex> hexs)
         {
-            for (int i = 0; i < originalHp - hp; i++)
+            if(this.Hp<=dmg)
             {
-                dwarfImageList[i].Visibility = Visibility.Visible;
+                foreach(Image img in dwarfImageList)
+                {
+                    img.Visibility = Visibility.Visible;
+                }
+                figures.Remove(this);
+                Hex.GetHexByFigure(hexs, this).Figure = null;
+
             }
+            else
+            {
+                int d=originalHp- Hp+dmg;
+
+                for (int i = 0; i < d;i++ )
+                {
+                    dwarfImageList[i].Visibility = Visibility.Visible;
+                    Hp--;
+                }
+
+            }
+
+            
+            
         }
     }
 }

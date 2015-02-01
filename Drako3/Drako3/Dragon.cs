@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,71 +10,87 @@ using System.Windows.Controls;
 
 namespace Drako3
 {
+    [DataContract]
     
-    class Dragon:Figure
+    public class Dragon:Figure
     {
         private int shieldHp = 4;
         private int wingsHp = 2;
         private int legsHp = 3;
         private int fireHp = 2;
+        private readonly int originalShieldHp = 4;
+        private readonly int originalWingsHp = 2;
+        private readonly int originalLegsHp = 3;
+        private readonly int originalFireHp = 2;
         private List<Image> shieldImageList = new List<Image>();
         private List<Image> wingsImageList = new List<Image>();
         private List<Image> legsImageList = new List<Image>();
         private List<Image> fireImageList = new List<Image>();
         private PanoramaPage1 page;
         private Point position;
-        
+
+        [DataMember]
         public int ShieldHp
         {
             get { return shieldHp; }
             set { if(value >=0)shieldHp = value;
-            PutDamageOnShield();
+            
             }
         }
+        [DataMember]
         public int LegsHp
         {
             get { return legsHp; }
             set { if (value >= 0)legsHp = value;
-            PutDamageOnLegs();
+            
             }
         }
+        [DataMember]
         public int FireHp
         {
             get { return fireHp; }
             set { if (value >= 0)fireHp = value;
-            PutDamageOnFire();
+            
             }
         }
+        [DataMember]
         public List<Image> ShieldImageList
         {
             get { return shieldImageList;}
             set{shieldImageList = value;}
         }
+        [DataMember]
         public List<Image> WingsImageList
         {
             get { return wingsImageList; }
             set { wingsImageList = value; }
         }
+        [DataMember]
         public List<Image> LegsImageList
         {
             get { return legsImageList; }
             set { legsImageList = value; }
         }
+        [DataMember]
         public List<Image> FireImageList
         {
             get { return fireImageList; }
             set { fireImageList = value; }
         }
+        [DataMember]
         public int WingsHp
         {
             get { return wingsHp; }
             set
             {
                 if (value >= 0) wingsHp = value;
-                PutDamageOnWings();
+                
             }
         }
+        public Dragon()
+        {
 
+        }
         public Dragon(Point p, PanoramaPage1 pag)
         {
             page = pag;
@@ -141,33 +159,115 @@ namespace Drako3
             }
                 return false;
         }
-        public void PutDamageOnShield()
+        public void PutDamageOnDragon(int dmg, PanoramaPage1 page, Game g)
         {
-            for(int i=0;i<4-ShieldHp;i++)
+            int d = PutDamageOnShield(dmg);
+            if(d>0)
             {
-                shieldImageList[i].Visibility = Visibility.Visible;
+                g.DamageToDragon = d;
+                (page.panorama.Items[2] as PanoramaItem).Visibility = Visibility.Collapsed;
+                page.panorama.SetValue(Panorama.SelectedItemProperty, page.panorama.Items[(1) % page.panorama.Items.Count]);
+                page.panorama.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                (page.panorama.Items[2] as PanoramaItem).Visibility = Visibility.Visible;
+
             }
         }
-        public void PutDamageOnLegs()
+        public int PutDamageOnShield(int dmg)
         {
-            for (int i = 0; i < 3 - LegsHp; i++)
+            if (shieldHp >= dmg)
             {
-                legsImageList[i].Visibility = Visibility.Visible;
+                int d = originalShieldHp - shieldHp + dmg;
+                for (int i = 0; i < d; i++)
+                {
+                    ShieldImageList[i].Visibility = Visibility.Visible;
+                   // shieldHp--;
+                }
+                shieldHp = originalShieldHp - d;
             }
+            else 
+            { 
+            foreach(Image img in shieldImageList)
+            {
+                img.Visibility = Visibility.Visible;
+            }
+            int rest = dmg - shieldHp;
+            shieldHp = 0;
+            return rest;
+            }
+            return 0;
         }
-        public void PutDamageOnFire()
+        public int PutDamageOnLegs(int dmg)
         {
-            for (int i = 0; i < 2 - FireHp; i++)
+            if (LegsHp >= dmg)
             {
-                fireImageList[i].Visibility = Visibility.Visible;
+                int d = originalLegsHp - LegsHp + dmg;
+                for (int i = 0; i < d; i++)
+                {
+                    LegsImageList[i].Visibility = Visibility.Visible;
+                    //LegsHp--;
+                }
+                LegsHp = originalLegsHp - d;
             }
+            else
+            {
+                foreach (Image img in LegsImageList)
+                {
+                    img.Visibility = Visibility.Visible;
+                }
+                int rest = dmg - LegsHp;
+                LegsHp = 0;
+                return rest;
+            }
+            return 0;
         }
-        public void PutDamageOnWings()
+        public int PutDamageOnFire(int dmg)
         {
-            for (int i = 0; i < 2 - WingsHp; i++)
+            if (FireHp >= dmg)
             {
-                wingsImageList[i].Visibility = Visibility.Visible;
+                int d = originalFireHp - FireHp + dmg;
+                for (int i = 0; i < d; i++)
+                {
+                    FireImageList[i].Visibility = Visibility.Visible;
+                    //FireHp--;
+                }
+                FireHp = originalFireHp - d;
             }
+            else
+            {
+                foreach (Image img in FireImageList)
+                {
+                    img.Visibility = Visibility.Visible;
+                }
+                int rest = dmg - FireHp;
+                FireHp = 0;
+                return rest;
+            }
+            return 0;
         }
+        public int PutDamageOnWings(int dmg)
+        {
+            if (WingsHp >= dmg)
+            {
+                int d = originalWingsHp - WingsHp + dmg;
+                for (int i = 0; i < d; i++)
+                {
+                    WingsImageList[i].Visibility = Visibility.Visible;
+                    //WingsHp--;
+                }
+                WingsHp = originalWingsHp - d;
+            }
+            else
+            {
+                foreach (Image img in WingsImageList)
+                {
+                    img.Visibility = Visibility.Visible;
+                }
+                int rest = dmg - WingsHp;
+                WingsHp = 0;
+                return rest;
+            }
+            return 0;
+        }
+        
     }
 }

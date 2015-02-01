@@ -7,6 +7,8 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Drako3.Resources;
+using System.Collections.Generic;
+using System.Windows.Shapes;
 
 namespace Drako3
 {
@@ -61,6 +63,65 @@ namespace Drako3
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+             Game game;
+         List<Hex> hexs;
+         Board board;
+        List<Polygon> p;
+        Dwarf leader;// = new Dwarf(DwarfType.Leader, new Point(1, -2));
+        Dwarf crossbowman;// = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1));
+        Dwarf webber;// = new Dwarf(DwarfType.Webber, new Point(1, 1));
+        Dragon dragon;// = new Dragon(new Point(0, 0));
+        List<Figure> figures = new List<Figure>();
+        Figure selectedFigure = null;
+        Player P1, P2;
+
+        Card.InitiateActionsDictionary();
+        
+        P1 = new Player("Zimex", Fraction.Dragon, new PanoramaPage1().HandGrid);
+        P1.DrawInitialHand();
+        P2 = new Player("Zaremox", Fraction.Dwarf, new PanoramaPage1().HandGrid);
+        P2.DrawInitialHand();
+        P1.RenderHand();
+        new PanoramaPage1().libraryImage.Source = new System.Windows.Media.Imaging.BitmapImage(
+            new Uri(@"/Images/Dragon.jpg", UriKind.RelativeOrAbsolute));
+
+
+        leader = new Dwarf(DwarfType.Leader, new Point(1, -2), new PanoramaPage1());
+        crossbowman = new Dwarf(DwarfType.Crossbowman, new Point(-2, 1), new PanoramaPage1());
+        webber = new Dwarf(DwarfType.Webber, new Point(1, 1), new PanoramaPage1());
+        dragon = new Dragon(new Point(0, 0), new PanoramaPage1());
+        figures = new List<Figure>();
+        selectedFigure = null;
+        figures.Add(leader);
+        figures.Add(crossbowman);
+        figures.Add(webber);
+        figures.Add(dragon);
+
+        board = new Board(figures);
+        game = new Game(GameType.HOT_SEATS, P1, P2, board, new PanoramaPage1().libraryImage, new PanoramaPage1());
+        game.Leader = leader;
+        game.Webber = webber;
+        game.Crossbowman = crossbowman;
+        game.Dragon = dragon;
+        game.Board.DrawBoard(new PanoramaPage1().BoardGrid);
+        game.ActionsLeft = 1;
+
+        
+        hexs = game.Board.Hexs;
+
+        ClassToSerialize c = new ClassToSerialize(game);
+        ClassToSerialize d = new ClassToSerialize(game);
+        ClassToSerialize a = new ClassToSerialize(game);
+         MySerializer<ClassToSerialize>.SaveData(c, "current");
+        d.p1Name = "Z";
+        d.xPos[0] = 1;
+        d.activePlayer = "Z";
+        
+         MySerializer<ClassToSerialize>.SaveData(d, "current2");
+       // a.p1Fraction = Fraction.Dwarf;
+       // a.p2Fraction = Fraction.Dragon;
+        a.xPos[0] = -1;
+         MySerializer<ClassToSerialize>.SaveData(a, "current3");
         }
 
         // Code to execute when the application is activated (brought to foreground)

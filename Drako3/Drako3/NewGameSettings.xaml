@@ -12,21 +12,47 @@
     SupportedOrientations="Portrait" Orientation="Landscape"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="menuHeaderStyle" TargetType="TextBlock" >
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+            <Setter Property="TextBlock.FontSize" Value="50"/>
 
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource menuHeaderStyle}" Text="New Game Menu"></TextBlock>
+        <Border Grid.Row="1" Height="Auto">
+            <Grid>
+                <phone:Panorama HorizontalAlignment="Left" Height="Auto"   Title="Hot Seats" VerticalAlignment="Top" Width="Auto" FontSize="6">
+                    <phone:PanoramaItem CacheMode="{x:Null}" Header="item1" >
+                        <phone:PanoramaItem.RenderTransform>
+                            <TranslateTransform/>
+                        </phone:PanoramaItem.RenderTransform>
+                        <Grid/>
+                    </phone:PanoramaItem>
+                    <phone:PanoramaItem CacheMode="{x:Null}" Header="item2">
+                        <phone:PanoramaItem.RenderTransform>
+                            <TranslateTransform/>
+                        </phone:PanoramaItem.RenderTransform>
+                        <Grid/>
+                    </phone:PanoramaItem>
+                </phone:Panorama>
+
+            </Grid>
+        </Border>
+        <Button x:Name="startButton" Content="Start" Padding="20" Grid.Row="2"  HorizontalAlignment="Center"   VerticalAlignment="Center" Width="200" Click="startButton_Click"/>
 
         <!--TitlePanel contains the name of the application and page title-->
-       
+
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

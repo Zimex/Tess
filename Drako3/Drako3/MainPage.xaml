@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="Portrait" Orientation="Landscape"
     shell:SystemTray.IsVisible="False">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -27,30 +27,36 @@
                 <StackPanel.Resources>
                     <Storyboard x:Name="MenuStoryBoard">
                         <DoubleAnimation
-                        Storyboard.TargetName="NewGameButton"
+                        Storyboard.TargetName="newGameButton"
                         Storyboard.TargetProperty="Opacity"
-                        BeginTime="0:0:0.2" From="0" To="1.0" Duration="0:0:2" RepeatBehavior="1"   AutoReverse="True"
+                        BeginTime="0:0:0.1" From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
                         />
                         <DoubleAnimation
-                        Storyboard.TargetName="Button2"
+                        Storyboard.TargetName="loadGameButton"
                         Storyboard.TargetProperty="Opacity"
-                        BeginTime="0:0:0.4"  From="0" To="1.0" Duration="0:0:2" RepeatBehavior="1"   AutoReverse="True"
+                        BeginTime="0:0:0.2"  From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
                         />
                         <DoubleAnimation
                         Storyboard.TargetName="Button3"
                         Storyboard.TargetProperty="Opacity"
-                        BeginTime="0:0:0.6" From="0" To="1.0" Duration="0:0:2" RepeatBehavior="1"   AutoReverse="True"
+                        BeginTime="0:0:0.3" From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
                         />
                         <DoubleAnimation
                         Storyboard.TargetName="Button4"
                         Storyboard.TargetProperty="Opacity"
-                        BeginTime="0:0:0.8" From="0" To="1.0" Duration="0:0:2" RepeatBehavior="1"   AutoReverse="True"
+                        BeginTime="0:0:0.4" From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
                         />
+                        <DoubleAnimation
+                            Storyboard.TargetName="menuTitle"
+                            Storyboard.TargetProperty="Opacity"
+                            BeginTime="0" From="0.4" To="1.0" Duration="0:0:2" RepeatBehavior="1" AutoReverse="True"
+                            />
                     </Storyboard>
 
 
                 </StackPanel.Resources>
                 <TextBlock x:Name="menuTitle" Grid.Row="0" Text="Main menu" FontSize="50"/>
+                <!--<TextBlock Style="{StaticResource menuHeaderStyle}" Text="Main menu"></TextBlock>-->
 
                 <!--<Button x:Name="loadGameButton" Content="Load Game" HorizontalAlignment="Left" Margin="194,255,0,0" VerticalAlignment="Top"/>
             <Button x:Name="settingsButton" Content="Settings" HorizontalAlignment="Left" Margin="223,377,0,0" Grid.Row="3" VerticalAlignment="Top"/>
@@ -58,12 +64,12 @@
 
             </StackPanel>
         </Border>
-        <Button x:Name="NewGameButton" Content="New Game" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="1" FontSize="40" Margin="0,50,0,0" Background="#FF050A3C"  >
+        <Button x:Name="newGameButton" Content="New Game" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,50,0,0" Background="#FF050A3C"  >
        
         </Button>
-        <Button x:Name="Button2" Content="Button2" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="2" FontSize="40" Margin="0,30,0,0" Background="#FF050A3C"/>
-        <Button x:Name="Button3" Content="Button3" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="3" FontSize="40" Margin="0,30,0,0" Background="#FF050A3C"/>
-        <Button x:Name="Button4" Content="Button4" HorizontalAlignment="Center"  Grid.Row="4" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="4" FontSize="40" Margin="0,30,0,0" Foreground="White" BorderBrush="White" Background="#FF050C3C"/>
+        <Button x:Name="loadGameButton" Content="Load Game" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Top" Opacity="0" FontSize="40" Margin="0,30,0,0" Background="#FF050A3C" Click="loadGameButton_Click"  />
+        <Button x:Name="Button3" Content="Button3" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,30,0,0" Background="#FF050A3C"/>
+        <Button x:Name="Button4" Content="Button4" HorizontalAlignment="Center"  Grid.Row="4" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,30,0,0" Foreground="White" BorderBrush="White" Background="#FF050C3C"/>
             
                
     </Grid>

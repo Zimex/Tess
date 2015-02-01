@@ -1,0 +1,77 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Drako3.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="165"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border>
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Storyboard x:Name="MenuStoryBoard">
+                        <DoubleAnimation
+                        Storyboard.TargetName="NewGameButton"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:0.1" From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
+                        />
+                        <DoubleAnimation
+                        Storyboard.TargetName="Button2"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:0.2"  From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
+                        />
+                        <DoubleAnimation
+                        Storyboard.TargetName="Button3"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:0.3" From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
+                        />
+                        <DoubleAnimation
+                        Storyboard.TargetName="Button4"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:0.4" From="0.4" To="1.0" Duration="0:0:1" RepeatBehavior="1"   AutoReverse="True"
+                        />
+                        <DoubleAnimation
+                            Storyboard.TargetName="menuTitle"
+                            Storyboard.TargetProperty="Opacity"
+                            BeginTime="0" From="0.4" To="1.0" Duration="0:0:2" RepeatBehavior="1" AutoReverse="True"
+                            />
+                    </Storyboard>
+
+
+                </StackPanel.Resources>
+                <TextBlock x:Name="menuTitle" Grid.Row="0" Text="Main menu" FontSize="50"/>
+                <!--<TextBlock Style="{StaticResource menuHeaderStyle}" Text="Main menu"></TextBlock>-->
+
+                <!--<Button x:Name="loadGameButton" Content="Load Game" HorizontalAlignment="Left" Margin="194,255,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="settingsButton" Content="Settings" HorizontalAlignment="Left" Margin="223,377,0,0" Grid.Row="3" VerticalAlignment="Top"/>
+            <Button x:Name="exitButton" Content="Exit" HorizontalAlignment="Left" Margin="0,2,0,0" Grid.Row="1" VerticalAlignment="Top" Click="exitButton_Click" />-->
+
+            </StackPanel>
+        </Border>
+        <Button x:Name="NewGameButton" Content="New Game" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,50,0,0" Background="#FF050A3C"  >
+       
+        </Button>
+        <Button x:Name="Button2" Content="Button2" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,30,0,0" Background="#FF050A3C"  />
+        <Button x:Name="Button3" Content="Button3" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,30,0,0" Background="#FF050A3C"/>
+        <Button x:Name="Button4" Content="Button4" HorizontalAlignment="Center"  Grid.Row="4" VerticalAlignment="Top" Click="newGameButton_Click" Opacity="0" FontSize="40" Margin="0,30,0,0" Foreground="White" BorderBrush="White" Background="#FF050C3C"/>
+            
+               
+    </Grid>
+
+</phone:PhoneApplicationPage>

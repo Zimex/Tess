@@ -40,9 +40,15 @@ namespace Drako3
         private void newGameButton_Click(object sender, RoutedEventArgs e)
         {
       
-            NavigationService.Navigate(new Uri("/PanoramaPage1.xaml", UriKind.Relative));
+           // NavigationService.Navigate(new Uri("/PanoramaPage1.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/NewGameSettings.xaml", UriKind.Relative));
             
 
+        }
+
+        private void loadGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/LoadGamePage.xaml", UriKind.Relative));
         }
         
         // Sample code for building a localized ApplicationBar

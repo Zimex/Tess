@@ -15,6 +15,12 @@ namespace Drako3
         public GameMenu()
         {
             InitializeComponent();
+            
+        }
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            //base.OnNavigatedTo(e);
+            //Game g = await MySerializer<Game>.LoadData("current.sav");
         }
 
         private void mainMenuButton_Click(object sender, RoutedEventArgs e)
@@ -33,6 +39,11 @@ namespace Drako3
         {
             if (NavigationService.CanGoBack)
                 NavigationService.GoBack();
+        }
+
+        private void loadGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/LoadGamePage.xaml",UriKind.Relative));
         }
     }
 }

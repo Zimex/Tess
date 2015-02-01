@@ -9,7 +9,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="Portrait" Orientation="Landscape"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
     BackKeyPress="PhoneApplicationPage_BackKeyPress">
@@ -23,13 +23,24 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="menuTitle" Grid.Row="0" Text="Game menu" FontSize="50"/>
+
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button x:Name="saveGameButton" Content="Save" HorizontalAlignment="Left" Margin="195,105,0,0" VerticalAlignment="Top"/>
-            <Button x:Name="mainMenuButton" Content="Main Menu" HorizontalAlignment="Left" Margin="240,260,0,0" VerticalAlignment="Top" Click="mainMenuButton_Click"/>
-            <Button Content="Return To Game" HorizontalAlignment="Left" Margin="212,433,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+            </Grid.RowDefinitions>
+            <Button x:Name="saveGameButton" Content="Save" Grid.Row="0" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+            <Button x:Name="loadGameButton" Content="Load" Grid.Row="1" HorizontalAlignment="Left"  VerticalAlignment="Top" Click="loadGameButton_Click"/>
+
+            <Button x:Name="mainMenuButton" Content="Main Menu" Grid.Row="2" HorizontalAlignment="Left"  VerticalAlignment="Top" Click="mainMenuButton_Click"/>
+            <Button Content="Return To Game" HorizontalAlignment="Left" Grid.Row="3"  VerticalAlignment="Top" Click="Button_Click"/>
 
         </Grid>
     </Grid>

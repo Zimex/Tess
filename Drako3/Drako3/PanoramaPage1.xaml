@@ -15,8 +15,9 @@
     BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <phone:Panorama x:Name="panorama" DefaultItem="ItemHand" HorizontalAlignment="Center" VerticalAlignment="Center">
-
+        
+        <phone:Panorama x:Name="panorama" DefaultItem="ItemHand" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="panorama_SelectionChanged" Foreground="#FF8D0000">
+            
             <phone:PanoramaItem x:Name="panoramaItemDwarfs" Height="Auto" Width="800" Tap="PanoramaItem_Tap">
 
                 <Grid x:Name="DwarfsGrid" Height="480" Margin="-10,-35,0,0" VerticalAlignment="Top" Width="800">
@@ -68,9 +69,44 @@
             </phone:PanoramaItem>
             <!--Panorama item one-->
             <phone:PanoramaItem x:Name="panoramaItemBoard" Height="Auto" Width="Auto" Tap="PanoramaItem_Tap">
-
+                
                 <Grid x:Name="BoardGrid" HorizontalAlignment="Left" Height="Auto" Margin="-10,-35,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Canvas Name="damageCanvas">
+                        
+                    
+                    <TextBlock x:Name="damage"  Text="5" FontSize="40" Foreground="#FF590101" Opacity="0" />
+                    </Canvas>
+                    <Canvas Name="boardCanvas" >
 
+                    </Canvas>
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Storyboard x:Name="damageStoryBoard">
+                                <DoubleAnimation
+                            Storyboard.TargetName="damage"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0" To="1" Duration="0:0:3"
+                                    AutoReverse="True"
+                        />
+                                <!--<PointAnimationUsingKeyFrames
+                                    BeginTime="00:00:00"
+                            Storyboard.TargetName="damage"
+                            Storyboard.TargetProperty="Margin"
+                            
+                        />-->
+                            </Storyboard>
+                            <Storyboard x:Name="tipBoxStoryBoard">
+                                <DoubleAnimation 
+                            Storyboard.TargetName="tipBox"
+                            Storyboard.TargetProperty="Opacity"
+                            From="1" To="0" Duration="0:0:1"
+                            
+                        />
+
+                            </Storyboard>
+                        </StackPanel.Resources>
+
+                    </StackPanel>
                     <Image x:Name="playedCardImage"  HorizontalAlignment="Left" Height="195" Margin="25,25,0,0"  Width="133" Canvas.ZIndex="1" VerticalAlignment="Bottom"/>
 
                     <Image x:Name="libraryImage" Source="{Binding ImagePath}" HorizontalAlignment="Left" Height="195" Margin="25,25,0,0"   VerticalAlignment="Top" Width="133" Tap="libraryImage_Tap" Canvas.ZIndex="1"/>
@@ -107,6 +143,29 @@
             <!--Panorama item two-->
 
         </phone:Panorama>
+        
+        <Canvas HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+            <Border Name="tipBorder" BorderBrush="#FF0000A4" BorderThickness="4" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+
+                <TextBlock Name="tipTextBlock" Text="tip" Opacity="1" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+
+        
+            </Canvas>
+        <StackPanel>
+            <StackPanel.Resources>
+                <Storyboard x:Name="tipStoryBoard">
+                    <DoubleAnimation
+                            Storyboard.TargetName="tipBorder"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0.1" To="0.9" Duration="0:0:5"
+                                    AutoReverse="True"
+                        />
+                </Storyboard>
+            </StackPanel.Resources>
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

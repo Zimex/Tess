@@ -75,3 +75,4 @@ C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\XapCacheFile.xml
 C:\Users\urbanowicz\Desktop\Drako3\Drako3\obj\Debug\GameMenu.g.cs
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\GameMenu.g.cs
 C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\Drako3.csprojResolveAssemblyReference.cache
+C:\Users\urbanowicz\Documents\GitHub\Tess\Drako3\Drako3\obj\Debug\LoadGamePage.g.cs

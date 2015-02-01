@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,9 @@ namespace Drako3
     /// <summary>
     /// Klasa hexagonalnej planszy do gry
     /// </summary>
+    [DataContract]
+    [KnownType(typeof(Hex))]
+    [KnownType(typeof(Figure))]
    public class Board
     {
         private Point center;
@@ -27,10 +31,18 @@ namespace Drako3
         private double hexWidth;
         private  Polygon activePlayer;
         private  Fraction activeFraction;
+        //[DataMember(IsRequired = false)]
         private  Image libraryImage = new Image();
+       // [DataMember(IsRequired = false)]
         private  Image dragonLibrary = new Image();
+        //[DataMember(IsRequired = false)]
         private  Image dwarfLibrary = new Image();
 
+
+        public Board()
+        {
+
+        }
         public  Board(List<Figure> figures)
         {
             var content = Application.Current.Host.Content;
@@ -136,60 +148,88 @@ namespace Drako3
     
         }
 
+        [DataMember]
         public Point Center
         {
             get { return center; }
             set { center = value; }
         }
+        [DataMember]
         public Size ScreenSize
         {
             get { return screenSize; }
             set { screenSize = value; }
         }
+        [DataMember]
         public Double BoardSize
         {
             get { return boardSize; }
             set { boardSize = value; }
         }
+        [DataMember]
         public List<Point> Corners
         {
             get { return corners; }
             set { corners = value; }
         }
+        [DataMember]
         public List<Hex> Hexs
         {
             get { return hexs; }
             set { hexs = value; }
         }
+        [DataMember]
         public int Margin
         {
             get { return margin; }
             set { margin = value; }
         }
+        [DataMember]
         public Double Scale
         {
             get { return scale; }
             set { scale = value; }
         }
+        [DataMember]
         public Double HexHeight
         {
             get { return hexHeight; }
             set { hexHeight = value; }
         }
+        [DataMember]
         public Double HexWidth
         {
             get { return hexWidth; }
             set { hexWidth = value; }
         }
+        [DataMember]
         public Polygon ActivePlayer
         {
             get { return activePlayer; }
             set { activePlayer = value; }
         }
+        [DataMember]
         public Fraction ActiveFraction
         {
             get { return activeFraction; }
             set { activeFraction = value; }
+        }
+        [DataMember(IsRequired = false)]
+        public Image LibraryImage
+        {
+            get { return libraryImage; }
+            set { libraryImage = value; }
+        }
+        [DataMember(IsRequired = false)]
+        public Image DragonLibrary
+        {
+            get { return dragonLibrary; }
+            set { dragonLibrary = value; }
+        }
+        public Image DwarfLibrary
+        {
+            get { return dwarfLibrary; }
+            set { dwarfLibrary = value; }
         }
        public void ChangeActivePlayer(Fraction f)
         {
@@ -240,7 +280,10 @@ namespace Drako3
         public void DrawBoard( Grid g) //List<Polygon> drawBoard()
         {
             
-        
+     //   Canvas c=new Canvas();
+     //   StackPanel sp = new StackPanel();
+      //  c.Children.Add(sp);
+       //     g.Children.Add(c);
             
             for (int i = 0; i < hexs.Count; i++)
             {
@@ -249,12 +292,12 @@ namespace Drako3
             }
             for (int i = 0; i < hexs.Count; i++)
             {
-                if (hexs[i].Figure != null) g.Children.Add(hexs[i].Polygon);
+                if (hexs[i].Figure != null) g.Children.Add(hexs[i].Polygon);//lol
 
             }
-            g.Children.Add(activePlayer);
-            
+            //g.Children.Add(activePlayer);
 
+            //Canvas.SetZIndex(sp, 50);
             return; 
         }
 

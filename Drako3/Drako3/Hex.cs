@@ -20,7 +20,6 @@ namespace Drako3
       public static Figure rangeFigure;
       private Polygon polygon = new Polygon();
       private bool inMoveRange = false;
-     // System.Windows.Media.Color color = System.Windows.Media.Color.FromArgb(155, 0, 255, 1);
         public Point Center
       {
           get { return center; }
@@ -90,8 +89,6 @@ namespace Drako3
         }
         public static bool CanBeMovedTo(Hex from, Hex to, int moves,List<Hex> hexs)
         {
-           // List<Hex> visited = new List<Hex>();
-            //for(KeyedByTypeCollection=2;KeyedByTypeCollection<)
             List<List<Hex>> visited = new List<List<Hex>>();
             visited.Add(new List<Hex>());
             visited[visited.Count-1].Add(from);
@@ -103,7 +100,6 @@ namespace Drako3
                 {
                     foreach (Hex h2 in GetUnblockedNeighbors(hexs, h, visited))
                         visited[visited.Count - 1].Add(h2);
-//visited.Add(GetUnblockedNeighbors(hexs, h,visited));
 
                 }
 
@@ -131,7 +127,6 @@ namespace Drako3
                 {
                     foreach (Hex h2 in GetUnblockedNeighbors(hexs, hex, visited))
                         visited[visited.Count - 1].Add(h2);
-                    //visited.Add(GetUnblockedNeighbors(hexs, h,visited));
 
                 }
 
@@ -264,11 +259,7 @@ namespace Drako3
         }
         public static Hex PixelToHex(Point p, List<Hex> list)
         {
-            //double a = 1.0 / 3 * Math.Sqrt(3) * p.X;
-            //double b = 1.0 / 3 * p.Y;
-            //double c = a - b;
-            //double d = hexHeight / 2.0;
-           // double q = c / d;
+          
             double q = (1.0 / 3.0 * Math.Sqrt(3) * p.X - 1.0 / 3.0 * p.Y) / (hexHeight/2.0);
             double r = 2.0 / 3.0 * p.Y / (hexHeight / 2.0);
              Microsoft.Xna.Framework.Vector3 cube= ConvertAxialToCube(new Point(q, r));
@@ -339,9 +330,7 @@ namespace Drako3
             vec.Add(new Point(-1,0));
             vec.Add(new Point(-1,1));
             vec.Add(new Point(0,1));
-
-
-            
+    
             for (int i = 0; i < 6;i++ )
             {
                 Hex n = new Hex();
@@ -370,7 +359,6 @@ namespace Drako3
            
         public void ResetPolygon()
         {
-            //this.polygon = new Polygon();
             if (this.figure != null)
             {
                 if (this.figure.IsSelected)
@@ -393,26 +381,25 @@ namespace Drako3
                 if (inMoveRange && rangeFigure!=null)
                 {
                     if(rangeFigure is Dragon)
-                    polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20,255,0,0));
+                    polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(50,255,0,0));
                     else if((rangeFigure as Dwarf).Type==DwarfType.Leader)
                     {
-                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 128, 0));
+                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(50, 255, 128, 0));
 
                     }
                     else if((rangeFigure as Dwarf).Type==DwarfType.Webber)
                     {
-                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 128, 255, 0));
+                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(50, 128, 255, 0));
 
                     }
                     else if((rangeFigure as Dwarf).Type==DwarfType.Crossbowman)
                     {
-                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 255, 0));
+                        polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(50, 255, 255, 0));
 
                     }
                 }
                 else
                 {
-                    // polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(150, 255, 0, 0));
                     polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 0, 0, 0));
 
                 }
@@ -447,7 +434,6 @@ namespace Drako3
 
                             break;
                     }
-                    // polygon.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 0, 0, 255));
                 }
             }
 
